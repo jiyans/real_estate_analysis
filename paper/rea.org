@@ -1,0 +1,103 @@
+#+title: Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
+#+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
+#+AUTHOR: Jiyan Jonas Schneider
+#+EMAIL:     jiyan.schneider@gmail.com
+#+DATE:      2021-12-20
+# #+LATEX_HEADER: \usepackage[style=apa, backend=biber]{biblatex}
+#+LATEX_HEADER: \usepackage[backend=biber, style=apa,]{biblatex}
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
+# #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W0}
+#+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
+#+latex_class_options: [12pt]
+# #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=1.0cm,bottom=2.5cm]{geometry}
+#+OPTIONS: toc:nil
+
+
+#+begin_abstract
+The aim of this study is to examine the effect that Deep Learning methods could
+potentially have on real estate housing. Although there have been quite a few
+studies investigating the use of Machine Learning methods for this kind of task.
+
+The novelty in our study primarily lies in the use of Deep Learning methods for
+computer vision to analyze the images of the floor plans to assist with
+prediction and our analysis of the way the neural network is able to use the
+floor plans for prediction. There have been have been quite a few papers about
+the use of Machine Learning methods for real estate price predictions, however,
+most of the do not make use of deep learning, and even if they do, they do not
+make use of the actual floor plan, but mostly rely on structured explanatory
+variables for the their models. Some recent examples include,
+autocite:park2015using , for the German housing market and
+autocite:sangha21_proper_norweg for the Norwegian housing market. In order to compare
+our results to other results, we also reconstruct some models often used in the literature
+as baseline models.
+
+#+end_abstract
+
+* TODO Introduction [This is still pretty poorly written]
+** Find some nice introduction of why real estate markets matter
+The real estate market has some defining features that make it different to
+other kinds of markets. For example while competition in growing cities is
+always pretty high, the goods sold could hardly be described homogenous /I have
+no idea what im saying/.
+
+Most real estate models are based on easily observable features of each kind of
+rental apartment, such as the zip-code, the closest station, or the number of
+rooms in each apartment.
+
+However the actual layout of each apartment could also be considered to a very
+important aspect of each apartment, however, since it is hard to describe the
+apartment layout precisely in words, in other words, hard to categorize, most
+analyses of house prices thus ignore the problem of precisely incorporating
+information about the apartment layout. In this paper we will try to answer 2
+main questions.
+
+ 1. Does having information about the room layout, help with the prediction for
+    any model? To test this we will try to predict the price of the apartment
+    solely with the CNN
+ 2. If there is an effect of considering the room layout, how do we build the
+    model that is most efficient for prediction.
+    1. For example we could use the output of our model together with a linear
+       model for the categories, like in 1.
+    2. We could make it kinda ensemble like, using the output of multiple
+       models, and using another linear model to combine them ( Or other
+       ensemble methods )
+    3. We could use a multimodal approach, where we output latent states with
+       each of our submodels and use a "head" model to fuse our latent states
+       as described in:
+
+* Data
+The data was collected from the realestate.yahoo.com website, and is includes
+only rental apartments in the area around Tokyo, Mita. Thus, our sample is not
+perfectly representative of the Tokyo realestate market, and our anlaysis can
+not be considered as an analysis of the Tokyo realestate market as a whole, and
+rather it serves as a way for us to outline
+
+** The data was collected by a scraper
+** We had the following problems
+*** We only had items that were listed at the time. So the sample is not truly random
+*** We ony have data from a single website, which might be another source of bias.
+* Models and Methods
+Even though the data consist of Integers only, we will choose the rent price to be
+** We propose two main models
+*** TODO Multimodal model explained in [MULTIMODALPAPER]
+*** TODO A model that is very similary to the above multimodal model, however the connection
+between the two models is not many nodes, but only a single. Pretrained on the regression task
+*** TODO A model with 1 CNN and 1 NN
+*** TODO A model with 1 CNN and 1 LN
+*** TODO A model with cnn ln and xgboost
+** Baseline models with columns only
+*** Multiple Linear Regression
+*** XGBoost
+*** Neural Network
+** Practical Adjustments
+*** At the end of the model we will
+*** How do tricks affect the model trainings
+* Results
+* Conclusion
+* Discussion
+* Further possible investigations
+OK so does this work though
+
+
+\printbibliography
