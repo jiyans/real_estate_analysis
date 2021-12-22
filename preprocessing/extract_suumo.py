@@ -33,7 +33,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df["apt_size"] = df["apt_size"].str.slice(0, -1).astype(float)
 
     #Extract number of floors above ground
-    df["b_no_floors"] = df["b_no_floors"].str.extract(r"(\d+)階建")[0]
+    df["b_no_floors"] = df["b_no_floors"].str.extract(r"(\d+)階建")[0].astype(float)
 
     assert df["apt_rent"].str.endswith("万円").all(), "Not all rents in 万円"
     df["apt_rent"] = df["apt_rent"].str.slice(0, -2).astype(float)
@@ -63,4 +63,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df[["station", "method", "time", "unit"]] =  df[["b_closest_stations"]].apply(
         lambda x: get_closest(x["b_closest_stations"]), axis=1, result_type="expand")
 
+    df["apt_floor"] = df["apt_floor"].astype(float)
+    df["apt_thanks_fee"] = df["apt_thanks_fee"].astype(float)
+    df["apt_deposit"] = df["apt_deposit"].astype(float
     return df
