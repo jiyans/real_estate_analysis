@@ -1,24 +1,20 @@
-#+title: Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
-#+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
+#+title: WIP Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
+#+SUBTITLE: WIP An evaluation of an incorporation of deep learning methods for prediction real estate prices
 #+AUTHOR: Jiyan Jonas Schneider
 #+EMAIL:     jiyan.schneider@gmail.com
 #+DATE:      2021-12-20
-# #+LATEX_HEADER: \usepackage[style=apa, backend=biber]{biblatex}
 #+LATEX_HEADER: \usepackage[backend=biber, style=apa,]{biblatex}
 #+LATEX_HEADER: \usepackage{xeCJK}
 #+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
 # #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W0}
 #+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
 #+latex_class_options: [12pt]
-# #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=1.0cm,bottom=2.5cm]{geometry}
+#+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 #+OPTIONS: toc:nil
-
-
 #+begin_abstract
 The aim of this study is to examine the effect that Deep Learning methods could
 potentially have on real estate housing. Although there have been quite a few
 studies investigating the use of Machine Learning methods for this kind of task.
-
 The novelty in our study primarily lies in the use of Deep Learning methods for
 computer vision to analyze the images of the floor plans to assist with
 prediction and our analysis of the way the neural network is able to use the
@@ -36,20 +32,25 @@ as baseline models.
 
 * TODO Introduction [This is still pretty poorly written]
 ** Find some nice introduction of why real estate markets matter
+
 The real estate market has some defining features that make it different to
 other kinds of markets. For example while competition in growing cities is
 always pretty high, the goods sold could hardly be described homogenous /I have
 no idea what im saying/.
 
+** Current Real estate models
 Most real estate models are based on easily observable features of each kind of
 rental apartment, such as the zip-code, the closest station, or the number of
 rooms in each apartment.
 
+** We want to consider the room layout
 However the actual layout of each apartment could also be considered to a very
 important aspect of each apartment, however, since it is hard to describe the
 apartment layout precisely in words, in other words, hard to categorize, most
 analyses of house prices thus ignore the problem of precisely incorporating
-information about the apartment layout. In this paper we will try to answer 2
+information about the apartment layout.
+** 2 main questions
+In this paper we will try to answer 2
 main questions.
 
  1. Does having information about the room layout, help with the prediction for
@@ -67,37 +68,80 @@ main questions.
        as described in:
 
 * Data
-The data was collected from the realestate.yahoo.com website, and is includes
+The data was collected from the realestate.yahoo.com website, and it includes
 only rental apartments in the area around Tokyo, Mita. Thus, our sample is not
 perfectly representative of the Tokyo realestate market, and our anlaysis can
-not be considered as an analysis of the Tokyo realestate market as a whole, and
-rather it serves as a way for us to outline
-
-** The data was collected by a scraper
-** We had the following problems
-*** We only had items that were listed at the time. So the sample is not truly random
-*** We ony have data from a single website, which might be another source of bias.
+not be considered as an analysis of the Tokyo realestate market as a whole, but
+rather it serves as a way for us to outline how to use our methods. However, the
+results from this paper should not be used for interpretations on the Tokyo real
+estate market as a whole.
+Two more potential sources of bias in the dataset are that we are only considering
+properties that were listed at the time of data collection, and that we rely on
+data from a single website, and are not making use of other sources. However, these
+biases are not expected to have an impact on our results, in this paper we are more
+concerned with the efficacy of the different measures, rather than making statements
+about the Tokyo Real-estate market.
+** TODO One problem with the data was that the images are too small. We would have liked to use bigger pictures but we weren't able to retrieve the bigger pictures
+** Dimensions of data
+** Summary stats
+** Some histograms
 * Models and Methods
-Even though the data consist of Integers only, we will choose the rent price to be
 ** We propose two main models
+Even though the data consist of Integers only, we will choose the rent price to be
+
+
 *** TODO Multimodal model explained in [MULTIMODALPAPER]
 *** TODO A model that is very similary to the above multimodal model, however the connection
 between the two models is not many nodes, but only a single. Pretrained on the regression task
 *** TODO A model with 1 CNN and 1 NN
 *** TODO A model with 1 CNN and 1 LN
 *** TODO A model with cnn ln and xgboost
+*** Explain how we crop our pictures
+*** Explain how I will prepare all the variables
+*** Explain the embeddings I will use for the Neural Network
+*** Explain how the result changes with One hot encodings vs embeddings.
 ** Baseline models with columns only
 *** Multiple Linear Regression
+ - [ ] Explain base class of the One hot encoded things and a little bit of multiple linear regression.
+   Make the model. If it becomes too long, explain it simply with the vector representation, this probably
+   does not have to be too exact.
+   \( \hat y = \beta_{0} x_{0} + \beta_{1} x_{1} + \beta_{2} x_{2} \)
+
 *** XGBoost
+ - [ ] Same here, show base class of ohe
+ - [ ] Show importance only in real paper but not the summary
 *** Neural Network
+ -  Simply show the results of the summary
 ** Practical Adjustments
 *** At the end of the model we will
 *** How do tricks affect the model trainings
+*** Exactly explain how the model is trained,
+ - Learning rate adjustment
+ - Pretrained resnet 50
+ - For the categorical ensemble thing, that first the network is trained,
+   then weights are frozen, and that only the new head of the resnet50 is trained at first, for a few epochs,
+   and at the end we train both models
+ - Same for the output
 * Results
-* Conclusion
+** Show the results for the baseline models
+** Show the results for the other models
+** Show all the graphs
+ - [ ] In summary show results with regression plots
+ - [ ] Show coefficients only in real paper not summary
 * Discussion
-* Further possible investigations
-OK so does this work though
+Some of our results are hard to interpret, e.g. multimodal learning is worse than the ensembling method. (probably) Why?
+* Conclusion
+** Conclude whether using these models might make sense or not
+Some of our
+** Further possible investigations
+Some possible talking points:
+ - If the results are good, would looking at a bigger market be interesting
+ - If we had a more representative sample, could we use some of the results to make some
+   interesting conclusions
+ - It would be interesting to analyze the outputs using methods as described in for example with shap or eli5, to see
+   why it doesn't work if it doesn't or what it focuses on for certain predictions, if it does.
+ - How does everything look for the multimodal approach, does it make sense or not?
+
 
 
 \printbibliography
