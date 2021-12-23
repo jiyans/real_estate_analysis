@@ -34,6 +34,7 @@ def get_closest(station_dict):
 
 def extract_suumo(df, site_root=SITE_ROOT):
     # Get rid of rows without images
+    df = df.dropna()
     df = df[~df["images"].apply(lambda x: x == [])].copy()
     assert df["apt_size"].str.endswith("m").all(), "Not all apartmentsizes end with m"
     df["apt_size"] = df["apt_size"].str.slice(0, -1).astype(float)
