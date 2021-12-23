@@ -40,7 +40,8 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df["apt_size"] = df["apt_size"].str.slice(0, -1).astype(float)
 
     #Extract number of floors above ground
-    df["b_no_floors"] = df["b_no_floors"].str.extract(r"(\d+)階建")[0].astype(float)
+    df["b_no_floors"] = df["b_no_floors"].str.replace("平屋", "1階")
+    df["b_no_floors"] = df["b_no_floors"].str.extract("(\d+)階")[0].astype(float)
 
     assert df["apt_rent"].str.endswith("万円").all(), "Not all rents in 万円"
     df["apt_rent"] = df["apt_rent"].str.slice(0, -2).astype(float)
@@ -49,7 +50,8 @@ def extract_suumo(df, site_root=SITE_ROOT):
 
     df["b_age"] = flatten_series(df["b_age"])
     assert (pd.Series(df["b_age"].unique()).apply(len) == 2).sum() == 1, "There should be only 1 element with length 2, and that is `新築`"
-    df["b_age"] = df["b_age"].str.slice(1,-1).apply(lambda x: "0" if x == "" else x).astype(float)
+    df["b_age"] = df["b_age"].str.replace("新築", "0年")
+    df["b_age"] = df["b_age"].str.extract("(\d+)年").astype(float)
 
     assert df["apt_admin_price"].str.replace("-", "0円").str.endswith("円").all(), "All prices should either be 0 or end with 円"
     df["apt_admin_price"] = df["apt_admin_price"].str.replace("-", "0円").str.slice(0, -1).astype(float)
@@ -73,6 +75,10 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df[["station", "method", "time_to_station", "unit"]] =  df[["b_closest_stations"]].apply(
         lambda x: get_closest(x["b_closest_stations"]), axis=1, result_type="expand")
 
+    # df = df.join(station_df.reset_index(), l=["index"])
+    df["apt_floor"] = df["apt_floor"].astype(float)
+    df["apt_thanks_fee"] = df["apt_thanks_fee"].astype(float)
+    df["apt_deposit"] = df["apt_deposit"].astype(float)
     df["apt_floor"] = df["apt_floor"].astype(float)
     df["apt_thanks_fee"] = df["apt_thanks_fee"].astype(float)
     df["apt_deposit"] = df["apt_deposit"].astype(float)
