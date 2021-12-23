@@ -71,6 +71,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df["apt_deposit"] = df["apt_deposit"].replace("-", "0万円").str.slice(0, -2)
 
     df["rel_image_paths"] = df["images"].apply(lambda x: x[0]["path"])
+    df["id"] = df["rel_image_paths"].slice(5, -4)
 
     df[["station", "method", "time_to_station", "unit"]] =  df[["b_closest_stations"]].apply(
         lambda x: get_closest(x["b_closest_stations"]), axis=1, result_type="expand")
@@ -82,6 +83,6 @@ def extract_suumo(df, site_root=SITE_ROOT):
 
     # Many buildings with B in front of them actually had bugs
     df = df[df["apt_floor"]>-1]
-    df = df.drop(["b_closest_stations", "image_urls", "images"], axis=1).drop_duplicates().reset_index(drop=True)
+    df = df.drop(["b_closest_stations", "image_urls", "images"], axis=1).drop_duplicates(subset="id").reset_index(drop=True)
 
     return df
