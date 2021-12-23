@@ -65,5 +65,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
 
     df["apt_floor"] = df["apt_floor"].astype(float)
     df["apt_thanks_fee"] = df["apt_thanks_fee"].astype(float)
-    df["apt_deposit"] = df["apt_deposit"].astype(float
+    df["apt_deposit"] = df["apt_deposit"].astype(float)
+    df = df.drop(["b_closest_stations", "image_urls", "images"], axis=1).drop_duplicates().reset_index(drop=True)
+
     return df
