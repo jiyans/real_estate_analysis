@@ -75,13 +75,13 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df[["station", "method", "time_to_station", "unit"]] =  df[["b_closest_stations"]].apply(
         lambda x: get_closest(x["b_closest_stations"]), axis=1, result_type="expand")
 
-    # df = df.join(station_df.reset_index(), l=["index"])
+    #Fixing some of the types
     df["apt_floor"] = df["apt_floor"].astype(float)
     df["apt_thanks_fee"] = df["apt_thanks_fee"].astype(float)
     df["apt_deposit"] = df["apt_deposit"].astype(float)
-    df["apt_floor"] = df["apt_floor"].astype(float)
-    df["apt_thanks_fee"] = df["apt_thanks_fee"].astype(float)
-    df["apt_deposit"] = df["apt_deposit"].astype(float)
+
+    # Many buildings with B in front of them actually had bugs
+    df = df[df["apt_floor"]>-1]
     df = df.drop(["b_closest_stations", "image_urls", "images"], axis=1).drop_duplicates().reset_index(drop=True)
 
     return df
