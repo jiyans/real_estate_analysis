@@ -60,7 +60,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
 
     df["rel_image_paths"] = df["images"].apply(lambda x: x[0]["path"])
 
-    df[["station", "method", "time", "unit"]] =  df[["b_closest_stations"]].apply(
+    df[["station", "method", "time_to_station", "unit"]] =  df[["b_closest_stations"]].apply(
         lambda x: get_closest(x["b_closest_stations"]), axis=1, result_type="expand")
 
     df["apt_floor"] = df["apt_floor"].astype(float)

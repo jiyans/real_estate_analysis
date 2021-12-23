@@ -11,6 +11,7 @@
 #+latex_class_options: [12pt]
 #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 #+OPTIONS: toc:nil
+
 #+begin_abstract
 The aim of this study is to examine the effect that Deep Learning methods could
 potentially have on real estate housing. Although there have been quite a few
@@ -69,18 +70,19 @@ main questions.
 
 * Data
 The data was collected from the realestate.yahoo.com website, and it includes
-only rental apartments in the area around Tokyo, Mita. Thus, our sample is not
-perfectly representative of the Tokyo realestate market, and our anlaysis can
-not be considered as an analysis of the Tokyo realestate market as a whole, but
-rather it serves as a way for us to outline how to use our methods. However, the
-results from this paper should not be used for interpretations on the Tokyo real
-estate market as a whole.
-Two more potential sources of bias in the dataset are that we are only considering
+only rental apartments in the Metropolitan area of Tokyo (including Kanagawa,
+Saitama and Chiba).
+While the dataset includ representative of the Tokyo
+realestate market, and our anlaysis can not be considered as an analysis of the
+Tokyo realestate market as a whole, but rather it serves as a way for us to
+outline how to use our methods. However, the results from this paper should not
+be used for interpretations on the Tokyo real estate market as a whole. Two more
+potential sources of bias in the dataset are that we are only considering
 properties that were listed at the time of data collection, and that we rely on
-data from a single website, and are not making use of other sources. However, these
-biases are not expected to have an impact on our results, in this paper we are more
-concerned with the efficacy of the different measures, rather than making statements
-about the Tokyo Real-estate market.
+data from a single website, and are not making use of other sources. However,
+these biases are not expected to have an impact on our results, in this paper we
+are more concerned with the efficacy of the different measures, rather than
+making statements about the Tokyo Real-estate market.
 ** TODO One problem with the data was that the images are too small. We would have liked to use bigger pictures but we weren't able to retrieve the bigger pictures
 ** Dimensions of data
 ** Summary stats
