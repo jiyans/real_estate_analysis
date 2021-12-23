@@ -6,6 +6,12 @@ import pandas as pd
 
 SITE_ROOT =  "https://suumo.jp/"
 
+
+def flatten_series(ser):
+    assert ser.apply(lambda x: isinstance(x, list)).all(), "Elements of ser arent lsits"
+    assert ser.apply(lambda x: len(x)==1).all(), "Not all elements are of length 1)"
+    return ser.apply(lambda x: x[0])
+
 def clean_apt_floor_strings(s):
     s = s.split("-")[0]
     s = "-".join(s.split("B"))
@@ -39,6 +45,8 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df["apt_rent"] = df["apt_rent"].str.slice(0, -2).astype(float)
 
 
+
+    df["b_age"] = flatten_series(df["b_age"])
     assert (pd.Series(df["b_age"].unique()).apply(len) == 2).sum() == 1, "There should be only 1 element with length 2, and that is `新築`"
     df["b_age"] = df["b_age"].str.slice(1,-1).apply(lambda x: "0" if x == "" else x).astype(float)
 
@@ -46,6 +54,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df["apt_admin_price"] = df["apt_admin_price"].str.replace("-", "0円").str.slice(0, -1).astype(float)
 
     # Extract the floor number,
+    df["apt_floor"] = flatten_series(df["apt_floor"])
     df["apt_floor"] = df["apt_floor"].apply(clean_apt_floor_strings).str.extract(r"(-?\d+)")[0]
 
     # Put full links in there
