@@ -1,0 +1,89 @@
+---
+title: "EDA"
+author: "Jiyan Jonas Schneider"
+date: "12/24/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# EDA
+
+This is the EDA for my project.
+GOd R studio has become hard to use.. .
+
+
+```{r cars}
+library(arrow)
+library(tidyverse)
+theme_set(theme_gray(base_family="HiraginoSans-W3"))
+```
+
+
+```{r imports}
+
+df  <- read_feather("../data/suumo23日.ar")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+hist(df$apt_rent, breaks = 100)
+```
+
+We can see that our dataset has a very long right tail, which contains only very few observations.
+These are rents per month. The author checked some of these outliers by hand, and they seem to be 
+not mistakes in data input, but to be actual prices. 
+
+When taking the log of the rents, the prices seem to move close to a "bell-shaped"
+distribution, however nto necessarily normal. Furthermore, there are no negative prices, so the left
+tail is shorter than the right tail.
+
+```{r}
+hist(log(df$apt_rent), breaks=100)
+
+```
+These are the prices of our rent. They look OK I think.. 
+
+```{r}
+```
+
+
+
+```{r}
+theme_dark(base_family = "HiraKakuProN-W3")
+
+
+#+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W0}
+
+df %>% 
+  group_by(station) %>% 
+  count %>%
+  arrange(-n) %>%
+  head(25) %>% 
+  arrange(-n) %>%
+  ggplot(aes(y=reorder(station, n), x=n)) + geom_bar(stat="identity") + ylab("station") + xlab("Number of properties")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
