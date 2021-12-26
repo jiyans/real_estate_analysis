@@ -6,138 +6,118 @@
 #+LATEX_HEADER: \usepackage[backend=biber, style=apa,]{biblatex}
 #+LATEX_HEADER: \usepackage{xeCJK}
 #+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
-# #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W0}
+#+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W3}
 #+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
 #+latex_class_options: [12pt]
 #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+#+OPTIONS: toc:1
 
 #+begin_abstract
-
-The aim of this study is to examine the effect that Deep Learning methods could
-potentially have on real estate housing. Although there have been quite a few
-studies investigating the use of Machine Learning methods for this kind of task.
-The novelty in our study primarily lies in the use of Deep Learning methods for
-computer vision to analyze the images of the floor plans to assist with
-prediction and our analysis of the way the neural network is able to use the
-floor plans for prediction. There have been have been quite a few papers about
-the use of Machine Learning methods for real estate price predictions, however,
-most of the do not make use of deep learning, and even if they do, they do not
-make use of the actual floor plan, but mostly rely on structured explanatory
-variables for the their models. Some recent examples include,
-autocite:park2015using , for the German housing market and
-autocite:sangha21_proper_norweg for the Norwegian housing market. In order to compare
-our results to other results, we also reconstruct some models often used in the literature
-as baseline models.
-
+The aim of this paper is to examine the opportunities of application of Computer
+vision Deep Learning methods in the realm of housing price prediction. Although
+there have been quite a few studies investigating the use of Machine Learning
+methods in the area of real estate price prediction, generally they were purely
+based on tabular data. The novelty of this paper study primarily lies in the use
+of Computer Vision Deep Learning methods to analyze images of floor plans of
+real estate listings and use these results to assist with with prediction and
+our analysis of the way the neural network is able to use the floor plans for
+prediction. The results of our model is then compared to a variety of baseline
+models to assess its viability.
 #+end_abstract
 
-* Introduction [This is still pretty poorly written]
-** Find some nice introduction of why real estate markets matter
+* Introduction
+In this paper we will look into whether its possible to make use of the floor
+plans of real estate listings, for price prediction. Most real estate models are
+based on easily observable features of each kind of rental apartment, such as
+the zip-code, the closest station, or the number of rooms in each apartment.
+Deep Learning in general and more specifically the field of Computer Vision have
+made large advances in recent years on unstructered data such as images and
+videos. In this paper we look into the opportunities of multi modal deep learning
+to make use of both the visual data, from the floor plan, as well more traditional
+tabular data.
 
-The real estate market has some defining features that make it different to
-other kinds of markets. For example while competition in growing cities is
-always pretty high, the goods sold could hardly be described homogenous /I have
-no idea what im saying/.
+In particular we will try to answer the following 2 main questions
 
-** Current Real estate models
-Most real estate models are based on easily observable features of each kind of
-rental apartment, such as the zip-code, the closest station, or the number of
-rooms in each apartment.
-
-** We want to consider the room layout
-However the actual layout of each apartment could also be considered to a very
-important aspect of each apartment, however, since it is hard to describe the
-apartment layout precisely in words, in other words, hard to categorize, most
-analyses of house prices thus ignore the problem of precisely incorporating
-information about the apartment layout.
-** 2 main questions
-In this paper we will try to answer 2
-main questions.
-
- 1. Does having information about the room layout, help with the prediction for
-    any model? To test this we will try to predict the price of the apartment
-    solely with the CNN
+ 1. Does having information about the room layout, help with the prediction?
+    To do this we will construct a model similar to what is described in [cite:@he15:deep_resid_learn_image_recog]
+    to predict monthly rent prices. Afterwards we will use these predictions with other
+    predictors regularly used in real estate market models.
  2. If there is an effect of considering the room layout, how do we build the
-    model that is most efficient for prediction.
-    1. For example we could use the output of our model together with a linear
-       model for the categories, like in 1.
-    2. We could make it kinda ensemble like, using the output of multiple
-       models, and using another linear model to combine them ( Or other
-       ensemble methods )
-    3. We could use a multimodal approach, where we output latent states with
-       each of our submodels and use a "head" model to fuse our latent states
-       as described in:
-
+    model that is most efficient for prediction?
+    If there is a positive effect of making use of the image data, how do we best incorporate
+    it into our models. In particular, we plan to consider the following 3 kinds of models.
+    1. Using the output of the image model for use in a linear model with the rest of the data.
+    2. Use the output of the image model together with a Neural Network trained on the tabular information and
+    3. We could use a multimodal approach, where we output multiple latent states from each of
+       our submodels, fuse these latent, and use a "head" model to fuse our latent states
+       as described in: MULTIMODAL PAPER.
 * Data
-The dataset used is a mix of tabular and image data
-
 The dataset used is a mix of tabular and image data of real estate properties
 from the Tokyo Metropolitan area, listed on a public website. The data was
 collected for the purpose of writing this paper. The Tokyo Metropolitan area
-includes parts of Yokohama, Saitama and Chiba as well. Due to our data collection
-process, there are arguably some biases, which would get in the way of making
-interpretations for the Tokyo real-estate market as a whole. For our purposes,
-however, the data at hand suffices, because rather than causal inference, today
-we want to find out how using
+includes parts of Yokohama, Saitama and Chiba as well. Since our dataset is not
+a random sample, our anlaysis can not be considered as an analysis of the Tokyo
+realestate market as a whole. Rather it serves as a way for us to outline how to
+use of the methods described in this paper might influence more traditional
+approaches. However, the results from this paper should not be used for
+interpretations on the Tokyo real estate market as a whole.
 
+Two potential sources of bias in the dataset are that we are only considering
+properties that were available for rent at the time of data collection, and that
+we rely on data from only single website, and are not making use of other
+sources. However, these biases are not expected to have an impact on our
+results, in this paper we are more concerned with the efficacy of the different
+measures, rather than making statements about the Tokyo Real-estate market.
 
-Chiba, Saitama and Yokohama is available and gathered by the author of this
-paper. The data was collected representative of the Tokyo realestate market, and
-our anlaysis can not be considered as an analysis of the Tokyo realestate market
-as a whole, but rather it serves as a way for us to outline how to use our
-methods. However, the results from this paper should not be used for
-interpretations on the Tokyo real estate market as a whole. Two more potential
-sources of bias in the dataset are that we are only considering properties that
-were listed at the time of data collection, and that we rely on data from a
-single website, and are not making use of other sources. However, these biases
-are not expected to have an impact on our results, in this paper we are more
-concerned with the efficacy of the different measures, rather than making
-statements about the Tokyo Real-estate market.
+Our dataset consists of 141394 observations. For each of these observations we
+had available 6 continuous explanatory variables and and 3 categorical
+explanatory variables. Our independent variable is the monthly rent price for
+each observation in units of 10000¥.
+
 ** Variables Used
-We did some dataprocessing for the variables. We prepared each variable as below.
-
-#+CAPTION: This is the caption for a table
-| Variable  | Strategy                                                                                                                                     |
-|-----------+----------------------------------------------------------------------------------------------------------------------------------------------|
-| Apt_rent  | Normalize                                                                                                                                    |
-| Apt_size  | No preprocesing (deleted 1 erroneous case)                                                                                                   |
-| apt_floor | treat underground floors as -ints, underground floors less than 2 are deleted:                                                               |
-| b_age     | This is the age of the buidling reported on the site 0 if it was built this year                                                             |
-| b_station | This is the closest station, if there were more that one possible closest stations, we would pick the one with the shortest travel distance. |
+#+CAPTION: This is a table explaining the variables used in our dataset.
+| Variable        | Explanation                                                    |
+|-----------------+----------------------------------------------------------------|
+| station         | Name of the closest station, measured by time travelled        |
+| method          | Description of the type of apartment (for example 1K, 1LDK...) |
+| apt_style       | Number of floors of the building of this listing               |
+|-----------------+----------------------------------------------------------------|
+| apt_floor       | The floor the property is 0.                                   |
+| apt_size        | Size of property in $m^2$                                      |
+| time_to_station | No. minutes of taking "method" to the next station             |
+| b_age           | No. of years ago the property was built                        |
+| b_no_floors     | No of floors of the building                                   |
+| apt_admin_price | Amount of monthly administration fee                           |
+| apt_rent        | Rent per month of the listing. In units of 10000 Yen           |
+|-----------------+----------------------------------------------------------------|
 
 ** Summary stats
-
 ** Some more data explanation with some plots
 * Models, Methods, Architecture
+The implementation of the models described below were made with the software
+library "fastai" introduced in [cite:@howard20_fastai]
 ** 2 main models
 Even though the data consist of Integers only, we will choose the rent price to be
-*** Cite Resnet
-*** Cite pretraining paper
-*** Cite Embedding paper
-*** Cite Learning Rate paper
+
+- Cite Resnet paper
+- Cite pretraining paper
+- Cite Embedding paper
+- Cite Learning Rate paper
+
 ** Explain the Multimodal model
 explained in [MULTIMODALPAPER]
 *** Different kinds of multimodals
 **** TODO A model that is very similary to the above multimodal model, however the connection
 between the two models is not many nodes, but only a single. Pretrained on the regression task
 **** TODO A model with 1 CNN and 1 NN
-*** TODO A model with 1 CNN and 1 LN I think this should be the model
-** Baseline models with columns only to compare our model to
+**** TODO A model with 1 CNN and 1 LN I think this should be the model
+** Baseline models
 Give reasons for why we chose those models ( e.g. other papers used those models )
 *** Multiple Linear Regression
- - [ ] Explain base class of the One hot encoded things and a little bit of multiple linear regression.
-   Make the model. If it becomes too long, explain it simply with the vector representation, this probably
-   does not have to be too exact.
-   \( \hat y = \beta_{0} x_{0} + \beta_{1} x_{1} + \beta_{2} x_{2} \)
-
-*** XGBoost
- - [ ] Same here, show base class of ohe
- - [ ] Show importance only in real paper but not the summary
+*** Random Forest
 *** Neural Network
- -  Simply show the results of the summary
 ** Practical Adjustments that had to be made
 *** Explain how we crop our pictures
-
 In order to efficiently process images on the GPU, all images have to have the
 same dimensions. However the images in the dataset colected had different
 dimensions, so the images have to be cropped. We cropped all images to 224x224
@@ -157,8 +137,7 @@ approach described below worked best for our dataset.
    the 224x224 pixels. With this approach it is possible to retain all parts of the
    image, so that no important parts are left out, however, when resizing like this,
    the amount of "squishing" done for each image varies, so the model has to learn
-   to deal with different amounts of distortion. This method entails with it
-   another drawback discussed in [[ ] ]]]]]]]]]]]]
+   to deal with different amounts of distortion.
 3. Cropping out not the middle part of the image, but a random part of the
    image. This problem entails with it the same problem as approach 1, however
    by cropping a random part, rather than just the center, we have more possibility of training the neural network, since even if we use the same image twice, there is a
@@ -167,15 +146,15 @@ approach described below worked best for our dataset.
 We had the best results for training the "Vision" part of our Neural network,
 when using the third approach, and results reported in this paper were done with
 "Random Crop" strategy.
-**** You might need to update this picture.
-:PROPERTIES:
-:ID:       c104b241-3f4e-4b3a-84f9-171d5119dd4b
-:END:
+
+Figure 1. shows how different techniques influence the different cropping methods.
+
 #+HEIGHT: 500
 #+CAPTION: This figure showcases the properties of each kind of resize as outlined in the paper. The first row shows some 9 floor plans where the data has been Resized with the "squish" method. The second row shows the same picture with the crop-and-pad method, and the third row shows the first apartment of the other two rows, randomly cropped to different sizes. The black parts of the second and third rows are the padded parts.
 [[file:./assets/resizes.jpg]]
 
 *** Explain what other tricks we used
+*** Hyperparameters (Like the learning rate)
 *** Explain the embeddings I will use for the Neural Network
 For the Neural Network part of the architecture we made use of Categorical Embedding layers
 We used the
@@ -188,9 +167,44 @@ We used the
    and at the end we train both models
  - Same for the output
 * Results
-** Results for our model
-** Results for vision model put into Linear Regression ( Is the prediction column statistically significant? )
 ** Results of baseline models
+ベースラインのモデルはこんな感じになっています。
+最初の重回帰分析以外は独立変数は家賃のlog になります。
+
+*** Linear Regression
+#+CAPTION:  This is is the result of a log linear regression regression performed with only the continuous variables on the log of the apartment rent: N=141394, Corr=0.86 $R^{2}=0.74$ mse=17.65
+[[./assets/Linear Regression.jpg]]
+#+Caption: This is is the result of a log linear regression regression performed with only the continuous variables on the log of the apartment rent N=141394, Corr=0.86 $R^{2}=0.74$ mse=0.05
+[[./assets/Linear Regression log.jpg]]
+
+#+Caption: THis is the result of linear regression all previous variables + apt_style Corr=0.877        N=141394 $R^{2} = 0.77$ mse=0.04
+[[./assets/style and log_rent.jpg]]
+
+#+Caption: This ist the result of a linear regression performed on all variables mse=0.03
+[[./assets/Station, Style, log rent.jpg]]
+*** Random Forest
+These are the results for random forest
+[[./assets/rf.jpg]]
+
+** Results for vision model
+(Is the prediction column statistically significant?)
+
+#+CAPTION:一旦学習してみたところ このような0.05ぐらいの精度でした。 平均だけを予測すれば0.17 になりますので平均よりはいいです。ギリギリ普通の線形回帰と同じような精度になっています。
+[[./assets/viz_learner.jpg]]
+
+
+** Results Regular NN
+#+CAPTION:TabularDataを全結合層の input->100->10->10->1のニューラルネットで一旦学習してみたらこうなりました。
+[[./assets/tab_learner.jpg]]
+
+
+** Results Multimodal
+
+#+CAPTION: まだ途中ですがオプト様とのプロジェクトと同じような作りを使って学習しているところです。 途中結果はこんな感じです。
+[[./assets/multimodal.jpg]]
+
+** まだVision のモデルの予測を使って線形回帰を行うことはできていません
+
 * Discussion
 Some of our results are hard to interpret, e.g. multimodal learning is worse than the ensembling method. (probably) Why?
 ** Problems of very high dimensionality due to many many categories in the categorical variables.
@@ -206,7 +220,5 @@ Some possible talking points:
    why it doesn't work if it doesn't or what it focuses on for certain predictions, if it does.
  - How does everything look for the multimodal approach, does it make sense or not?
 And ways to improve the model
-
-** Cite Fastai
 
 \printbibliography
