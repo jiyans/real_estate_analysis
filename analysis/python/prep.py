@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import mean_squared_error
@@ -33,17 +32,19 @@ def plot_regression_once(preds,targs, model_name):
         N = preds.shape[0],
         corr = preds.corr(targs),
     )
-    plt.figure(figsize=(16, 9))
+    fig,ax = plt.subplots(nrows=1,ncols=1, figsize=(5, 4))
+    plt.scatter(x=targs, y=preds, alpha=0.10)
     plt.scatter(x=targs, y=preds, alpha=0.10)
     m = max(targs.max(), preds.max())
     corrcords = (0.0, round(m*0.8))
     
-    plt.plot([0, m], [0, m], label="y = x", c="purple")
+    plt.plot([0, m], [0, m], label="y = x", alpha=0.6)
     plt.legend(fontsize=15)
     plt.ylabel("Predictions", fontsize=18)
     plt.xlabel("Ground Truth", fontsize=18)
     annotation_string=annotate_string([trainstats])
-    plt.annotate(annotation_string,
-                 corrcords, 
-                fontsize=15, family="monospace")
-    return plt.title(f"{model_name}" , fontsize=22)
+    # plt.annotate(annotation_string,
+    #              corrcords,
+    #             fontsize=15, family="monospace")
+    plt.title(f"{model_name}" , fontsize=22)
+    return fig

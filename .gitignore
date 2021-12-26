@@ -6,3 +6,9 @@
 /analysis/jl/Manifest.toml
 /analysis/python/.ipynb_checkpoints/
 /analysis/data/
+*.jpg
+*.svg
+*.png
+*.bbl
+*.pdf
+*.tex
