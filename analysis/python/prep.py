@@ -96,14 +96,14 @@ def plot_regression(tp, tt, vp, vt, model_name=""):
     plt.xlabel("Ground Truth")
 
     # corrcords = (0.0, round(m*0.8))
-    corrcords = (-1.0, -3)
+    corrcords = (-1.0, -4)
     annotation_string = annotate_string([train_stats, test_stats])
 
     plt.annotate(
         annotation_string,
         corrcords,
         xycoords="data",
-        fontsize=12,
+        fontsize=8,
         family="monospace",
         annotation_clip=False,
     )
@@ -113,7 +113,7 @@ def plot_regression(tp, tt, vp, vt, model_name=""):
 
 def get_summary(learner, model_name="", dls=None):
     if dls is None:
-        tp, tt = learner.get_preds(
+        tt, tp = learner.get_preds(
             ds_idx=0,
             act=None,
             with_input=False,
@@ -121,9 +121,9 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        tp, tt = tp.squeeze().numpy(), tt.squeeze().numpy()
+        tt, tp = tt.squeeze().numpy(), tp.squeeze().numpy()
 
-        vp, vt = learner.get_preds(
+        vt, vp = learner.get_preds(
             ds_idxs=1,
             act=None,
             with_input=False,
@@ -131,9 +131,9 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        vp, vt = vp.squeeze().numpy(), vt.squeeze().numpy()
+        vt, vp = vt.squeeze().numpy(), vp.squeeze().numpy()
     else:
-        tp, tt = learner.get_preds(
+        tt, tp = learner.get_preds(
             dl=dls.train,
             act=None,
             with_input=False,
@@ -141,8 +141,8 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        tp, tt = tp.squeeze().numpy(), tt.squeeze().numpy()
-        vp, vt = learner.get_preds(
+        tt, tp = tt.squeeze().numpy(), tp.squeeze().numpy()
+        vt, vp = learner.get_preds(
             dl=dls.valid,
             act=None,
             with_input=False,
@@ -150,6 +150,6 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        vp, vt = vp.squeeze().numpy(), vt.squeeze().numpy()
+        vt, vp = vt.squeeze().numpy(), vp.squeeze().numpy()
 
     return plot_regression(tp, tt, vp, vt, model_name=model_name)
