@@ -88,18 +88,19 @@ def plot_regression(train_preds,train_targs, test_preds, test_targs,model_name="
 def get_summary(learner, model_name="", dls=None):
   if dls is None:
     tr_preds,tr_targs = learner.get_preds(ds_idx=0)
+    tr_preds = tr_preds.squeeze().numpy()
+    tr_targs = tr_targs.squeeze().numpy()
+
     te_preds,te_targs = learner.get_preds(ds_idx=1)
+    te_preds  = te_preds.squeeze().numpy()
+    te_targs  = te_targs.squeeze().numpy()
   else:
     tr_preds,tr_targs = learner.get_preds(dl=dls.train)
+    tr_preds = tr_preds.squeeze().numpy()
+    tr_targs = tr_targs.squeeze().numpy()
     te_preds,te_targs = learner.get_preds(dl=dls.valid)
+    te_preds  = te_preds.squeeze().numpy()
+    te_targs  = te_targs.squeeze().numpy()
 
-  test_preds  = te_preds.squeeze().numpy()
-  test_targs  = te_targs.squeeze().numpy()
-  train_preds = tr_preds.squeeze().numpy()
-  train_targs = tr_targs.squeeze().numpy()
-
-  return plot_regression(train_preds,
-                  train_targs,
-                  test_preds,
-                  test_targs,
+  return plot_regression(tr_preds, tr_targs, te_preds, te_targs,
                   model_name=model_name)
