@@ -16,16 +16,30 @@
 The aim of this paper is to examine the opportunities of application of Computer
 vision Deep Learning methods in the realm of housing price prediction. Although
 there have been quite a few studies investigating the use of Machine Learning
-methods in the area of real estate price prediction, generally they were purely
-based on tabular data. The novelty of this paper study primarily lies in the use
-of Computer Vision Deep Learning methods to analyze images of floor plans of
-real estate listings and use these results to assist with with prediction and
-our analysis of the way the neural network is able to use the floor plans for
-prediction. The results of our model is then compared to a variety of baseline
-models to assess its viability.
+methods in the area of real estate price prediction, generally they are based on
+purely tabular data. The novelty of this paper study lies in the use of Computer
+Vision Deep Learning methods to analyze images of floor plans of real estate
+listings and use these results to firstly, predict rent prices of properties,
+and secondly, for the interpretation of the the way real estate prices come into
+existence.
 #+end_abstract
 
 * Introduction
+Real estate prices have to be estimated for different purposes (real estate
+appraisal for evalation of net worth, but also for other national surveys.
+Furthermore imputed real estate prices are used in the output of homeowners.
+Here the price of the rent is estimated from the price of the house and other
+values.)
+
+
+Because real estate product of a ), and the structure of real estate
+prices is a long standing problem. Since [cite:@rosen_1974_hedonic] real estate
+prices are often considered to be of hedonic nature, meaning that the price of a
+certain property would consists of it attributes associated with the property.
+While they are often considered to be hedonic, the factors that make up the
+prices are often up for discussion.
+
+
 In this paper we will look into whether its possible to make use of the floor
 plans of real estate listings, for price prediction. Most real estate models are
 based on easily observable features of each kind of rental apartment, such as

@@ -14,8 +14,8 @@
 
 #+begin_abstract
 
-The aim of this study is to examine the effect that Deep Learning methods could
-potentially have on real estate housing. Although there have been quite a few
+The aim of this study is to examine the viability of using Deep Learning methods
+and what they might have in housing. Although there have been quite a few
 studies investigating the use of Machine Learning methods for this kind of task.
 The novelty in our study primarily lies in the use of Deep Learning methods for
 computer vision to analyze the images of the floor plans to assist with
@@ -25,14 +25,16 @@ the use of Machine Learning methods for real estate price predictions, however,
 most of the do not make use of deep learning, and even if they do, they do not
 make use of the actual floor plan, but mostly rely on structured explanatory
 variables for the their models. Some recent examples include,
-autocite:park2015using , for the German housing market and
-autocite:sangha21_proper_norweg for the Norwegian housing market. In order to compare
-our results to other results, we also reconstruct some models often used in the literature
-as baseline models.
+[cite:@park2015using] and [cite:@sangha21_proper_norweg] , for the German
+housing market and autocite:sangha21_proper_norweg for the Norwegian housing
+market. In order to compare our results to other results, we also reconstruct
+some models often used in the literature as baseline models.
 
 #+end_abstract
 
 * Introduction [This is still pretty poorly written]
+
+
 ** Find some nice introduction of why real estate markets matter
 
 The real estate market has some defining features that make it different to
@@ -40,10 +42,12 @@ other kinds of markets. For example while competition in growing cities is
 always pretty high, the goods sold could hardly be described homogenous /I have
 no idea what im saying/.
 
-** Current Real estate models
+* Background
+
+** Current real estate models
 Most real estate models are based on easily observable features of each kind of
 rental apartment, such as the zip-code, the closest station, or the number of
-rooms in each apartment.
+rooms in each apartment. It
 
 ** We want to consider the room layout
 However the actual layout of each apartment could also be considered to a very
@@ -70,20 +74,46 @@ main questions.
        as described in:
 
 * Data
-The dataset used is a mix of tabular and image data
 
-The dataset used is a mix of tabular and image data of real estate properties
-from the Tokyo Metropolitan area, listed on a public website. The data was
-collected for the purpose of writing this paper. The Tokyo Metropolitan area
-includes parts of Yokohama, Saitama and Chiba as well. Due to our data collection
-process, there are arguably some biases, which would get in the way of making
-interpretations for the Tokyo real-estate market as a whole. For our purposes,
-however, the data at hand suffices, because rather than causal inference, today
-we want to find out how using
+The dataset used is a mix of tabular and image data of rental real estate
+properties from the Tokyo Metropolitan area, listed on a public website. The
+data was collected for the purpose of writing this paper. The Tokyo metropolitan
+area includes parts of Yokohama, Saitama and Chiba.
+
+used various methods in attempts to subdivide the real estate markets to be able
+to more accurately model the different structures of this market, and by
+limiting ourselves to only the Tokyo Metropolitan area, we try to sidestep the
+problem of having to accomodate for the different kinds of markets as has to be
+done in
 
 
-Chiba, Saitama and Yokohama is available and gathered by the author of this
-paper. The data was collected representative of the Tokyo realestate market, and
+** This selection of data has been justified by the fact that
+
+For each listing we used the dependent variable, the monthly rent
+of the apartment, the image of the floorplan of the apartment, 5 continuous and
+3 categorical variables.
+
+#+CAPTION: An explanation of the variables that were collected and used in this study.
+#+Name: var_explanation
+|-----------------+-----------------------------------------------------------------------------------------------------|
+| Variable        | Explanation                                                                                         |
+|-----------------+-----------------------------------------------------------------------------------------------------|
+| station         | Name of the closest public transport station, (by travelling period)                                |
+| method          | Description of the layout type of the apartment of the type of apartment (for example 1K, 1LDK...)  |
+| apt_style       | Number of floors of the building of this listing                                                    |
+|-----------------+-----------------------------------------------------------------------------------------------------|
+| apt_floor       | The floor the property is on property                                                               |
+| apt_size        | Size of property in $m^2$                                                                           |
+| time_to_station | No. minutes of taking "method" to the next station                                                  |
+| b_age           | No. of years ago the property was built                                                             |
+| b_no_floors     | No of floors of the building                                                                        |
+| apt_admin_price | Amount of monthly administration fee                                                                |
+|-----------------+-----------------------------------------------------------------------------------------------------|
+| apt_rent        | Rent per month of the listing. In units of 10000 Yen                                                |
+|-----------------+-----------------------------------------------------------------------------------------------------|
+
+
+The data was collected representative of the Tokyo realestate market, and
 our anlaysis can not be considered as an analysis of the Tokyo realestate market
 as a whole, but rather it serves as a way for us to outline how to use our
 methods. However, the results from this paper should not be used for
@@ -94,35 +124,22 @@ single website, and are not making use of other sources. However, these biases
 are not expected to have an impact on our results, in this paper we are more
 concerned with the efficacy of the different measures, rather than making
 statements about the Tokyo Real-estate market.
+:w
+
 ** Variables Used
 We did some dataprocessing for the variables. We prepared each variable as below.
-
-#+CAPTION: This is the caption for a table
-| Variable  | Strategy                                                                                                                                     |
-|-----------+----------------------------------------------------------------------------------------------------------------------------------------------|
-| Apt_rent  | Normalize                                                                                                                                    |
-| Apt_size  | No preprocesing (deleted 1 erroneous case)                                                                                                   |
-| apt_floor | treat underground floors as -ints, underground floors less than 2 are deleted:                                                               |
-| b_age     | This is the age of the buidling reported on the site 0 if it was built this year                                                             |
-| b_station | This is the closest station, if there were more that one possible closest stations, we would pick the one with the shortest travel distance. |
-
 ** Summary stats
 
 ** Some more data explanation with some plots
 * Models, Methods, Architecture
-** 2 main models
-Even though the data consist of Integers only, we will choose the rent price to be
+We will assess the problem of whether or not image data is worth it by. constructing the
+predictions for the apartment rent, and using these predictions, together with the rest of
+the variables to assist prediction of the actual apartment rent.
+For the assessment of whether or not
 *** Cite Resnet
 *** Cite pretraining paper
 *** Cite Embedding paper
 *** Cite Learning Rate paper
-** Explain the Multimodal model
-explained in [MULTIMODALPAPER]
-*** Different kinds of multimodals
-**** TODO A model that is very similary to the above multimodal model, however the connection
-between the two models is not many nodes, but only a single. Pretrained on the regression task
-**** TODO A model with 1 CNN and 1 NN
-*** TODO A model with 1 CNN and 1 LN I think this should be the model
 ** Baseline models with columns only to compare our model to
 Give reasons for why we chose those models ( e.g. other papers used those models )
 *** Multiple Linear Regression
@@ -131,11 +148,6 @@ Give reasons for why we chose those models ( e.g. other papers used those models
    does not have to be too exact.
    \( \hat y = \beta_{0} x_{0} + \beta_{1} x_{1} + \beta_{2} x_{2} \)
 
-*** XGBoost
- - [ ] Same here, show base class of ohe
- - [ ] Show importance only in real paper but not the summary
-*** Neural Network
- -  Simply show the results of the summary
 ** Practical Adjustments that had to be made
 *** Explain how we crop our pictures
 
