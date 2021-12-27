@@ -1,0 +1,8 @@
+#+TITLE: notes for research paper
+
+* Fujisawa
+They present a way of estimating the induced rent for real houses,
+however I looked at it for the influences considered.
+They cite 森泉（１９９６）, who pointed out the differences within certain
+real-estate markets.
+* You can cite Fujisawa,Akiyama and probably 森泉 as well, to justify picking the Tokyo market
