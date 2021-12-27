@@ -1,0 +1,4 @@
+#+TITLE: Architecture for paper
+* Complete Architecture
+** Neural Network (100 10 10)
+** Multimodal

@@ -12,3 +12,4 @@
 *.bbl
 *.pdf
 *.tex
+/paper/.auctex-auto/
