@@ -143,7 +143,7 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        tt = tt.squeeze().numpy(),
+        tt = tt.squeeze().numpy()
         tp  = tp.squeeze().numpy()
         vp, vt = learner.get_preds(
             dl=dls.valid,
