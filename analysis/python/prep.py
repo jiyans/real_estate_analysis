@@ -113,7 +113,7 @@ def plot_regression(tp, tt, vp, vt, model_name=""):
 
 def get_summary(learner, model_name="", dls=None):
     if dls is None:
-        tt, tp = learner.get_preds(
+        tp, tt = learner.get_preds(
             ds_idx=0,
             act=None,
             with_input=False,
@@ -121,9 +121,10 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        tt, tp = tt.squeeze().numpy(), tp.squeeze().numpy()
+        tt = tt.squeeze().numpy()
+        tp = tp.squeeze().numpy()
 
-        vt, vp = learner.get_preds(
+        vp, vt = learner.get_preds(
             ds_idxs=1,
             act=None,
             with_input=False,
@@ -131,9 +132,10 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        vt, vp = vt.squeeze().numpy(), vp.squeeze().numpy()
+        vt = vt.squeeze().numpy()
+        vp = vp.squeeze().numpy()
     else:
-        tt, tp = learner.get_preds(
+        tp, tt = learner.get_preds(
             dl=dls.train,
             act=None,
             with_input=False,
@@ -141,8 +143,9 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        tt, tp = tt.squeeze().numpy(), tp.squeeze().numpy()
-        vt, vp = learner.get_preds(
+        tt = tt.squeeze().numpy(),
+        tp  = tp.squeeze().numpy()
+        vp, vt = learner.get_preds(
             dl=dls.valid,
             act=None,
             with_input=False,
@@ -150,6 +153,7 @@ def get_summary(learner, model_name="", dls=None):
             reorder=False,
             with_decoded=False,
         )
-        vt, vp = vt.squeeze().numpy(), vp.squeeze().numpy()
+        vt = vt.squeeze().numpy()
+        vp = vp.squeeze().numpy()
 
     return plot_regression(tp, tt, vp, vt, model_name=model_name)
