@@ -97,13 +97,14 @@ each observation in units of 10000¥.
 
 ** Summary stats
 ** Some more data explanation with some plots
-* Models, Methods, Architecture
+* Methods
+We will implement this model
 The implementation of the models described below were made with the software
 library "fastai" introduced in [cite:@howard20_fastai]
+
 ** 2 main models
 Even though the data consist of Integers only, we will choose the rent price to be
 
-- Cite Resnet paper
 - Cite pretraining paper
 - Cite Embedding paper
 - Cite Learning Rate paper
