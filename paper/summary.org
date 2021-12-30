@@ -3,14 +3,14 @@
 #+AUTHOR: Jiyan Jonas Schneider
 #+EMAIL:     jiyan.schneider@gmail.com
 #+DATE:      2021-12-20
-#+LATEX_HEADER: \usepackage[backend=biber, style=apa,]{biblatex}
 #+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \usepackage[backend=biber, style=apa]{biblatex}
 #+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
 #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W3}
 #+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
-#+latex_class_options: [12pt]
-#+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
-#+OPTIONS: toc:1
+#+LATEX_CLASS: article
+#+latex_class_options: [12pt,titlepage]
+#+LATEX_HEADER: \usepackage[a4paper]{geometry}
 
 #+begin_abstract
 The aim of this paper is to examine the opportunities of application of Computer
