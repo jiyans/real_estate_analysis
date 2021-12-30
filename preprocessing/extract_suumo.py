@@ -64,11 +64,7 @@ def extract_suumo(df, site_root=SITE_ROOT):
     df["full_apt_detail_link"] = df["apt_detail_link"].apply(lambda x: site_root+x)
 
     # Doing these as well now
-    assert df["apt_thanks_fee"].replace("-", "0万円").str.endswith("万円").all(), "All prices should have same unit"
-    df["apt_thanks_fee"] = df["apt_thanks_fee"].replace("-", "0万円").str.slice(0, -2)
-
-    assert df["apt_deposit"].replace("-", "0万円").str.endswith("万円").all(), "All prices should have same unit"
-    df["apt_deposit"] = df["apt_deposit"].replace("-", "0万円").str.slice(0, -2)
+    assert df["apt_thanks_fee"].replace("-", "0万円").str.endswith("万円").all(), "All prices should have same unit" df["apt_thanks_fee"] = df["apt_thanks_fee"].replace("-", "0万円").str.slice(0, -2) assert df["apt_deposit"].replace("-", "0万円").str.endswith("万円").all(), "All prices should have same unit" df["apt_deposit"] = df["apt_deposit"].replace("-", "0万円").str.slice(0, -2)
 
     df["rel_image_paths"] = df["images"].apply(lambda x: x[0]["path"])
     df["id"] = df["rel_image_paths"].str.slice(5, -4)
