@@ -844,6 +844,14 @@ python-versions = ">=3.6"
 catalogue = ">=2.0.3,<2.1.0"
 
 [[package]]
+name = "stargazer"
+version = "0.0.5"
+description = "Nicely formatted regression reporting"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "statsmodels"
 version = "0.13.1"
 description = "Statistical computations and models for Python"
@@ -1035,7 +1043,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a7488711efbf61d9c5202b428e94fa2b7addc415f9bdf8320d97f06047fa6355"
+content-hash = "37c2208bad1a8c2e69ce122d0712ca4c18adc5d5920cb99530db802ebda57d6a"
 
 [metadata.files]
 appnope = [
@@ -1843,6 +1851,10 @@ srsly = [
     {file = "srsly-2.4.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d4bc36962208810d29c72156e0573dcbabd9914f42fede42217ccfcadd96beb6"},
     {file = "srsly-2.4.2-cp39-cp39-win_amd64.whl", hash = "sha256:090072830cf2d5bd6765705a02463f586db8a586805d1c31a72080f971d311b5"},
     {file = "srsly-2.4.2.tar.gz", hash = "sha256:2aba252292767875086adf4e4380e27b024d73655456f796f8e07eb3a4dfacc0"},
+]
+stargazer = [
+    {file = "stargazer-0.0.5-py3-none-any.whl", hash = "sha256:336723343de62ec39217e1e7f73966c13138986ccfd94d01eba2f596b775ecf8"},
+    {file = "stargazer-0.0.5.tar.gz", hash = "sha256:0a7f4055845e1d65d023fa916b69c2573e8df41337bce7b1e1e330081f73f14b"},
 ]
 statsmodels = [
     {file = "statsmodels-0.13.1-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:0caa9f4d544c84a9e656946865dce17eb7cc32a9d3aff86bdbac7e87928341f1"},
