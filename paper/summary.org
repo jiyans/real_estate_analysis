@@ -97,7 +97,7 @@ each observation in units of 10000¥.
 
 ** Summary stats
 ** Some more data explanation with some plots
-* Methods
+* Computer Vision model
 We will implement this model
 The implementation of the models described below were made with the software
 library "fastai" introduced in [cite:@howard20_fastai]
@@ -171,6 +171,8 @@ We used the
    then weights are frozen, and that only the new head of the resnet50 is trained at first, for a few epochs,
    and at the end we train both models
  - Same for the output
+
+* Statistical Methods
 * Results
 ** Results of baseline models
 ベースラインのモデルはこんな感じになっています。
