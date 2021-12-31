@@ -13,15 +13,21 @@
 #+LATEX_HEADER: \usepackage[a4paper]{geometry}
 
 #+begin_abstract
-The aim of this paper is to examine the opportunities of application of Computer
-vision Deep Learning methods in the realm of housing price prediction. Although
-there have been quite a few studies investigating the use of Machine Learning
-methods in the area of real estate price prediction, generally they are based on
-purely tabular data. The novelty of this paper study lies in the use of Computer
-Vision Deep Learning methods to analyze images of floor plans of real estate
-listings and use these results to firstly, predict rent prices of properties,
-and secondly, for the interpretation of the the way real estate prices come into
-existence.
+
+The aim of this study is to examine the viability of using Deep Learning methods
+and what they might have in housing. Although there have been quite a few
+studies investigating the use of Machine Learning methods for this kind of task.
+The novelty in our study primarily lies in the use of Deep Learning methods for
+computer vision to analyze the images of the floor plans to assist with
+prediction and our analysis of the way the neural network is able to use the
+floor plans for prediction. There have been have been quite a few papers about
+the use of Machine Learning methods for real estate price predictions, however,
+most of them focus only on the structured data available. In this paper we want
+make use of the actual floor plan, Some recent examples include, [cite:@park2015using] and [cite:@sangha21_proper_norweg] , for the German
+housing market and autocite:sangha21_proper_norweg for the Norwegian housing
+market. In order to compare our results to other results, we also reconstruct
+some models often used in the literature as baseline models.
+
 #+end_abstract
 
 * Introduction
@@ -42,19 +48,22 @@ researched.
 
 In particular we will try to answer the following 2 main questions
 
- 1. Does having information about the room layout, help with the prediction?
-    To do this we will construct a model similar to what is described in [cite:@he15:deep_resid_learn_image_recog]
-    to predict monthly rent prices. Afterwards we will use these predictions with other
-    predictors regularly used in real estate market models.
+ 1. Does having information about the room layout, help with the prediction? To
+    do this we will construct a model similar to what is described in
+    [cite:@he15:deep_resid_learn_image_recog] to predict monthly rent prices.
+    Afterwards we will use these predictions with other predictors regularly
+    used in real estate market models.
  2. If there is an effect of considering the room layout, how do we build the
-    model that is most efficient for prediction?
-    If there is a positive effect of making use of the image data, how do we best incorporate
-    it into our models. In particular, we plan to consider the following 3 kinds of models.
-    1. Using the output of the image model for use in a linear model with the rest of the data.
-    2. Use the output of the image model together with a Neural Network trained on the tabular information and
-    3. We could use a multimodal approach, where we output multiple latent states from each of
-       our submodels, fuse these latent, and use a "head" model to fuse our latent states
-       as described in.
+    model that is most efficient for prediction? If there is a positive effect
+    of making use of the image data, how do we best incorporate it into our
+    models. In particular, we plan to consider the following 3 kinds of models.
+    1. Using the output of the image model for use in a linear model with the
+       rest of the data.
+    2. Use the output of the image model together with a Neural Network trained
+       on the tabular information and
+    3. We could use a multimodal approach, where we output multiple latent
+       states from each of our submodels, fuse these latent, and use a "head"
+       model to fuse our latent states as described in.
 * Data
 The dataset used is a mix of tabular and image data of real estate properties
 from the Tokyo Metropolitan area, listed on a public website. The data was
@@ -71,12 +80,11 @@ properties that were available for rent at the time of data collection, and that
 we rely on data from only single website, and are not making use of other
 sources. However, these biases are not expected to have an impact on our
 results, in this paper we are more concerned with the efficacy of the different
-measures, rather than making statements about the Tokyo Real-estate market.
-
-Our dataset consists of 141394 observations. For each of these observations we
-had available 6 continuous explanatory variables and and 3 categorical
-explanatory variables. Our independent variable is the monthly rent price for
-each observation in units of 10000¥.
+measures, rather than making statements about the Tokyo Real-estate market. Our
+dataset consists of 141394 observations. For each of these observations we had
+available 6 continuous explanatory variables and and 3 categorical explanatory
+variables. Our independent variable is the monthly rent price for each
+observation in units of 10000¥.
 
 ** Variables Used
 #+CAPTION: This is a table explaining the variables used in our dataset.
