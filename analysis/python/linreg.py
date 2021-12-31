@@ -59,7 +59,24 @@ df["apt_style"] = df["apt_style"].apply(apt_style_clean)
 df["time_to_station_sq"] = df["time_to_station"] ** 2
 df["apt_style"] = set_base(df["apt_style"], "ワンルーム")
 
-mod = lm(
+mod1 = lm(
+    "{} ~ b_age"
+    "+ apt_size"
+    "+ b_no_floors"
+    "+ apt_floor"
+    "+ apt_admin_price"
+    "+ time_to_station"
+    "+ time_to_station_sq"
+    "+ C(method)"
+    "+ C(station)"
+    "+ apt_style",
+    # "+ viz_preds",
+    df,
+    "log_apt_rent",
+    model_name="Simple",
+)
+
+mod2 = lm(
     "{} ~ b_age"
     "+ apt_size"
     "+ b_no_floors"
@@ -76,7 +93,31 @@ mod = lm(
     model_name="Simple",
 )
 
-from stargazer.stargazer import Stargazer
-sg = Stargazer([mod] )
 
-sg.covariate_order(["apt_floor", "b_no_floors"])
+from stargazer.stargazer import Stargazer
+
+sg = Stargazer([mod, mod2])
+
+order = [
+    "apt_size",
+    "b_no_floors",
+    "apt_floor",
+    "apt_admin_price",
+    "time_to_station",
+    "time_to_station_sq",
+    "viz_preds",
+]
+
+sg.covariate_order(order)
+
+sg.rename_covariates({
+    "apt_size": "Size",
+    "b_no_floors": "Floors",
+    "apt_floor": "apt floor",
+    "apt_admin_price": "adminprice",
+    "time_to_station" : "timetostation",
+    "time_to_station_sq": "timetostationsq",
+    "viz_preds": "vizpreds",
+})
+
+print(sg.render_latex())
