@@ -157,3 +157,12 @@ def get_summary(learner, model_name="", dls=None):
         vp = vp.squeeze().numpy()
 
     return plot_regression(tp, tt, vp, vt, model_name=model_name)
+
+def get_tta_summ(learner, model_name=""):
+    tp, tt = learner.tta(ds_idx=0)
+    tt = tt.squeeze().numpy()
+    tp = tp.squeeze().numpy()
+    vp, vt = learner.tta(ds_idxs=1)
+    vt = vt.squeeze().numpy()
+    vp = vp.squeeze().numpy()
+    return plot_regression(tp, tt, vp, vt, model_name=model_name)
