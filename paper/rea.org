@@ -69,7 +69,7 @@ We regard our measures as roughly an attractiveness measure of the floorplans, s
 As we see a significant increase in accuracy over a more traditional estimation approach, we believe that floor plans contain valuable information usually incorporated in the markets.
 Thus, this information about aesthetics is considered by consumers when making a decision, it is not, however, considered by more tradtional hedonic estimation methods.
 
-* Background
+* TODO Background
 * Data
 The dataset used is a mix of tabular and image data of rental real estate
 properties from the Tokyo Metropolitan area, listed on a public website. The
@@ -82,23 +82,23 @@ described in Table [[tab:var_explanation]].
 #+NAME: tab:var_explanation
 #+CAPTION: An explanation of the variables that were collected and used in this study.
 #+ATTR_LATEX: :name tab:var_explanation :label tab:var_explanation
-|-----------------+----------------------------------------------------------------------------------------|
-| Variable        | Explanation                                                                            |
-|-----------------+----------------------------------------------------------------------------------------|
-| station         | Name of the closest public transport station                                           |
-| method          | Description of the layout type of the apartment of the type of apartment (1K, 1LDK...) |
-| apt_style       | Number of floors of the building of this listing                                       |
-|-----------------+----------------------------------------------------------------------------------------|
-| apt_floor       | The floor the property is on property                                                  |
-| apt_size        | Size of property in $m^2$                                                              |
-| time_to_station | No. minutes of taking "method" to the next station                                     |
-| b_age           | No. of years ago the property was built                                                |
-| b_no_floors     | No of floors of the building                                                           |
-| apt_admin_price | Amount of monthly administration fee                                                   |
-|-----------------+----------------------------------------------------------------------------------------|
-| apt_rent        | Rent per month of the listing. In units of 10000 Yen                                   |
-|-----------------+----------------------------------------------------------------------------------------|
-
+|-----------------+---------------------------------------------------------------|
+| Variable        | Explanation                                                   |
+|-----------------+---------------------------------------------------------------|
+|-----------------+---------------------------------------------------------------|
+| Floor           | The floor the property is on property                         |
+| Size            | Size of property in $m^2$                                     |
+| Time to station | No. minutes of taking "method" to the next station            |
+| Age bldg.       | No. of years ago the property was built                       |
+| Floors bldg     | No of floors of the building                                  |
+| Admin fee       | Amount of monthly administration fee                          |
+|-----------------+---------------------------------------------------------------|
+| Station         | Name of the closest public transport station                  |
+| Method          | How "Time to station" is measured (foot, bus or car)          |
+| Style           | Description of the layout type of the apartment (1K, 1LDK...) |
+|-----------------+---------------------------------------------------------------|
+| Monthly rent    | Rent per month of the listing. In units of 10000 Yen          |
+|-----------------+---------------------------------------------------------------|
 The data collected is observational only, and not representative of the Tokyo
 realestate market as a whole.
 
@@ -108,13 +108,14 @@ As for the age distribution, we can see the number of buildings declining with a
 In the number of floors of the buildings, we see an upspike at 2 floors, and then 2 sudden
 declines, at 5 and 15 floors respectively. The reason for these spikes most likely lies in a change of building regulation. /// citation needed ?? and what change exactly?
 
+*** Make true summary statistics for each of the columsn
 In the "Time to station" variable, we also observe some irregularity around the 5, 8, and 10
 minute marks, there being sudden declines at each of the values. While most of these times were given in minutes by foot, some also were given in minute by Bus[1041] / and minutes by car[24], which can be seen in the "Methods" plot.
 
 "Styles" shows the distribution of layouts of the rooms. 1R means "One room"(ワンルーム). The original dataset included
-layouts of apartments until "11LDK", leading to a high cardinality of the variable. [fn:1]
+layouts of apartments until "11LDK", leading to a high cardinality of the variable.
 For this reason,  we included all layouts with more than 5 bedrooms under "5+". We can see that other than 1K and 1R,
-the "LDK" type rooms seem to be the most popular layouts.
+the "LDK" type rooms seem to be the most popular layouts. [fn:1]
 
 #+NAME: fig:hists
 #+LABEL: fig:hists
@@ -139,7 +140,6 @@ on pytorch.
  - However we replaced the latter layers by some layers that we added on our own.
    - Neural Net at the end for the regression
    - Sigmoid Layer to scale
-   -
 
 The Resnet model and learning rate were optimized with adam, and the learning rate schedule was chosen as suggested in [cite:@smith17_cyclic_learn_rates_train_neural_networ].
 
@@ -192,7 +192,7 @@ The third approach yielded the best results in some preliminary experiments, thu
 #+ATTR_LATEX: :name fig:floorplan_transforms :label fig:floorplan_transforms :height 8cm
 [[file:./assets/resizes.jpg]]
 
-** Hedonic Price estimation
+** TODO Hedonic Price estimation
 The hedonic price estimation is done via a Multiple Linear regression model making use of all the variables collected in the following way.
 
 \[  y = \alpha + \beta X + \lambda minutes * way + e \]
@@ -205,8 +205,10 @@ station to affect the price of the rent differently than number of minutes by
 foot.
 
 * Results
+In this section we will look at the results the propsed method.
+Firstly, we will look at the results quantitavely, and afterwards we will take a look at the models qualitatevly, by looking at some examples and edgecases to better understand how
+the predictions work.
 ** Quantitative
-*** Results for our model
 Table [[tab:regression]] shows the results for two the regression in described in [[Hedonic Price estimation]], using two different sets of Variables.
 The first column shows the estimated coefficients and their standard errors, without the attractiveness factor, and the
 second shows the esimated coefficients with the attractiveness factor. We included all categorical variables in both of the regressions, but did not
@@ -214,12 +216,9 @@ include their coefficients in the table, due to their high cardinality.
 #+NAME: tab:regression
 #+LABEL: tab:regression
 #+ATTR_LATEX: :label tab:regression :name tab:regression
-#+CAPTION: Estimated Coefficients and s These are the results of two mulitple linear regressions using all the variable sin Table [[tab:var_explanation]]. Due to the high cardinality of the categorical variables of "apt_styl" and "station", we excluded them from this table. The degrees of freedom are denoted with "df" in the table below.
 #+INCLUDE: "assets/table2.tex" export latex
-We see a considerable increase in \(R^2 \) and
+We see a considerable increase in \(R^2 \) ...
 
-*** Results for vision model put into Linear Regression ( Is the prediction column statistically significant? )
-*** Results of baseline models
 ** Qualitative
 Furthermore, we did some other Qualitative investigations into whether the model seems to be able
 to incorporate the information obtained from the floorplans.
@@ -231,14 +230,14 @@ by other factors outside of the floorplan as well.
 *** Lowest predictions
 #+LABEL: fig:negtop
 #+NAME: fig:negtop
-#+ATTR_LATEX: :label fig:negtop :name fig:negtop
+#+ATTR_LATEX: :label fig:negtop :name fig:negtop :height 4cm
 #+CAPTION: Floorplans of apartments with highest predicted rents
 [[./assets/random_negtop100.png]]
 
 *** Highest predictions
 #+LABEL: fig:postop
 #+NAME: fig:postop
-#+ATTR_LATEX :label fig:postop :name fig:postop
+#+ATTR_LATEX: :label fig:postop :name fig:postop :height 4cm
 #+CAPTION: Floorplans of apartments with highest predicted rents
 [[./assets/rand_top_100.png]]
 We can see that for the extreme cases the model's predictions are far off, with the model erring on the high side.
@@ -272,23 +271,18 @@ In the second and fourth picture, the prediction of the Neural network is closes
 * Discussion
 Some of our results are hard to interpret, e.g. multimodal learning is worse than the ensembling method. (probably) Why?
 ** Problems of very high dimensionality due to many many categories in the categorical variables.
+** The Neural Network seems to be very positive with its predictions, is there something we can do about it?
+
+** We only have a very small amount of variables about the actual apartments. Having more variables about the apartment should/will probably remove some of the explanatory of the CNN
+
+** Further possible investigations
+*** Looking into what the model focuses on when making predictions
+*** Furthermore we only have the Tokyo Rental apartment market, including other markets might be interesting
 * Conclusion
 ** Conclude whether using these models might make sense or not
-Some of our
-** Further possible investigations
-Some possible talking points:
- - If the results are good, would looking at a bigger market be interesting
- - If we had a more representative sample, could we use some of the results to make some
-   interesting conclusions
- - It would be interesting to analyze the outputs using methods as described in for example with shap or eli5, to see
-   why it doesn't work if it doesn't or what it focuses on for certain predictions, if it does.
- - How does everything look for the multimodal approach, does it make sense or not?
-And ways to improve the model
-
-** Cite Fastai
 
 \printbibliography
 
 * Footnotes
 
-[fn:1] The way to intepret these layouts is as follows: The number at the beginning denotes the number of bedrooms. Following that, come the letters "S", "L", "D" and "K", which stand for "Service", "Living", "Dining" and "Kitchen" respectively. Thus a "2LDK" apartment would have 2 bedrooms, one living room, 1 dining room and 1 kitchen. Service, often stands for a small room without enough lighting or ventilation to count as a bedroom. These rooms are often utilized for storage. In Figure [[fig:hists]], 1R stands for ワンルーム(1 Room), a layout in there either is no Kitchen, or there is no partition between the Kitchen and the bedroom.
+[fn:1] The way to intepret these layouts is as follows: The number at the beginning denotes the number of bedrooms. Following that, come the letters "S", "L", "D" and "K", which stand for "Service", "Living", "Dining" and "Kitchen" respectively. Thus a "2LDK" apartment would have 2 bedrooms, one living room, 1 dining room and 1 kitchen. Service, often stands for a small room without enough lighting or ventilation to count as a bedroom. These rooms are often utilized for storage. In Figure [[fig:hists]], 1R stands for ワンルーム(1 Room), a layout in which there either is no Kitchen, or there is no partition between the Kitchen and the bedroom.
