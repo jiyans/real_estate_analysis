@@ -1,0 +1,144 @@
+---
+title: "EDA"
+author: "Jiyan Schneider"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this notebook we will perform the Exploratory data analysis for our
+Housing datset.
+
+# Loading and exploring data
+
+Loading the packages.
+
+```{r, message=False, warning=False}
+library(knitr)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(corrplot)
+library(caret)
+library(gridExtra)
+library(scales)
+library(Rmisc)
+library(ggrepel)
+library(randomForest)
+library(psych)
+library(xgboost)
+library(ggthemes)
+library(latex2exp)
+library(ggplot2)
+
+```
+
+```{r}
+theme <- theme_gray
+theme_set()
+```
+
+## Reading in the data.
+```{r}
+df <- read.csv("data/viz_learn_preds.csv")
+df[df$apt_style=="ワンルーム", ]$apt_style = "1R"
+
+rooms <- c(   "1R", "1K", "1SK", "1LK", "1DK", "1SLK", "1SDK", "1LDK", "1SLDK",
+                    "2K", "2SK", "2LK", "2DK", "2SLK", "2SDK", "2LDK", "2SLDK", 
+                    "3K", "3SK", "3LK", "3DK",         "3SDK", "3LDK", "3SLDK", 
+                    "4K",        "4LK", "4DK",         "4SDK", "4LDK", "4SLDK","5+" )
+
+df[!df$apt_style %in% rooms,]$apt_style <- "5+"
+
+df$apt_style <- factor(df$apt_style, levels = rooms)
+```
+
+
+
+## Data size and structure
+
+```{r}
+dim(df)
+str(df)
+```
+
+
+Distribution of rent and log apt rent. 
+```{r}
+
+p1 <- ggplot(data=df[!is.na(df$apt_rent),], aes(x=apt_rent)) +
+  geom_histogram() +
+  scale_x_continuous() +
+  ylab("Density") +
+  theme()
+p2 <- ggplot(data=df[!is.na(df$apt_rent),], aes(x=log(apt_rent))) +
+        geom_histogram(binwidth=0.1) +
+        scale_x_continuous() + ylab("Density") + theme()
+
+p3 <-  ggplot(data=df[!is.na(df$apt_rent),], aes(x=b_age)) +
+        geom_histogram() +
+        scale_x_continuous() + ylab("Count") + xlab("Age bldg.") + theme()
+
+p4 <- ggplot(data=df[!is.na(df$apt_rent),], aes(x=b_no_floors)) +
+        geom_histogram(binwidth = 1) +
+        scale_x_continuous() +
+        ylab("Count") +
+        xlab("# floors bldg.") +
+        theme()
+
+p5 <- ggplot(data=df[!is.na(df$apt_rent),], aes(x=apt_size)) +
+        geom_histogram(binwidth = 5) +
+        scale_x_continuous(breaks = c(200, 400)) +
+        ylab("Density") +
+        xlab(TeX("Size in $m^2$")) +
+        theme()
+
+p6 <- ggplot(data=df, aes(x=apt_floor)) +
+        geom_histogram(binwidth = 1) +
+        scale_x_continuous() +
+        ylab("Count") +
+        xlab("Apt. Floor") +
+        theme()
+
+p7 <- ggplot(data=df[df$apt_admin_price < 50000,], aes(x=apt_admin_price/10000)) +
+        geom_histogram() +
+        scale_x_continuous() +
+        ylab("Density") +
+        xlab("Admin fee (10,000¥)") +
+        theme()
+
+p8 <- ggplot(data=df, aes(x=time_to_station)) +
+        geom_histogram(binwidth=1) +
+        scale_x_continuous() +
+        ylab("Density") +
+        xlab("Time to station") +
+        theme()
+
+p9 <- ggplot(data=df, aes(x=method)) +
+        geom_histogram(stat="count") +
+        ylab("Density") +
+        xlab("Methods") +
+        scale_y_continuous(labels = function(x) format(x, scientific=F)) +
+        scale_x_discrete(labels=c("Bus", "Foot", "Car")) + 
+        ## geom_label(stat = "count", aes(label = ..count.., y = ..count..), size=3) +
+        theme()
+
+p10 <- ggplot(data=df, aes(x=apt_style)) +
+        geom_histogram(stat="count") +
+        ylab("Density") +
+        xlab("Styles") +
+        scale_y_continuous(breaks=c(25000, 50000)) + coord_flip() + 
+        theme(base_size=10, base_family="HiraKakuProN-W3")
+
+layout <- matrix(c(1, 2, 3, 4, 5, 6, 4, 7, 8, 4, 9, 10),4,3,byrow=TRUE)
+grid <- grid.arrange(p1, p2, p3, p10, p4, p5, p6, p7, p8, p9, top="Frequencies of values of the variables used", layout_matrix=layout)
+
+ggsave("../paper/assets/varhists.png", plot=grid, dpi=600,width=6.76, height=5.08)
+
+```
