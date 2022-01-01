@@ -8,8 +8,10 @@
 #+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
 #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W3}
 #+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
-#+LATEX_CLASS_OPTIONS: [12pt]
+#+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+#+LATEX_CLASS_OPTIONS: [12pt,titlepage]
 #+OPTIONS: toc:2
+
 
 #+begin_abstract
 
