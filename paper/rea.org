@@ -192,7 +192,7 @@ The third approach yielded the best results in some preliminary experiments, thu
 #+name: fig:floorplan_transforms
 #+label: fig:floorplan_transforms
 #+CAPTION: This figure showcases the properties of each resizing method. The first and second row show the same floorplans, the third shows different crops of the leftmost floorplan of the above two rows.
-#+ATTR_LATEX: :name fig:floorplan_transforms :label fig:floorplan_transforms :height 8cm
+#+ATTR_LATEX: :name fig:floorplan_transforms :label fig:floorplan_transforms :width 15cm
 [[file:./assets/resizes.jpg]]
 ** Hedonic Price estimation
 The hedonic price estimation is done via a Multiple log-linear regression model making use of all variables collected and outlined in [[tab:var_explanation]]. We log-transform the target variable of apartment rent. While preliminary tests of our model did onlys how a very slight improvement in $R^{2}$, the Neural network improved greatly, and furthermore previous research tends to use log-transformed rents as well, so will we side with convention.
@@ -231,19 +231,19 @@ For the variables that were included in the regression but not in this table, a 
 
 #+NAME: fig:corrplot
 #+LABEL: fig:corrplot
-#+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm
-#+CAPTION: A heatmap showing the correlations of the variables displayed in [[tab:regression]].
+#+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm :float wrap
+#+CAPTION: Heatmap showing the correlations of the variables displayed in [[tab:regression]].
 [[./assets/corrplot.png]]
 
 
 ** Qualitative
 
 Next, we would like to look at the predictions our models made in a more qualitative way.
-In Figure [[fig:residual_plots]] we plotted the predictions against their actual values to try and see whether there are any patterns of mispredictions in our models. We can see that all of our models seem to overpredict the most expensive properties. In [[fig:residual_plots]] we drew a dotted line at \(x=4.8\). After this point, the all models seem to greatly overpredict the rent prices. While the linear models have some few, but very high overpredictions, the Neural Network's residuals are less small, but seem to have shifted systematically. The reason for the relatively low residuals is because we used the sigmoid layer as discussed in [[Models, Methods, Architecture]]. Furthermore, the neural network underpredicts many low rent properties as well, possibly because some of these properties having very good location, about which our model does not have any information.
+In Figure [[fig:residual_plots]] we plotted the predictions against their actual values to try and see whether there are any patterns of mispredictions in our models. We can see that all of our models seem to overpredict the most expensive properties. In [[fig:residual_plots]] we drew a dotted line at \(x=log(100) \approx 4.6\). After this point, the all models seem to greatly overpredict the rent prices. While the linear models have some few, but very high overpredictions, the Neural Network's residuals are less small, but seem to have shifted systematically. The reason for the relatively low residuals is because we used the sigmoid layer as discussed in [[Models, Methods, Architecture]]. Furthermore, the neural network underpredicts many low rent properties as well, possibly because some of these properties having very good location, about which our model does not have any information.
 #+LABEL: fig:residual_plots
 #+NAME: fig:residual_plots
 #+ATTR_LATEX: :height 4cm :label fig:residual_plots :name fig:residual_plots
-#+CAPTION: This image shows the residuals of the predictions of the two models and the Neural network. The y and x-axes are the same scale. The dotted blue line is drawn at \( x = 4.6 \)
+#+CAPTION: This image shows the residuals of the predictions of the two models and the Neural network. The x and y axes for all of the plots are the same. The dotted blue line is drawn at \( x = log(100) \approx 4.6 \).
 [[./assets/residual_plot.png]]
 
 Next, we would like to examine some single predictions of the models and the Neural Net.
@@ -324,5 +324,4 @@ Our results seem to be in line with existing literature on the topic of real-est
 \printbibliography
 
 * Footnotes
-
 [fn:1] The way to intepret these layouts is as follows: The number at the beginning denotes the number of bedrooms. Following that, come the letters "S", "L", "D" and "K", which stand for "Service", "Living", "Dining" and "Kitchen" respectively. Thus a "2LDK" apartment would have 2 bedrooms, one living room, 1 dining room and 1 kitchen. Service, often stands for a small room without enough lighting or ventilation to count as a bedroom. These rooms are often utilized for storage. In Figure [[fig:hists]], 1R stands for ワンルーム(1 Room), a layout in which there either is no Kitchen, or there is no partition between the Kitchen and the bedroom.
