@@ -16,11 +16,11 @@
 
 #+begin_abstract
 
-This study aims to examine the structure of real estate rental prices,
+This study strives to examine the structure of real estate rental prices,
 taking into account the property's layout. We find that when using computer
-vision methods to analyze the apartment rent The aim of this study is to examine
+vision methods to analyze the apartment rent
 the viability of using Deep Learning methods and what they might have in
-housing. There have been quite a few studies investigating the use of Machine
+housing. There have been studies investigating the use of Machine
 Learning methods for this kind of task. The novelty in our study primarily lies
 in the use of Computer Vision Deep Learning methods to analyze the images of the
 floor plans to assist with prediction. By making use of one of the computer
@@ -73,7 +73,7 @@ for this increased effectiveness is twofold:
    property. [cite:@choi2003]
 2. The increase in explanatory power seems extraordinarily high because we had
    much less explanation than other studies on hedonic pricing.
-We will expand more on these points in the [[Background]] and [[Discussion]] sections.
+We will extend more on these points in the [[Background]] and [[Discussion]] sections.
 
 There were other attempts to incorporate Machine Learning methods for
 unstructured, visual data about real estate properties. For example,
@@ -334,8 +334,8 @@ retain information from all image regions. However, when resizing like
 this, the degree of distortion for each image varies based on the original size, and thus the model has to process different distortions and
 the distorted proportions these entail.
 
-/Cropping out/ the middle part of the image and padding with black if the
-image's height or size is smaller than 224 pixels. One drawback with this method
+/Cropping out/ the center part of the image and padding with black if the
+image's height or size is smaller than 224 pixels. One drawback of this method
 is that if we were to exclude an essential part of the image, there would be no
 information for the model to refer to. Furthermore, since the padded values are
 all 0's, they result in wasted computation, thus inefficient training.
@@ -385,8 +385,8 @@ prediction of the neural network, using only the neural network and an intercept
 
 
 * Results
-In this section, we will look at the results of the proposed method. Firstly, we
-will look at the results quantitatively, and afterward, we will take a look at the
+Moving onto the results of our analysis.
+Firstly, we will look at the results quantitatively, and afterward, we will take a look at the
 models and their predictions qualitatively by looking at some examples and
 edge cases to better understand how the predictions work and how the model makes
 its predictions.
