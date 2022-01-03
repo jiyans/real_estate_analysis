@@ -34,43 +34,67 @@ regressions.
 #+end_abstract
 
 * Introduction
-The problem of real estate value estimation comes up in multiple forms throughout economics and society.
-For example real estate appraisers determine the value of a property used for the determination of the network of individuals.
-This kind of real estate appraisal is often done on an individual basis, with nationally certified appraises estimating the value of a house.
-In a slightly different context, and on a larger scale, the potential rent that a property would get on the market at a given point, has to be estimated or imputed for use in the determination of economic variables as for example the GDP.
+The problem of real estate value estimation comes up in multiple forms throughout economics and society, with many kinds of actors being interested in the prediction of housing and real estate prices. Real-estate appraisal is conducted by appraisors and tax assesors, fundamental value analyses are conducted by investors [cite:@krainer2004], and it reasonable to assume that other parties such as banks, have methods of assessing the price of a property as well, for their mortgage lending operations. 
+This kind of real estate appraisal might be done on an individual basis, with nationally certified appraisors estimating the value of a house, however it is also conducted in different contexts. 
+For example on a larger scale, the potential rent that a property would receive on the market at a given time, has to be estimated or imputed for use in the determination of certain economic variables as for example the GDP.
 In economics, real estate prices are often considered to be hedonic prices, meaning that the final price of a good is determined by the parts that make it up, and hedonic methods are often
-the de factor methods for real estate price estimation, including the above two use cases.
-For example, in the U.S. state Utah real estate appraisal has to be done via hedonic estimation.
+the de facto methods for real estate price estimation.
+** TODO For example, in the U.S. state Utah real estate appraisal has to be done via hedonic estimation.  
+
 For the second use-case, the methods used for estimation are almost exclusively done via hedonic methods. [cite:@weko_55303_1]
 
 For these reasons, much research on real estate pricing has been conducted and most of this research makes use of purely tabular data.
-However, non-tabular data, like the actual floorplans of the real-estates, contains valuable information not easily expressed in a more tractable format, we will examples for some of this
-information in section.
-The underlying hypothesis of this research paper is that the floorplans, which are intrinsic to any given property, expose some of these properties, can be leveraged with Deep Learning, and advance our insight into the price structure of real estate.
+However, non-tabular data, like the actual floorplans of the real-estates, contains valuable information not easily expressed in a more tractable format.
+The underlying hypothesis of this research paper is that the floorplans, expose some properties that are valuable to consumers, and can be leveraged with Deep Learning.
+By doing this, we hope to advance our insight into the price structure of real estate, consumer behavior in the longer run.
 
-We collected tabular data and the floor plans of over 100,000 rental apartments in the Tokyo Metropolitan area from a publicly available website. Then we used the Neural Network architecture
-suggested in , to predict the rent of each apartment given only its floorplan, and lastly we used these predictions together with a more traditional hedonic regression model to ascertain the effect that the Neural Network has.
+To achieve this, we first collected tabular data and the floor plans of over 100,000 rental apartments in the Tokyo Metropolitan area from a publicly available website. Then we used the Neural Network architecture described in [[Models, Methods, Architecture]] to predict the rent of each apartment given only its floorplan, and lastly we used these predictions together with a traditional hedonic regression model to ascertain the effect that the Neural Network has.
 
-We focused on rental apartments in Tokyo in particular because, as outlined in [cite:@weko_55303_1] and [cite:@akiyama_yuki2019320204], estimating real estate prices throughout different markets becomes more challenging.
-As a showcase for the increased difficulty, consider [cite:@akiyama_yuki2019320204].
-First, they rely on the K-Means++ algorithm and the Gap statistic to create clusters for different real estate markets.
-And in their subsequent analysis make use of these clusters to analyze their data on a by-market basis.
-As this is an exploratory study, we decided that by focusing on "roughly" a single market, we can sidestep this problem and focus on the viability of these computer vision methods first.
+Doing this, we find that the Neural network is able to explain a large proportion of the
+rent price of many properties, and considerably improve the explanatory power of the hedonic
+regression model. We suppose that the reason for this increased effectiveness is twofold:
+1. By using the floorplans the Neural Network had access to the factors that most influence residential satisfaction of experienced with a a certain property. [cite:@choi2003]
+2. The increase in explanatory power seems extraordinarily high because we had much less explanatory available to us than other studies on hedonic pricing.
+We will expand more on these points in the [[Background]] and [[Discussion]] sections. 
 
-There were some other attempts to incorporate Machine Learning methods for visual data about real estate properties.
-For example [cite:@hattori2019rent] use Principal Component Analysis to extract a feature feature vector from floorplan data, and subsequently use this vector in a variety of models.
-However, they report that while there are slight improvements in prediction, and that it is difficult to find merits for using their approach.
-
-Furthermore [cite:@zeng2019deep] use a computer vision on floor plan images, however
-they are looking to find out functionalities of different elements within a floor plan and
-are not using it for rent prediciton.
-
-We find that by using the "attractiveness" measure, obtained by the Neural Network described in [[Models, Methods, Architecture]] we are able to significantly improve traditional hedonic price estimations.
-We regard our measures as roughly an attractiveness measure of the floorplans, since the Neural Network outputs it based solely on the floorplans.
-As we see a significant increase in accuracy over a more traditional estimation approach, we believe that floor plans contain valuable information usually incorporated in the markets.
-Thus, this information about aesthetics is considered by consumers when making a decision, it is not, however, considered by more tradtional hedonic estimation methods.
+There were some other attempts to incorporate Machine Learning methods for
+unstructured, visual data about real estate properties. For example
+[cite:@hattori2019rent] use Principal Component Analysis to extract a feature
+feature vector from floorplan data, and subsequently use this vector in a
+variety of models. However, they report that while there are slight improvements
+in prediction, that it is difficult to find merits for using their approach,
+because these improvements are too small. [cite:@zeng2019deep] use a computer
+vision on floor plan images, however they are looking to find out
+functionalities of different elements within a floor plan and are not using it
+for rent prediction.
+Lastly [cite:@poursaeed2018] use pictures of exteriours and interiors of properties to improve price predictions.
+Their approach improves predictions as well, however, they are not making use of the actual floorplans of the properties.
+While their approach certainly seems to be valuable as well, floorplans reflect properties that are intrinsic to a certain real estate property, while pictures of interiors carry with them much subjectivity.
+When analyzing photographs, the quality, lighting, angles and the interior furniture would be expected to have effects on the evaluation of a property.
+Floorplans however, especially when prepared professionally, include properties intrinsic to a certain property, for example the sizes of the different rooms, and their relative location.
 
 * TODO Background
+Real estate rental prices are a much studied topic, and is often tackled from
+many different kinds of perspectives. Many studies about real-estate appraisal, imputation or prediction use cross-sectional tabular data.
+[cite:@akiyama_yuki2019320204;@weko_55303_1;@limsombunchai2004]
+
+There are, however, also other avenues of study about different kinds of real estate prices, for example finanical/time-series based attempts to understand real estate prices. [cite:@krainer2004]
+
+Because of all these different ways of considering real-estate prices 
+a literature of the structure of real-estate prices has been accumulated. While all of the above approaches, usually have different goals, they do relate do real-estate
+prices in some way or another. In this section we will discuss some of the past literature
+about real estate price structure.
+
+Most studies agree that real-estate prices are a mixture of mostly two kinds of factors. Structural factors about the properties in question, for example its size, the number of rooms, or the type of the rooms. As well as environmental factors, properties that are not directly included in the apartment, but also about its environment, for example the distance to the closest, schools, or the city center. Depending on the market, some of these factors might change, with markets having their own pecularities. For example in big japanese cities, people tend to a higher proportion of their income on rent, and also tend to put a higher relative value on property location than in other places.
+# TODO cite the paper from akiyama
+Furthermore, the author found that while most studies about real estate prices and their structure written in english tended to include categorical variables like "distance to the city center", most studies written in Japanese did not have such a variable, but rather included variables measuring values such as the distance to the closest train station, which seems to be a sign of different consumer behavior in different markets. However, no formal study was conducted, so this should be taken with a grain of salt. 
+
+
+While not directly about prices, [cite:@choi2003] is a study about the subjective satistfaction 
+
+Real estate price prediction has much research going into it for a long time.
+Real estate value != rent prices, but they are highly correlated.
+In the introduction we actually introduc While in this paper we will be using rent prices 
  - Real estate price prediction has been a big topic for a long time
  - Real estate prices tend to differ by market for example Akiyama shows that people inside Tokyo are ready to pay a much higher premium based on location than elsewhere.
  - There are peculiarities of the Japanese markets. For example, a higher focus on the accessibility of public transport.
@@ -81,11 +105,18 @@ Thus, this information about aesthetics is considered by consumers when making a
 The dataset used is a mix of tabular and image data of rental real estate
 properties from the Tokyo Metropolitan area, listed on a public website. The
 data was collected for the purpose of writing this paper.
+
+We focused on rental apartments in Tokyo in particular because, as outlined in [cite:@weko_55303_1] and [cite:@akiyama_yuki2019320204], estimating real estate prices throughout different markets becomes more challenging.
+As a showcase for the increased difficulty, consider [cite:@akiyama_yuki2019320204].
+First, they rely on the K-Means++ algorithm and the Gap statistic to create clusters for different real estate markets and then in their subsequent analysis make use of these clusters to analyze their data on a by-market basis.
+As this is an exploratory study, we decided that by focusing on "roughly" a single market, we can sidestep this problem and focus on the viability of these computer vision methods first.
+
+
 For each listing, we have the monthly rent of the apartment, the image of the floorplan of the apartment, 5 continuous and 3 categorical variables. The details for the tabular variables are
 described in Table [[tab:var_explanation]].
 #+LABEL: tab:var_explanation
 #+NAME: tab:var_explanation
-#+CAPTION: An explanation of the variables that were collected and used in this study.
+#+CAPTION: Explanation of the variables collected and used in this study.
 #+ATTR_LATEX: :name tab:var_explanation :label tab:var_explanation
 |-----------------+---------------------------------------------------------------|
 | Variable        | Explanation                                                   |
@@ -311,7 +342,7 @@ However, we believe that our model still has some practical advantage, because o
 *** Looking into what the model focuses on when making predictions
 *** Furthermore we only have the Tokyo Rental apartment market, including other markets might be interesting
 *** Looking into rented apartments would be interesting.
-*** Copmaring our results with consumers opinions might be interesting
+*** Comparing our results with consumers opinions might be interesting
 
 * Conclusion
 Overall, we used real estate data collected from a publicly available websits, to train a Residual based Convolutional Neural Network for prediction of rent prices based solely on that properties' floorplan.
