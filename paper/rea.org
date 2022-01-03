@@ -1,11 +1,11 @@
 #+title: WIP Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
 #+SUBTITLE: WIP An evaluation of an incorporation of deep learning methods for prediction real estate prices
 #+AUTHOR: Jiyan Jonas Schneider
-#+DATE:      2021-12-20
-#+LATEX_HEADER: \usepackage[backend=biber, style=apa,]{biblatex}
+#+DATE: 2021-12-20
 #+LATEX_HEADER: \usepackage{xeCJK}
 #+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
 #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W3}
+#+LATEX_HEADER: \usepackage[backend=biber, style=apa]{biblatex}
 #+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
 #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 #+LATEX_HEADER: \usepackage{graphics}
@@ -433,7 +433,7 @@ significant after the inclusion of the new feature. For the variables that were
 included in the regression but not in this table, a similar pattern holds. Most
 of these coefficients moved toward 0, neither changing sign, nor signficance.
 
-[[fig:corrplot]] Shows a correlation plot of all of the variables, many of the
+Figure [[fig:corrplot]] Shows a correlation plot of all of the variables, many of the
 explanatory variables are quite highly correlated, which means that it becomes
 hard to interpret the model, and might be an opportunity for improvement in
 future works.
