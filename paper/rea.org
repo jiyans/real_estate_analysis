@@ -357,21 +357,22 @@ the compass' orientation. Thus we can easily see that mirrored floorplans are no
 functionally the same, which is why we avoid mirroring our images.
 
 **** Resizing
-In order to efficiently process images, all images have to have the same size.
-However, the images in the dataset collected had different dimensions, so we had
+For efficient processing of the images, all images have to have the same size.
+However, the images in the dataset collected have different sizes, so we had
 to choose how to prepare the images. We decided to choose 224x224 pixels for our
 images. This size is a conventional choice, which we did not find to have any
-problems with, most images in our datasets were between 200 and 400 pixels in
+problems with. Most images in the dataset are between 200 and 400 pixels in
 height and length, and we did not see a reason to adjust it. Images were cropped
 lazily before feeding them into our model, so we were able to try different
-approaches to resizing the image. Each approach is a trade-off, which we will
-outline below.
+approaches to resizing the image. Each approach has advantages and disadvantages
+which we will outline below. We tried the following three approaches.
 
-/Distorting/ the image to fit into the 224 pixels by "squashing and
-squeezing" it into the 224x224 pixels. With this approach, it is possible to
-retain information from all image regions. However, when resizing like
-this, the degree of distortion for each image varies based on the original size, and thus the model has to process different distortions and
-the distorted proportions these entail.
+/Distorting/ the image to fit into 224 pixels by "squashing and squeezing" it
+into the 224x224 pixels. With this approach, it is possible to retain
+information from all image regions. However, when resizing like this, the amount
+of distortion for each image varies based on the original size, and the
+model has to process different degrees of distortions and the distorted proportions these
+entail.
 
 /Cropping out/ the center part of the image and padding with black if the
 image's height or size is smaller than 224 pixels. One drawback of this method
@@ -383,22 +384,27 @@ all 0's, they result in wasted computation, thus inefficient training.
 has the same problem as the second approach, however by cropping out a random
 part, rather than just the center, we can input the Neural Network a
 wider variety of images, since even if we use the same image twice, there is a
-high probability that the images are cropped differently.
+high probability that the images are cropped differently. Furthermore, at evaluation
+time we can crop the same image a few times, predict the different crops and
+then average their predictions to obtain a prediction that considers more
+area of each floorplan.
 
 Figure [[fig:floorplan_transforms]] shows how different techniques influence the
-different cropping methods and let us observe some of the problems outlined.
-The first row shows the distorted images. All the images with the label
-7.7 look highly alike and are actually from the same building. However, while
-the first and eighth picture images look highly alike, the ninth
-does not because the original image contains more white on either side. Even
-though the layout looks a lot alike, the resized image looks different. In
-the second row, we can see that the compass rose of the pictures labeled 8.0 and
-8.57 is cropped out. In their squished versions, however, it is included. In the
-last row, see the random crop method for the floorplan in the first column of the
-other rows. While we get most of the details, with the correct proportions,
-due to the random nature of our cropping, we do not have any image containing the apartment's balcony. The third approach yielded the best results in
-some preliminary experiments. Thus all results are reported using this "Random
-Crop" strategy.
+different cropping methods and lets us observe some of the problems outlined.
+The first row shows the distorted images. All images with the label 7.7 look
+highly alike and are actually from the same building. However, while the first
+and eighth picture images look the same, the ninth does not because the original
+image contains more white on either side. Even though all images depict rooms
+with almost exactly the same layout, after the distortion, one room looks quite
+different. In the second row, we can see that the compass rose of the pictures
+labeled 8.0 and 8.57 is cropped out. In their squished versions, however, it is
+included. The last row depicts some images obtained by using the the random crop
+method for the floorplan in the first column of the other rows. While we get
+most of the details, with the correct proportions, due to the random nature of
+our cropping, we do not have any image containing the apartment's balcony. The
+third approach yielded the best results in some preliminary experiments. Thus
+all results in this paper are reported using a model trained on predictions
+by using the "Random Crop" strategy.
 
 #+name: fig:floorplan_transforms
 #+label: fig:floorplan_transforms
@@ -590,32 +596,37 @@ Some of our results are hard to interpret, e.g., multimodal learning is worse
 than the ensembling method. (probably) Why?
 ** Problems of very high dimensionality due to many categories in the categorical variables.
 ** The Neural Network seems to be very positive with its predictions; is there something we can do about it?
-** We only have a minimal amount of variables about the actual apartments. Having more variables about the apartment should/will probably remove some of the explanatory of the CNN
-Many studies in the actual literature use much bigger datasets, both column and
-row-wise, and we believe that the inclusion of more variables used would reduce
-the explanatory power of the model proposed in the current paper. For example,
-different datasets might have a column for the number of bathrooms a given
-property has. Should this turn out to be a significant variable, the explanatory
-power of our Neural network in the final hedonic price model will probably
-decrease. However, we believe that our model still has some practical advantages
-because obtaining floorplans is often much more manageable than tabular data for
-a large number of apartments.
-** Further possible investigations
-*** Looking into what the model focuses on when making predictions
-*** Furthermore, we only have the Tokyo Rental apartment market, including other markets that might be interesting
-*** Looking into rented apartments would be interesting.
-*** Comparing our results with consumers opinions might be interesting
 ** Introduction
-*** Review findings
+In this paper we found that utilizing the floorplans of rental apartment can
+improve the predictive power of Linear Regression models when not many variables are available.
 We suppose that the reason for this increased effectiveness is twofold:
 1. By using the floorplans, the Neural Network had access to the factors that
    most influence residential satisfaction of experience with a certain
-   property. [cite:@choi2003]
+   property.
 2. The increase in explanatory power seems extraordinarily high because we had
    much less explanation than other studies on hedonic pricing.
-We will extend more on these points in the [[Background]] and [[Discussion]] sections.
-*** Discuss outcomes
-*** Stake a claim
+Most studies we reviewed made use of many more explanatory variables, especially about
+structural features of the apartments, and we believe by using those, the improvement
+of predictive power that our NN provided would be expected to decrease.
+However, we believe that under many circumstances it might be easier to obtain floorplans
+of apartments rather than the tabular data of the categorical features, so our
+method could be used by parties like that.
+While this study was exploratory only, further investigation might include how this method
+fares with floorplans in different markets. While this time, only the market in and around
+Tokyo was considered, and rent prices were mostly stable because we only had a single
+location to deal with, we can easily imagine that larger discrepancies in price due to
+location only could cause trouble with our model. One potential remedy for this problem could
+be training the model on residuals of a Multiple Linear Regression controlling for location.
+
+Another problem with the current model is that it is hard to interpret why the model is
+making some of the decisions. For example [cite:@NIPS2017_7062] provide an approach for
+model interpretation sometimes also applied to computer vision. Analyzing the current model
+using the technique outlined here might give us more into the model's internals, which might
+in turn lead to insights about consumer behavior as well.
+
+Currently the Neural Network seems over predict prices on high-end properties, which might
+be another avenue that we could improve the model for.
+
 ** Evaluation
 *** Analyze
 *** Offer explanations
