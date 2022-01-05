@@ -294,6 +294,17 @@ than five bedrooms under the category "5+", which seems to be a comparatively
 small group nonetheless. We can see that other than 1K and 1R, the "LDK" type
 rooms seem to be the most popular layouts.
 
+Figure [[fig:corrplot]] shows a correlation plot of all of the variables. Many of
+the explanatory variables are quite highly correlated. This high correlation means
+that an interpretation of coefficients in a linear regression model would be less
+reliable. In this paper, however, we are not going to make any strong interpretations
+based on our coefficients.
+#+NAME: fig:corrplot
+#+LABEL: fig:corrplot
+#+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm
+#+CAPTION: Heatmap showing the correlations of the variables displayed in [[tab:regression]].
+[[./assets/corrplot.png]]
+
 ** Neural Network architecture
 This subsection will explain the architecture of the Neural network we used and
 some of the preprocessing and augmenation steps we performed.
@@ -456,17 +467,6 @@ Furthermore, the previously non-significant factor of "Admin fee" became
 significant after the inclusion of the new feature. A similar pattern holds for the variables
 included in the regression but not in this table. Most
 of these coefficients moved toward 0, neither changing sign nor significance.
-
-Figure [[fig:corrplot]] Shows a correlation plot of all of the variables, many of the
-explanatory variables are quite highly correlated, which means that it becomes
-hard to interpret the model, and might be an opportunity for improvement in
-future works.
-
-#+NAME: fig:corrplot
-#+LABEL: fig:corrplot
-#+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm
-#+CAPTION: Heatmap showing the correlations of the variables displayed in [[tab:regression]].
-[[./assets/corrplot.png]]
 
 ** Qualitative
 
