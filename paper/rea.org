@@ -15,20 +15,19 @@
 
 
 #+begin_abstract
-This study strives to examine the structure of real estate rental prices,
-taking into account the property's layout. We find that when using computer
-vision methods to analyze the apartment rent
-the viability of using Deep Learning methods and what they might have in
-housing. There have been studies investigating the use of Machine
-Learning methods for this kind of task. The novelty in our study primarily lies
-in the use of Computer Vision Deep Learning methods to analyze the images of the
-floorplans to assist with prediction. By making use of one of the computer
-vision models described in [cite:@park2015using] to create an attractiveness
-measure based solely on the floorplan, we can improve a regular hedonic
-pricing model from an $R^{2}$ of 0.915 to an $R^{2}$ of 0.945. This suggests
-that floorplans contain considerable information about rent prices
-and thus consumer behavior, which is not usually covered in hedonic
-regressions.
+This study strives to examine whether consideration of floorplan images of
+real-estate apartments could be effective for improving rental price
+predictions. We use a state-of-the-art computer vision technique to predict the
+rental price of apartments using exclusively the floorplan of the apartment.
+Afterward, we use these predictions in combination with a more traditinal
+hedonic pricing method, to see whether its predictions improved. We found that
+by including the predictions, we were able to increase the accuracy of the
+predictions from an \( R^{2} \) of 0.915, to an \( R^{2} \) of 0.945. This
+suggests that floorplans contain a considerable amount of information of rent
+prices, not captured in the other explanatory variables used. Further
+investigation including more explanatory variables about the apartment itself,
+could be used in future research to further examine the price structure of real
+estate and better understand consumer behavior.
 #+end_abstract
 
 * Introduction
@@ -268,7 +267,7 @@ The data collected is observational only and not representative of the Tokyo
 real estate market as a whole.
 
 In figure [[fig:hists]] we can see the distribution of values our variables take on.
-We include further summary statistics in the appendix. [[fig:A:summary_stats]]
+We include further summary statistics in the appendix. [[fig:A:summary_st]]
 We see that our target variable, "apt_rent", has a very long, thin tail to the
 right. After taking the logarithm, the values move a lot closer, to 0 and take
 on a more symmetric shape. As for the distribution of building age, we can see
@@ -472,13 +471,11 @@ inclusion of the new feature. A similar pattern holds for the variables included
 in the regression but not in this table. Most of these coefficients moved toward
 0, neither changing sign nor significance.
 
-
 * Discussion
 Our discussion section consists of two parts.
 The first, more extensive part discusses the
 predictions of the models, the shortcomings of the models and some potential remedies.
 The second part discusses the results of our papers in a more general sense.
-
 ** Discussion and critique of the Neural Network
 In this first part we would like to look at our models' predictions more
 qualitatively. In figure [[fig:residual_plots]] we plotted the predictions against
@@ -672,6 +669,9 @@ prediction might be more practical than traditional, manual ways o feature
 collection.
 
 \printbibliography
+* Appendix
+** Summary statistics
+** Larger images Neural network predictions
 * Footnotes
 [fn:2] They use the word 基礎環境, referring to items such as ventilation, lighting or insulation.
 [fn:1] The way to interpret these layouts is as follows: The Number at the
@@ -683,5 +683,3 @@ lighting or ventilation to count as a bedroom. These rooms are often utilized
 for storage. In figure [[fig:hists]], 1R stands for ワンルーム(1 Room), a layout in
 which there either is no Kitchen, or there is no partition between the kitchen
 and the bedroom.
-
-* Appendix
