@@ -213,7 +213,7 @@ obtain. Although apartment size, is a standard characteristic available in most
 datasets, more specific features like washing room space, or kitchen space are
 harder acquire. However, many of the structural features are available in
 floorplan information. For example, while about residential satisfaction and not
-explicitly about rent prices, we believe that floorplans contain information
+explicitly about rent prices, we expect that floorplans contain information
 about all features in the "Size and Facilities" section. Furthermore, many
 floorplans even contain information about balconies, windows, the cardinal
 direction of the apartment, and some even include the placement of air
@@ -266,19 +266,19 @@ The data collected is observational only and not representative of the Tokyo
 real estate market as a whole.
 
 In figure [[fig:hists]] we can see the distribution of values our variables take on.
-We include further summary statistics in the appendix. [[fig:A:summary_st]]
-We see that our target variable, "apt_rent", has a very long, thin tail to the
-right. After taking the logarithm, the values move a lot closer, to 0 and take
-on a more symmetric shape. As for the distribution of building age, we can see
-that the number of buildings declines with age. In the number of floors of the
-buildings, we see a spike at two floors, and then two sudden declines, at 5
-and 15 floors respectively. The reason for these drops most likely lies in a
-change of building regulation at certain heights. In the "Time to station" variable, we also
-observe some irregularity around the 5, 8, and 10-minute marks, there being
-sudden declines at each of the values. While most of these times were given in
-minutes by foot, some also were given in minutes by Bus (1041 cases) / and minutes
-by car (24 cases), which can be seen in the "Methods" plot, and is the reason the "methods"
-variable was included.
+We include further summary statistics in the appendix (Table [[tab:app:summ_cont]]
+and [[tab:app:summ_cat]]). We see that our target variable, "apt_rent", has a very
+long, thin tail to the right. After taking the logarithm, the values move a lot
+closer, to 0 and take on a more symmetric shape. As for the distribution of
+building age, we can see that the number of buildings declines with age. In the
+number of floors of the buildings, we see a spike at two floors, and then two
+sudden declines, at 5 and 15 floors respectively. The reason for these drops
+most likely lies in a change of building regulation at certain heights. In the
+"Time to station" variable, we also observe some irregularity around the 5, 8,
+and 10-minute marks, there being sudden declines at each of the values. While
+most of these times were given in minutes by foot, some also were given in
+minutes by Bus (1041 cases) / and minutes by car (24 cases), which can be seen
+in the "Methods" plot, and is the reason the "methods" variable was included.
 
 #+NAME: fig:hists
 #+LABEL: fig:hists
@@ -293,7 +293,6 @@ than five bedrooms under the category "5+", which seems to be a comparatively
 small group nonetheless. We can see that other than 1K and 1R, the "LDK" type
 rooms seem to be the most popular layouts.
 
-The appendix
 Figure [[fig:corrplot]] shows a correlation plot of all of the variables. Many of
 the explanatory variables are quite highly correlated. This high correlation means
 that an interpretation of coefficients in a linear regression model would be less
@@ -607,58 +606,90 @@ are available, and that a Neural Network can do quite well with predictions of
 apartment rent even on its own. We suppose that the reason for the effectiveness
 of the Neural network is twofold:
 1. By using the floorplans, the Neural Network had access to information that
-   influences rent and residential satisfaction (as described in [cite:@choi2003]) of a
-   certain real estate. Thus it can find features that influence rent that are not available in the tabular dataset, and leverage these for its prediction.
-2. The increase in explanatory power seems extraordinarily high because of our relatively simple dataset. While we had a sizable amount of apartments and floorplans, we had much less explanatory variables than other studies on hedonic pricing. Furthermore, we only had apartments from the Tokyo Metropolitan area.
-To further expand on the second point, most studies we reviewed made use of
-many more explanatory variables, especially about structural features of the
-apartments. We presume that by using those, the regression models'
-predictive power would increase, and that of the NN would decrease. However,
-under many circumstances it might be easier to obtain floorplans of apartments
-rather than the tabular data of the categorical features, so our method could be
-used by entities who do not have the resources to gather a datset of tabular
-features, but could obtain the floorplans.
+   influences rent and residential satisfaction (as described in
+   [cite:@choi2003]) of a certain real estate. Thus it can find features that
+   influence rent that are not available in the tabular dataset, and leverage
+   these for its prediction.
+2. The increase in explanatory power seems extraordinarily high because of our
+   relatively simple dataset. While we had a sizable amount of apartments and
+   floorplans, we had much less explanatory variables than other studies on
+   hedonic pricing. Furthermore, we only had apartments from the Tokyo
+   Metropolitan area.
+To further expand on the second point, most studies we reviewed made use of many
+more explanatory variables, especially about structural features of the
+apartments. We presume that by using those, the regression models' predictive
+power would increase, and that of the NN would decrease when used in combination
+with the new features. However, under many circumstances it might be easier to
+obtain floorplans of apartments rather than the tabular data of the categorical
+features, so our method could be used by entities who do not have the resources
+to gather a datset of tabular features, but could obtain the floorplans.
 
-While this study was exploratory only, further investigation might include how
-this method fares with floorplans in different markets. As explained earlier,
-the current dataset only included a limited area of rental apartments in and
-around Tokyo. This, however mreans that we only had a single location to deal
-with, we can easily imagine that larger discrepancies in rent amount due to
-location only could cause trouble with our model. The same problem, less
-pronounced is present in the current dataset already, because apartments with
-mostly the same layout in different locations will have different prices. One
-potential remedy for this problem could be training the model on the residuals
-of a Multiple Linear Regression controlling for location. Doing this, it might
-be possible to reduce some of the effect that location has on rent.
+This study was exploratory only and further investigation might include how this
+method fares with floorplans in different markets. The current dataset only
+includes a limited area of rental apartments in and around Tokyo. This, however
+means that the rent prices we encountered, did not deviate as much as they would
+when considering more markets. We can easily imagine that larger discrepancies
+in rent amount due to location only could disturb our model. The same problem,
+less pronounced is present in the current dataset already, because apartments
+with mostly the same layout in different locations will have different prices.
+One potential remedy for this problem could be training the model on the
+residuals of a multiple linear regression controlling for location. Doing this,
+it might be possible to reduce some of the effect that location has on rent.
 
-Another problem with the current paper is that is that it is hard to interpret
-why the model is making some of the decisions. [cite:@NIPS2017_7062], for
+Another problem with Neural networks in general, is that is that they hard to
+interepret. This also applies to the current study. We have trouble explaining
+why the model is making some of its predictions. [cite:@NIPS2017_7062], for
 example, provide an approach for general model interpretation, which sometimes
 is also applied to computer vision. Analyzing the current model using the
-technique outlined here might give us more into the model's internals to see what it
-is focusing on. This, in turn, might lead to insights about consumer behavior as well.
+technique outlined there might give us more into the model's internals to see
+what it is focusing on. This, in turn, might lead to insights about consumer
+behavior.
 
 * Conclusion
-Overall, we used real estate data collected from a publicly available website,
-to train a Residual based Convolutional Neural Network for prediction of rent
-prices based solely on that properties' floorplan. We also showcased some tweaks
-to enhance the original model, to allow for quicker training and convergence. We
-showed that it is possible to effectively leverage floorplan image information
-to prediction rent prices, and that these predictions can enhance other more
-traditional models' predictive power. While we did not have any access to very
-detailed information about the apartments themselves, and thus were not able to
-test the effectiveness of floorplan image analysis against, models making use of
-more tabular data, we believe that using floorplan data could be an option for
-entities trying to estimate rent prices, without the need for interviewing
-participants. Our results seem to be inline with existing literature on the
-topic of real-estate value composition, however we believe that this paper shows
-initial evidence that is using Computer vision for some instances of rent
-prediction might be more practical than traditional, manual ways o feature
-collection.
+We used real estate data collected from a publicly available website, to train a
+residual based convolutional neural network for prediction of rent prices based
+solely on that properties' floorplan. We proposed some tweaks to enhance the
+original model, to allow for quicker training and convergence in the case of
+real-estate prediction. We showed that it is possible to effectively leverage
+floorplan image information to improve prediction of rent prices, and that these
+predictions can enhance other more traditional models' predictive power. We only
+had limited access to detailed information at apartment level, and thus were not
+able to test the effectiveness of floorplan image analysis against, models
+making use of a wider variety of tabular data. We suspect that using floorplan
+data could be an option for entities trying to estimate rent prices, without the
+need for interviewing participants or employing other costly means of gaining
+apartment-level information. Our results seem to be in line with existing
+literature on the topic of real-estate price composition. Furthermore we believe
+that this paper shows initial evidence that using computer vision for rent
+prediction in low data-availability situations can be practical.
 
 \printbibliography
+
 * Appendix
 ** Summary statistics
+#+LABEL: tab:app:summ_cat
+#+NAME: tab:app:summ_cat
+#+ATTR_LATEX: :label tab:app:summ_cat :name tab:app:summ_cat
+#+CAPTION: Summary statistics for the categorical variables used.
+ | Name    | Unique | Most Frequent           | No. Occurences |
+ |---------+--------+-------------------------+----------------|
+ | Style   |     31 | 1K                      |          63573 |
+ | station |    684 | 東京メトロ東西線/葛西駅 |           1839 |
+ | method  |      3 | 歩                      |         140329 |
+
+#+LABEL: tab:app:summ_cont
+#+NAME: tab:app:summ_cont
+#+ATTR_LATEX: :label tab:app:summ_cont :name tab:app:summ_cont
+#+CAPTION: Summary statistics for the continuous variables used.
+| Name            |        mean |         std |  min |    25\% |   50\% |    75\% |       max |
+|-----------------+-------------+-------------+------+---------+--------+---------+-----------|
+| Bldg. Age       |   17.701062 |   15.081147 | 0.00 |    4.00 |   15.0 |    30.0 |     99.00 |
+| Bldg. No Floors |    7.300168 |    5.734189 | 1.00 |    3.00 |    6.0 |    10.0 |     60.00 |
+| Size \(m^{2}\)  |   30.497512 |   17.251406 | 1.94 |   21.16 |   25.6 |    35.0 |    491.88 |
+| Admin Fee       | 6554.481350 | 5220.711042 | 0.00 | 3000.00 | 6000.0 | 10000.0 | 220600.00 |
+| Floor           |    4.096327 |    3.610408 | 1.00 |    2.00 |    3.0 |     5.0 |     57.00 |
+| Time to station |    6.034167 |    3.284996 | 1.00 |    4.00 |    5.0 |     8.0 |     40.00 |
+| Rent            |   11.119562 |    8.232117 | 1.10 |    7.50 |    9.1 |    12.1 |    250.00 |
 ** Larger images Neural network predictions
 * Footnotes
 [fn:2] They use the word 基礎環境, referring to items such as ventilation, lighting or insulation.
