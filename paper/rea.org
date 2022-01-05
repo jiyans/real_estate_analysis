@@ -268,6 +268,7 @@ The data collected is observational only and not representative of the Tokyo
 real estate market as a whole.
 
 In figure [[fig:hists]] we can see the distribution of values our variables take on.
+We include further summary statistics in the appendix. [[fig:A:summary_stats]]
 We see that our target variable, "apt_rent", has a very long, thin tail to the
 right. After taking the logarithm, the values move a lot closer, to 0 and take
 on a more symmetric shape. As for the distribution of building age, we can see
@@ -294,6 +295,7 @@ than five bedrooms under the category "5+", which seems to be a comparatively
 small group nonetheless. We can see that other than 1K and 1R, the "LDK" type
 rooms seem to be the most popular layouts.
 
+The appendix
 Figure [[fig:corrplot]] shows a correlation plot of all of the variables. Many of
 the explanatory variables are quite highly correlated. This high correlation means
 that an interpretation of coefficients in a linear regression model would be less
@@ -440,75 +442,85 @@ all variables, without the rent prediction of the Neural Network, one using all
 variables with the rent prediction of the neural network, using only the neural
 network and an intercept.
 * Results
-Moving onto the results of our analysis.
-Firstly, we will look at the results quantitatively, and afterward, we will take a look at the
-models and their predictions qualitatively by looking at some examples and
-edge cases to better understand how the predictions work and how the model makes
-its predictions.
-** Quantitative
-Table [[tab:regression]] shows the results for three models described in [[Hedonic
-Price estimation]]. The first column shows the estimated coefficients and standard
-errors, without the predictions obtained from the neural network (Hereafter
-sometimes referred to as NN Factor), the second shows the estimated coefficients
-with the predictions, and the last shows the values for the model with intercept
-and the predictions of the neural network only. We included all categorical
-variables in both of the first two regressions, but did not include their
-coefficients in the table due to their high cardinality.
+In this section we will first describe the results of our analysis, and afterward present
+some concrete examples of some of our models' predictions to trace some of its
+inner workings, how it works together with the linear regression models, and point out
+some flaws the current model has.
+
+Moving onto the results of our analysis. Table [[tab:regression]] shows the results
+for three models described in [[Hedonic Price estimation]]. The first column shows
+the estimated coefficients and standard errors, without the predictions obtained
+from the neural network (hereafter referred to as NN Factor), the second shows
+the estimated coefficients with the predictions, and the last shows the values
+for a Linear Regression model with intercept and the predictions of the neural
+network only. We included all categorical variables in both of the first two
+regressions, but did not include their coefficients in the table due to their
+high cardinality.
 #+NAME: tab:regression
 #+LABEL: tab:regression
 #+ATTR_LATEX: :label tab:regression :name tab:regression
 #+INCLUDE: "assets/table2.tex" export latex
-Looking at this table, we observe a considerable increase in the explanatory power of the model using the NN's predictions over the one that does not include the NN's predictions. The \( R^{2} \) value moves from
-0.915, to 0.945, and the Residual Std. Error is reduced from 0.127 to 0.101,
-a reduction in error of \( \approx 20\% \). The signs of the coefficients in the models are as
-one would expect them to be and do not change with the inclusion of the Neural network prediction.
-However, the magnitude of the coefficients moved toward 0 in every case.
-Furthermore, the previously non-significant factor of "Admin fee" became
-significant after the inclusion of the new feature. A similar pattern holds for the variables
-included in the regression but not in this table. Most
-of these coefficients moved toward 0, neither changing sign nor significance.
+We observe a considerable increase in the predictive power of the model using
+the NN's predictions over the one that does not include the NN's predictions.
+The \( R^{2} \) value moves from 0.915, to 0.945, and the Residual Std. Error is
+reduced from 0.127 to 0.101, a reduction in error of \( \approx 20\% \). The
+signs of the coefficients in the models are as one would expect them to be and
+do not change with the inclusion of the Neural network prediction. However, the
+magnitude of the coefficients moved toward 0 in every case. Furthermore, the
+previously non-significant factor of "Admin fee" became significant after the
+inclusion of the new feature. A similar pattern holds for the variables included
+in the regression but not in this table. Most of these coefficients moved toward
+0, neither changing sign nor significance.
 
-** Qualitative
 
-Next, we would like to look at our models' predictions more qualitatively. In figure [[fig:residual_plots]] we plotted the predictions against
+* Discussion
+Our discussion section consists of two parts.
+The first, more extensive part discusses the
+predictions of the models, the shortcomings of the models and some potential remedies.
+The second part discusses the results of our papers in a more general sense.
+
+** Discussion and critique of the Neural Network
+In this first part we would like to look at our models' predictions more
+qualitatively. In figure [[fig:residual_plots]] we plotted the predictions against
 their actual values to try and see whether there are any patterns of
 mispredictions in our models. We can see that all of our models seem to
 overpredict the most expensive properties. In [[fig:residual_plots]] we drew a
-dotted line at \(x=log(100) \approx 4.6\). After this point, all models seem
-to overpredict the rent prices greatly. While the linear models have few
-but very high over-predictions, the Neural Network's residuals are smaller
-but have shifted systematically. The reason for the relatively low
-residuals of the Neural network is that we used scaled its predictions with
-the sigmoid layer discussed in [[Models, Methods, Architecture]]. Furthermore,
-the neural network underpredicts many low rent properties, possibly
-because, in some of these cases, the properties have a good location, to which
-they owe their higher prices.
+dotted line at \(x=log(100) \approx 4.6\). After this point, all models seem to
+overpredict the rent prices greatly. While the linear models have few but very
+high over-predictions, the Neural Network's residuals are smaller but have
+shifted systematically. The reason for the relatively low residuals of the
+Neural network is that we scaled its predictions with the sigmoid layer
+discussed in [[Models, Methods, Architecture]]. Furthermore, the neural network
+underpredicts many low rent properties, possibly because, in some of these
+cases, the properties have a good location, due to which they have their higher
+than predicted prices. Overall, we can see that the second model's predictions
+are wound around the identity more tightly, and its predictions seem to have been
+improved.
 #+LABEL: fig:residual_plots
 #+NAME: fig:residual_plots
 #+ATTR_LATEX: :height 4cm :label fig:residual_plots :name fig:residual_plots
 #+CAPTION: This image shows the residuals of the predictions of the two models and the Neural network. The x and y axes for all of the plots are the same. The dotted blue line is drawn at \( x = log(100) \approx 4.6 \).
-[[./assets/residual_plot.png]]
+[[./assets/residuals.png]]
 
-Next, we would like to examine some predictions of the models in even more
-detail.
-We will look at the following patterns of predictions.
 
+Next, we will look at some predictions of the Neural network and their floorplans.
+First, we will take a look at some randomly chosen predictions of the dataset, to
+see what a regular floorplan and the predictions for it might look like. Afterwards,
+we will look at the highest and lowest predictions that the model made.
 1. Some random predictions
 2. The highest and lowest predictions of the network
-3. The predictions that were the most due to input of the Neural Network
-4. Predictions for properties with similar characteristics but whose value considerably changed due to the Neural network predictions.
-
 Firstly, we will look at some randomly extracted images in figure
-[[fig:random_examples]]. We show these predictions mostly to showcase the available
-floorplans and the targets. The Neural network is not radically off with any
-prediction in this example, with the highest difference in prediction and price
-being 17000¥. However, it is hard to tell exactly why the Neural Network made
-the predictions it did. Some of the more extreme predictions are more easily
-discernible patterns. Some of these more extreme predictions are due to problems
-with the dataset. However, they also seem to give us some insight into how the
-Neural Network is making its predictions, so instead of removing these cases and
-retraining the model right away, we decided to still explore them in this
-section.
+[[fig:random_examples]]. The Neural network is not radically off with any prediction
+in this example, with the highest difference in prediction and price being
+17000¥. Seen in relative terms, the model is overpredicting the apartment's
+value by about 25%. However, it is hard to tell exactly why the Neural Network
+made the predictions it did, and some of the more extreme predictions show more
+easily discernible patterns. While some of these extreme predictions come about
+simply due to problems with the dataset However, they also seem to give us some
+insight into how the Neural Network is making its predictions, so instead of
+removing these cases and retraining the model right away, we decided to explore
+them in this section. As these images are quite small, we will provide larger versions
+in the appendix.
 
 #+LABEL: fig:random_examples
 #+NAME: fig:random_examples
@@ -516,63 +528,72 @@ section.
 #+CAPTION: This image shows the NN's predictions and ground truths for a randomly extracted sample of the dataset. (In 10,000¥)
 [[./assets/random_table.png]]
 
-Moving onto more extreme cases, we tried looking at the highest and lowest
-predictions in Figures [[fig:negtop]] and [[fig:postop]]. Here we show images that the Neural
-Network's predictions were the lowest and highest for.
+Figures [[fig:negtop]] and [[fig:postop]] exhibit images that the Neural Network's predictions were the lowest and highest for.
 #+LABEL: fig:negtop
 #+NAME: fig:negtop
 #+ATTR_LATEX: :label fig:negtop :name fig:negtop :height 4cm
 #+CAPTION: These are the four predictions the model predicted the lowest rent for. (in 10,000¥)
 [[./assets/rand_neg_top_100.png]]
-The floorplans for figure [[fig:negtop]] are solely
+
+The floorplans for Figure [[fig:negtop]], the models' lowest predictions, are solely
 for dormitory or boarding house-like apartments. The model seems to have picked
 up on the repetitive pattern in the floorplan often present in these apartments.
 Although the overall size is of the floors is quite extensive, and the floorplan
-spans multiple floors. The model's predictions seem to be at least aware that
-only a single room is considered. However, as we see later in the leftmost
-picture of figure [[fig:upward]], the model cannot correctly tell these kinds of
-shared-living spaces from big apartments intended for a single household. Note
-that the predictions for the middle two floorplans were different even though
-the floorplans are the same. This is due to the preprocessing step where we
-randomly crop our images. When making the two predictions for the middle
-floorplans, the model thus had slightly different inputs and outputs. This image
-appears twice in the dataset because two different rooms in this building were
-open for rent, which explains the difference in actual prices.
+spans multiple floors. The model's predictions, having seen some amount of these
+kinds of plans, seem to be predict the price for only a single room. However, as
+we see later in the leftmost picture of figure [[fig:upward]], the model cannot
+always correctly tell these kinds of shared-living spaces from big apartments
+intended for a single household. Note that the predictions for the middle two
+floorplans were different even though the floorplans are the same. This is due
+to the preprocessing step where we randomly crop our images. When making the two
+predictions for the middle floorplans, the model thus had slightly different
+inputs and outputs. This image appears twice in the dataset because two
+different rooms in this building were open for rent, which explains the
+difference in actual prices. If the prices for each room are close like in this
+case, the fact that the model does not have any information about which room to
+predict the rent for, is not too detrimental, but one potential failure point of
+the model could be an apartment where the floorplan is presented as above,
+however the rents of different apartments are largely different.
 
 #+LABEL: fig:postop
 #+NAME: fig:postop
 #+ATTR_LATEX: :label fig:postop :name fig:postop :height 4cm
 #+CAPTION: The floorplans of the four apartments with the highest predicted rents. (in 10,000¥)
 [[./assets/rand_top_100.png]]
-Moving onto the highest predictions of the Neural network, in figure [[fig:postop]] we see that the Networks residuals are much higher.
-The model seems to choose spacious apartments with multiple floors, prominent balconies
-and a non-repetitive layout for its highest predictionsin .
-Overall, however, it is harder to find a definitive pattern in the highest predictions of the model.
+
+Moving onto the highest predictions of the Neural
+network, in figure [[fig:postop]] we see that the Networks residuals are much
+higher. The model appears to choose spacious apartments with multiple floors,
+prominent balconies and a non-repetitive layout. Overall, however, it is harder
+to find a definitive pattern in the highest predictions of the model.
+
+Next, in order to see some more edge cases, we will present the predictions that changed
+the most due to the input of the NN factor.
+First we will look at the largest downward changes due to the Neural Network, and afterwards
+we will look at the largest upward changes.
 
 #+LABEL: fig:downward
 #+NAME: fig:downward
 #+ATTR_LATEX: :height 4cm :label fig:downward :name fig:downward
 #+CAPTION: This image shows the floorplans of the apartments with the biggest decreases in prediction after considering Neural Network output. (in 10,000¥)
-[[./assets/overpreds.png]]
-Figure [[fig:downward]] and [[fig:upward]] have a slight change
+[[./assets/overpreds.png]] Figure [[fig:downward]] and [[fig:upward]] have a slight change
 in format. In these Figures, we compare the differences in the predictions of
-Models 1 and 2 for a given apartment, to find the observations where the
-Neural Network prediction had the largest impacts. These predictions were
-performed using all available variables. Furthermore, we display the floorplans
-and the Neural Network's predictions. Figure [[fig:downward]] shows the greatest
-downward shifts due to the Neural Network predictions. Here, we again have the
-problem of the same picture being present multiple times. The property with the
-middle floorplan was posted to the website under different names by different
-agencies multiple times, even with different prices. It is quite large
-with a nice location, which is why the Linear Models
-overestimate it so largely. Another reason for this big performance difference is
-that while we are scaling the Neural Networks predictions, we are not doing
+Models 1 and 2 for a given apartment, thus their respective predictions, as well
+as the Neural Network prediction and the actual rent value are given in the
+labels. Figure [[fig:downward]] shows the greatest downward shifts. Here, we again
+see an example of the same floorplan being used multiple times.. The property
+with the middle floorplan was posted to the website under different names by
+different agencies multiple times, even with different prices. It is quite large
+with a prime location, which is why the Linear Models overstimate so greatly.
+Another reason for this big performance difference is that while we are scaling
+the Neural Networks predictions into the correct output range, we are not doing
 anything the like for the Linear Model. In the rightmost picture, we can see
-that the model's prediction was far below the property's actual value,
-while the linear model's predictions were much closer to the actual value. This
-seems to be due to the simplistic layout of the property. Upon further
-investigation, it also turned out that his property is an office space
-that was mistakenly posted on the wrong part of the website.
+that the Neural Networks prediction on its own was far below the property's
+actual value, while the linear model's predictions were much closer to it. The reason
+for this seems to be the simplistic layout of the property. Upon further
+investigation, it also turned out that his property is an office space that was
+mistakenly posted on the wrong part of the website. In the linear model, the size and
+location of the office are the biggest contributors to the prediction.
 
 Finally, we will look at the greatest upward movements after considering the
 predictions of the neural network.
@@ -581,74 +602,74 @@ predictions of the neural network.
 #+ATTR_LATEX: :height 4cm :label fig:upward :name fig:upward
 #+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the Neural Network input.
 [[./assets/underpreds.png]]
-The first floorplan was posted for a room available in a
-shared flat, and for this property, the first model's predictions are much more
-accurate than the other two predictions. This is because the Neural Network
-overpredicted the rent by a lot. The reason for this seems to be that the
-The neural network was considering the floorplan as a whole, while the actual
-apartment that was up for rent is only a single room in the floorplan. A
-similar problem most likely occurred with the third floorplan, which displays the
-apartment's floorplan and a balcony that everyone living in the
-apartment seems to be able to use.
 
-* Discussion
-Some of our results are hard to interpret, e.g., multimodal learning is worse
-than the ensembling method. (probably) Why?
-** Problems of very high dimensionality due to many categories in the categorical variables.
-** The Neural Network seems to be very positive with its predictions; is there something we can do about it?
-** Introduction
+The first floorplan in Figure [[fig:upward]] was posted for a room available in a
+shared flat. For this estate, the predictions of the model without the Neural
+Network's input are much more accurate than the other two predictions. This is
+because the Neural Network overestiamted the rent by a lot. The reason for this
+might be that the The neural network was considering the floorplan as a whole,
+while the actual apartment available for rent is only a single room. While in
+Figure [[fig:negtop]] the Neural Network still predicted these cases more
+accurately, here it did not. The most likely reason for this seems to be that
+the model did not recognize the pattern for this floorplan, as it did with the
+others. A similar problem seems to have occurred with the third floorplan, which
+displays the apartment's floorplan and a balcony that everyone living in the
+building seems to be able to use. The reasons for the high upward shift in the
+second and fourth floorplans are much harder to discern.
+** General discussion
 In this paper we found that utilizing the floorplans of rental apartment can
-improve the predictive power of Linear Regression models when not many variables are available.
-We suppose that the reason for this increased effectiveness is twofold:
-1. By using the floorplans, the Neural Network had access to the factors that
-   most influence residential satisfaction of experience with a certain
-   property.
-2. The increase in explanatory power seems extraordinarily high because we had
-   much less explanation than other studies on hedonic pricing.
-Most studies we reviewed made use of many more explanatory variables, especially about
-structural features of the apartments, and we believe by using those, the improvement
-of predictive power that our NN provided would be expected to decrease.
-However, we believe that under many circumstances it might be easier to obtain floorplans
-of apartments rather than the tabular data of the categorical features, so our
-method could be used by parties like that.
-While this study was exploratory only, further investigation might include how this method
-fares with floorplans in different markets. While this time, only the market in and around
-Tokyo was considered, and rent prices were mostly stable because we only had a single
-location to deal with, we can easily imagine that larger discrepancies in price due to
-location only could cause trouble with our model. One potential remedy for this problem could
-be training the model on residuals of a Multiple Linear Regression controlling for location.
+improve the predictive power of Linear Regression models when not many variables are available, and that a Neural Network can do quite well with predictions of apartment rent even on its own.
+We suppose that the reason for the effectiveness of the Neural network is twofold:
+1. By using the floorplans, the Neural Network had access to information that
+   influences rent and residential satisfaction (as described in [cite:@choi2003]) of a
+   certain real estate. Thus it can find features that influence rent, which are not available in the tabular dataset alone, and leverage these for its prediction.
+2. The increase in explanatory power seems extraordinarily high because of our relatively simple dataset. While we had a good amount of apartments and floorplans, we had much less explanatory variables than other studies on hedonic pricing. Furthermore, we only had apartments from the Tokyo Metropolitan area.
 
-Another problem with the current model is that it is hard to interpret why the model is
-making some of the decisions. For example [cite:@NIPS2017_7062] provide an approach for
-model interpretation sometimes also applied to computer vision. Analyzing the current model
-using the technique outlined here might give us more into the model's internals, which might
-in turn lead to insights about consumer behavior as well.
+To further expand on the second reaosn, most studies we reviewed made use of
+many more explanatory variables, especially about structural features of the
+apartments, and we believe that by using those, the regression models'
+predictive power would increase, and that of the NN would decrease. However,
+under many circumstances it might be easier to obtain floorplans of apartments
+rather than the tabular data of the categorical features, so our method could be
+used by entities who do not have the resources to gather a datset of tabular
+features, but could obtain the floorplans.
 
-Currently the Neural Network seems over predict prices on high-end properties, which might
-be another avenue that we could improve the model for.
+While this study was exploratory only, further investigation might include how
+this method fares with floorplans in different markets. As explained earlier,
+the current dataset only included a limited area of rental apartments in and
+around Tokyo. This, however mreans that we only had a single location to deal
+with, we can easily imagine that larger discrepancies in rent amount due to
+location only could cause trouble with our model. The same problem, less
+pronounced is present in the current dataset already, because apartments with
+mostly the same layout in different locations will have different prices. One
+potential remedy for this problem could be training the model on the residuals
+of a Multiple Linear Regression controlling for location. Doing this, it might
+be possible to reduce some of the effect that location has on rent.
 
-** Evaluation
-*** Analyze
-*** Offer explanations
-*** Reference the literature
-*** State imlpications
+Another problem with the current paper is that is that it is hard to interpret
+why the model is making some of the decisions. [cite:@NIPS2017_7062], for
+example, provide an approach for general model interpretation, which sometimes
+is also applied to computer vision. Analyzing the current model using the
+technique outlined here might give us more into the model's internals to see what it
+is focusing on. This, in turn, might lead to insights about consumer behavior as well.
 
 * Conclusion
 Overall, we used real estate data collected from a publicly available website,
 to train a Residual based Convolutional Neural Network for prediction of rent
 prices based solely on that properties' floorplan. We also showcased some tweaks
-to enhance the original model, to allow for quicker training and
-convergence. We showed that it is possible to effectively leverage floorplan
-image information to prediction rent prices, and that these predictions can
-enhance other more traditional models' predictive power. While we did not have any
-access to very detailed information about the apartments themselves, and thus
-were not able to test the effectiveness of floorplan image analysis against,
-models making use of more tabular data, we believe that using floorplan data
-could be an option for entities trying to estimate rent prices,
-without the need for interviewing participants. Our results seem to be inline
-with existing literature on the topic of real-estate value composition, however
-we believe that this paper shows initial evidence that is using Computer vision for
-some instances of rent prediction might be more practical than traditional, manual ways o feature collection.
+to enhance the original model, to allow for quicker training and convergence. We
+showed that it is possible to effectively leverage floorplan image information
+to prediction rent prices, and that these predictions can enhance other more
+traditional models' predictive power. While we did not have any access to very
+detailed information about the apartments themselves, and thus were not able to
+test the effectiveness of floorplan image analysis against, models making use of
+more tabular data, we believe that using floorplan data could be an option for
+entities trying to estimate rent prices, without the need for interviewing
+participants. Our results seem to be inline with existing literature on the
+topic of real-estate value composition, however we believe that this paper shows
+initial evidence that is using Computer vision for some instances of rent
+prediction might be more practical than traditional, manual ways o feature
+collection.
 
 \printbibliography
 * Footnotes
@@ -662,3 +683,5 @@ lighting or ventilation to count as a bedroom. These rooms are often utilized
 for storage. In figure [[fig:hists]], 1R stands for ワンルーム(1 Room), a layout in
 which there either is no Kitchen, or there is no partition between the kitchen
 and the bedroom.
+
+* Appendix
