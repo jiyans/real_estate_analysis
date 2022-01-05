@@ -1,239 +1,280 @@
-#+title: WIP Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices Summary
-#+SUBTITLE: WIP An evaluation of an incorporation of deep learning methods for prediction real estate prices
+#+title: [SUMMARY] Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
+#+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
 #+AUTHOR: Jiyan Jonas Schneider
-#+EMAIL:     jiyan.schneider@gmail.com
-#+DATE:      2021-12-20
+#+DATE: 2021-12-20
 #+LATEX_HEADER: \usepackage{xeCJK}
-#+LATEX_HEADER: \usepackage[backend=biber, style=apa]{biblatex}
 #+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
 #+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W3}
+#+LATEX_HEADER: \usepackage[backend=biber, style=apa]{biblatex}
 #+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
-#+LATEX_CLASS: article
-#+latex_class_options: [12pt,titlepage]
-#+LATEX_HEADER: \usepackage[a4paper]{geometry}
+#+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+#+LATEX_HEADER: \usepackage{graphics}
+#+LATEX_HEADER: \usepackage{rotating}
+#+LATEX_HEADER: \usepackage[doublespacing]{setspace}
+#+LATEX_CLASS_OPTIONS: [12pt,titlepage]
+#+OPTIONS: toc:2 H:4
+
 
 #+begin_abstract
-
-The aim of this study is to examine the viability of using Deep Learning methods
-and what they might have in housing. Although there have been quite a few
-studies investigating the use of Machine Learning methods for this kind of task.
-The novelty in our study primarily lies in the use of Deep Learning methods for
-computer vision to analyze the images of the floor plans to assist with
-prediction and our analysis of the way the neural network is able to use the
-floor plans for prediction. There have been have been quite a few papers about
-the use of Machine Learning methods for real estate price predictions, however,
-most of them focus only on the structured data available. In this paper we want
-make use of the actual floor plan, Some recent examples include, [cite:@park2015using] and [cite:@sangha21_proper_norweg] , for the German
-housing market and autocite:sangha21_proper_norweg for the Norwegian housing
-market. In order to compare our results to other results, we also reconstruct
-some models often used in the literature as baseline models.
-
+This study strives to examine whether consideration of floorplan images of
+real-estate apartments could be effective for improving rental price
+predictions. We use a state-of-the-art computer vision technique to predict the
+rental price of apartments using the floorplan of the apartment exclusively.
+Afterward, we use these predictions combined with a more traditional
+hedonic pricing method to see whether its predictions improved. We found that
+by including the predictions, we were able to increase the accuracy of the
+predictions from an \( R^{2} \) of 0.915 to an \( R^{2} \) of 0.945. This
+suggests that floorplans contain considerable information about rent
+prices, not captured in the other explanatory variables used. Further
+investigation, including more explanatory variables about the apartment itself,
+could be used in future research to examine the price structure of real
+estate further and better understand consumer behavior.
 #+end_abstract
 
 * Introduction
-Real estate prices have to be estimated for different purposes (real estate
-appraisal for evalation of net worth, but also for other national surveys.
-Furthermore imputed real estate prices are used in the output of homeowners.
-Here the price of the rent is estimated from the price of the house and other
-values.)
+In the paper, we look into the problem fo real estate rental price estimation,
+and in how far it is possible to apply computer vision toward it. The reason
+why we do so is because the problem of real estate value estimation comes up
+often times in society, and many agents have incentives for an accurate prediction.
+Furthermore, we believe that if it is possible to apply computer vision methods
+to real-estate, it might open up venues for further studies into consumer behavior
+and the structure of real-estate prices in the future.
 
-Because real estate product of a ), and the structure of real estate prices is a
-long standing problem. Since [cite:@rosen_1974_hedonic] real estate prices are
-often considered to be of hedonic nature, meaning that the price of a certain
-property would consists of it attributes associated with the property. The most
-tangible example would be, that it is easy to imagine that the rent of an
-apartment is a function of its size. While real estate prices are often
-considered to be hedonic the factors that make up the prices are still being
-researched.
+The underlying hypothesis of the research paper is that the floorplans contain
+some characteristics that are valuable to consumers, but are currently neglected
+with traditional methods. Furthemore, we hypothesize that some of these factors
+could be leveraged with deep learning. In the long run, we hope to advance
+insight into the price structure of real estate and consumer behavior
+surrounding real estate.
 
-In particular we will try to answer the following 2 main questions
+To test our hypothesis, we first collected tabular data and floorplans of over
+140,000 rental apartments in the Tokyo Metropolitan area from a publicly
+available website. Then we devised some minor changes to a widely used neural
+network architecture and trained a neural network (NN hereafter) to predict the
+rent of an apartment given only its floorplan. Finally, we combined the NN's
+prediction with a traditional hedonic regression model and analyzed the effects
+of including the NN's predictions.
 
- 1. Does having information about the room layout, help with the prediction? To
-    do this we will construct a model similar to what is described in
-    [cite:@he15:deep_resid_learn_image_recog] to predict monthly rent prices.
-    Afterwards we will use these predictions with other predictors regularly
-    used in real estate market models.
- 2. If there is an effect of considering the room layout, how do we build the
-    model that is most efficient for prediction? If there is a positive effect
-    of making use of the image data, how do we best incorporate it into our
-    models. In particular, we plan to consider the following 3 kinds of models.
-    1. Using the output of the image model for use in a linear model with the
-       rest of the data.
-    2. Use the output of the image model together with a Neural Network trained
-       on the tabular information and
-    3. We could use a multimodal approach, where we output multiple latent
-       states from each of our submodels, fuse these latent, and use a "head"
-       model to fuse our latent states as described in.
-* Data
-The dataset used is a mix of tabular and image data of real estate properties
-from the Tokyo Metropolitan area, listed on a public website. The data was
-collected for the purpose of writing this paper. The Tokyo Metropolitan area
-includes parts of Yokohama, Saitama and Chiba as well. Since our dataset is not
-a random sample, our anlaysis can not be considered as an analysis of the Tokyo
-realestate market as a whole. Rather it serves as a way for us to outline how to
-use of the methods described in this paper might influence more traditional
-approaches. However, the results from this paper should not be used for
-interpretations on the Tokyo real estate market as a whole.
+Doing this, we find that the neural network can explain a considerable
+proportion of the rent price of many real-estate properties and considerably
+improve the explanatory power of the hedonic regression model. Including the
+neural network does not overly take away explanatory power from variables that
+would be considered important in a more traditional model or affect the other
+variables in other unexpected ways, showing that the Neural Network captures at
+least some previously unconsidered factors.
 
-Two potential sources of bias in the dataset are that we are only considering
-properties that were available for rent at the time of data collection, and that
-we rely on data from only single website, and are not making use of other
-sources. However, these biases are not expected to have an impact on our
-results, in this paper we are more concerned with the efficacy of the different
-measures, rather than making statements about the Tokyo Real-estate market. Our
-dataset consists of 141394 observations. For each of these observations we had
-available 6 continuous explanatory variables and and 3 categorical explanatory
-variables. Our independent variable is the monthly rent price for each
-observation in units of 10000¥.
+One of the main reason, why we think that the floorplans might contain
+previously untapped potential, is that economics studies tend to find that
+so-called "structural" features have more significance in the consumers' eyes
+than so-called "environmental" ones. [cite:@choi2003;@akiyama_yuki2019320204]
+In the complete paper we discuss these sources in more detail, and also present some
+other previous attempts of using computer vision models in real-estate estimation.
 
-** Variables Used
-#+CAPTION: This is a table explaining the variables used in our dataset.
-| Variable        | Explanation                                                    |
-|-----------------+----------------------------------------------------------------|
-| station         | Name of the closest station, measured by time travelled        |
-| method          | Description of the type of apartment (for example 1K, 1LDK...) |
-| apt_style       | Number of floors of the building of this listing               |
-|-----------------+----------------------------------------------------------------|
-| apt_floor       | The floor the property is 0.                                   |
-| apt_size        | Size of property in $m^2$                                      |
-| time_to_station | No. minutes of taking "method" to the next station             |
-| b_age           | No. of years ago the property was built                        |
-| b_no_floors     | No of floors of the building                                   |
-| apt_admin_price | Amount of monthly administration fee                           |
-| apt_rent        | Rent per month of the listing. In units of 10000 Yen           |
-|-----------------+----------------------------------------------------------------|
+* Methodology
+** Data
+The dataset used is a mix of tabular and image data of rental real estate
+properties listed on a public website from the Tokyo Metropolitan area. The data
+was collected to write this paper. The dataset we are using has over 140,000
+observations, but only 3 categorical and 7 continuous variables including the
+target variable. This is more observations, but less categories than in most
+papers the author reviewed. We focused on rental apartments in Tokyo in
+particular because, as outlined in textcite:moriizumi1986;weko_55303_1 and
+textcite:akiyama_yuki2019320204, estimating real estate prices throughout
+different markets are more challenging and causes complications as described
+earlier. This paper is primarily an exploratory study, so we decided that by
+focusing on "roughly" a single market, we can sidestep the problem of
+considering multiple markets and focus on the viability of these computer vision
+methods first. For each listing, we have the monthly rent of the apartment, the
+image of the floorplan of the apartment, 6 continuous and 3 categorical
+variables. The details for the tabular variables are described in Table
+[[tab:var_explanation]].
+#+LABEL: tab:var_explanation
+#+NAME: tab:var_explanation
+#+CAPTION: Explanation of the variables collected and used in this study.
+#+ATTR_LATEX: :name tab:var_explanation :label tab:var_explanation
+|-----------------+-----------------------------------------------------------------|
+| Variable        | Explanation                                                     |
+|-----------------+-----------------------------------------------------------------|
+|-----------------+-----------------------------------------------------------------|
+| Floor           | The floor the property is on property                           |
+| Size            | Size of property in $m^2$                                       |
+| Time to station | No. minutes of taking "method" to the next station              |
+| Age bldg.       | No. of years ago the property was built                         |
+| Floors bldg     | No of floors of the building                                    |
+| Admin fee       | Amount of monthly administration fee                            |
+|-----------------+-----------------------------------------------------------------|
+| Station         | Name of the closest public transport station                    |
+| Method          | How "Time to station" is measured (foot, bus, or car)           |
+| Style           | Description of the layout type of the apartment (1K, 1LDK,... ) |
+|-----------------+-----------------------------------------------------------------|
+| Monthly rent    | Rent per month of the listing. In units of 10000 Yen            |
+|-----------------+-----------------------------------------------------------------|
 
-** Summary stats
-** Some more data explanation with some plots
-* Computer Vision model
-We will implement this model
-The implementation of the models described below were made with the software
-library "fastai" introduced in [cite:@howard20_fastai]
+** Neural Network architecture
+For the construction of the Neural Network, we relied on the software libraries
+~fastai~ [cite:@howard20_fastai], ~pytorch~ and ~torchvision~. (Pytorch and
+torchvision both by the PyTorch team [cite:@NEURIPS2019_9015]). We built on the
+~resnet50~ implementation by textcite:NEURIPS2019_9015 of the model outlined in
+textcite:he15:deep_resid_learn_image_recog. We initialized the model's weights
+to the pre-trained weights available in ~torchvision~. These weights are trained
+using the "ImageNet" [cite:@imagenet2009] dataset.
 
-** 2 main models
-Even though the data consist of Integers only, we will choose the rent price to be
+We replaced the last layers with a custom adaptation to better fit the
+regression task at hand. We used the same base model up until the first fully
+connected layer, which we replaced with another untrained fully connected layer.
+Initially, we used a fully connected layer with a single output as the final
+layer. However, we found that sometimes the model would make unreasonably high
+predictions, which complicated the model training by abnormally increasing the
+loss, resulting in "exploding gradients". Thus, we decided to add
+another layer to scale the Neural Networks output between a predetermined range.
+In particular, we scaled the last layer's outputs with a sigmoid function. By
+scaling the outputs of The neural network, we could prevent these problems at
+the expense of introducing one hyperparameter, the y-range. To decide on the
+y-range for our Neural network, we used the log-transformed target variable's
+greatest lower and least upper integer bounds. Since the extreme values were
+0.095, and 5.521, so we chose 0 and 6 as our bounds. This layer scales the
+output vector from the Network elementwise according to the following rule.
+\(s(x) = \sigma(x) (hl) + l \), where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \)
+is the lower bound, and \( h \) is the upper bound. The outputs of this
+function are then used to calculate the loss, ensuring that initial predictions
+of the network are never unreasonably high, ultimately resulting in easier
+training and convergence.
 
-- Cite pretraining paper
-- Cite Embedding paper
-- Cite Learning Rate paper
+We used the mean squared error as a loss function, and before training the whole
+model, we "froze" the base model and trained our custom head only. After
+initial rounds of training the head only, we "unfroze" the pre-trained weights
+and trained the whole neural network. The Resnet model was optimized with Adam
+[cite:@kingma2017adam], and the learning rate schedule an initial learning rate
+was chosen as suggested in
+textcite:smith17_cyclic_learn_rates_train_neural_networ.
 
-** Explain the Multimodal model
-explained in [MULTIMODALPAPER]
-*** Different kinds of multimodals
-**** TODO A model that is very similary to the above multimodal model, however the connection
-between the two models is not many nodes, but only a single. Pretrained on the regression task
-**** TODO A model with 1 CNN and 1 NN
-**** TODO A model with 1 CNN and 1 LN I think this should be the model
-** Baseline models
-Give reasons for why we chose those models ( e.g. other papers used those models )
-*** Multiple Linear Regression
-*** Random Forest
-*** Neural Network
-** Practical Adjustments that had to be made
-*** Explain how we crop our pictures
-In order to efficiently process images on the GPU, all images have to have the
-same dimensions. However the images in the dataset colected had different
-dimensions, so the images have to be cropped. We cropped all images to 224x224
-pixels. The choice for this size seemed to be a good fit since most images in
-our dataset are between 200-400 pixels in both, height and length. Other than
-for this reason, however, the size was picked mostly out of convention. The
-images were cropped lazily before feeding them into our model, so we were able
-to try different approaches to cropping the image. We found that the third
-approach described below worked best for our dataset.
+** Hedonic Price estimation
+The hedonic price estimation was performed via a multiple linear regression
+model using all variables collected. We log-transform the target variable of
+apartment rent. While preliminary tests of the multiple regression model only
+showed a slight improvement in $R^{2}$, and the coefficients, the NN's
+predictions improved significantly. We created dummy matrices for each of our
+categorical variables, ending up with 724 columns, including the intercept and
+continuous columns. The "station" variable's cardinality of 684 Moreover, the
+"style" variable's cardinality of 31 caused this significant increase in
+dimension. Furthermore, we added a squared term for the "Time to station."
+variable to the design matrix. We estimated three different models, one using
+all variables, without the rent prediction of the Neural Network, one using all
+variables with the rent prediction of the neural network, using only the neural
+network and an intercept.
 
-1. Cropping out just the middle part of the image and padding with black if the
-   images height or size was smaller than the 224 pixels. One drawback with this
-   method is that if we were to crop out an important part of the image, there
-   would be no information for the model to refer to. Furthermore, the padded parts
-   are wasted computations.
-2. Distorting the image so that fits into the 224 pixels by "squashing" it into
-   the 224x224 pixels. With this approach it is possible to retain all parts of the
-   image, so that no important parts are left out, however, when resizing like this,
-   the amount of "squishing" done for each image varies, so the model has to learn
-   to deal with different amounts of distortion.
-3. Cropping out not the middle part of the image, but a random part of the
-   image. This problem entails with it the same problem as approach 1, however
-   by cropping a random part, rather than just the center, we have more possibility of training the neural network, since even if we use the same image twice, there is a
-   high probability that the images are cropped differently. This is a technique that
-   is often used as a means of data augmentation as well.
-We had the best results for training the "Vision" part of our Neural network,
-when using the third approach, and results reported in this paper were done with
-"Random Crop" strategy.
-
-Figure 1. shows how different techniques influence the different cropping methods.
-
-#+HEIGHT: 500
-#+CAPTION: This figure showcases the properties of each kind of resize as outlined in the paper. The first row shows some 9 floor plans where the data has been Resized with the "squish" method. The second row shows the same picture with the crop-and-pad method, and the third row shows the first apartment of the other two rows, randomly cropped to different sizes. The black parts of the second and third rows are the padded parts.
-[[file:./assets/resizes.jpg]]
-
-*** Explain what other tricks we used
-*** Hyperparameters (Like the learning rate)
-*** Explain the embeddings I will use for the Neural Network
-For the Neural Network part of the architecture we made use of Categorical Embedding layers
-We used the
-
-*** Exactly explain how the model is trained
- - Learning rate adjustment
- - Pretrained resnet 50
- - For the categorical ensemble thing, that first the network is trained,
-   then weights are frozen, and that only the new head of the resnet50 is trained at first, for a few epochs,
-   and at the end we train both models
- - Same for the output
-
-* Statistical Methods
 * Results
-** Results of baseline models
-ベースラインのモデルはこんな感じになっています。
-最初の重回帰分析以外は独立変数は家賃のlog になります。
-
-*** Linear Regression
-#+CAPTION:  This is is the result of a log linear regression regression performed with only the continuous variables on the log of the apartment rent: N=141394, Corr=0.86 $R^{2}=0.74$ mse=17.65
-[[./assets/Linear Regression.jpg]]
-#+Caption: This is is the result of a log linear regression regression performed with only the continuous variables on the log of the apartment rent N=141394, Corr=0.86 $R^{2}=0.74$ mse=0.05
-[[./assets/Linear Regression log.jpg]]
-
-#+Caption: THis is the result of linear regression all previous variables + apt_style Corr=0.877        N=141394 $R^{2} = 0.77$ mse=0.04
-[[./assets/style and log_rent.jpg]]
-
-#+Caption: This ist the result of a linear regression performed on all variables mse=0.03
-[[./assets/Station, Style, log rent.jpg]]
-*** Random Forest
-These are the results for random forest
-[[./assets/rf.jpg]]
-
-** Results for vision model
-(Is the prediction column statistically significant?)
-
-#+CAPTION:一旦学習してみたところ このような0.05ぐらいの精度でした。 平均だけを予測すれば0.17 になりますので平均よりはいいです。ギリギリ普通の線形回帰と同じような精度になっています。
-[[./assets/viz_learner.jpg]]
-
-
-** Results Regular NN
-#+CAPTION:TabularDataを全結合層の input->100->10->10->1のニューラルネットで一旦学習してみたらこうなりました。
-[[./assets/tab_learner.jpg]]
-
-
-** Results Multimodal
-
-#+CAPTION: まだ途中ですがオプト様とのプロジェクトと同じような作りを使って学習しているところです。 途中結果はこんな感じです。
-[[./assets/multimodal.jpg]]
-
-** まだVision のモデルの予測を使って線形回帰を行うことはできていません
+Table [[tab:regression]] shows the results for three models described in [[Hedonic
+Price estimation]]. The first column shows the estimated coefficients and standard
+errors, without the predictions obtained from the neural network (hereafter
+referred to as NN Factor), the second shows the estimated coefficients with the
+predictions and the last shows the values for a Linear Regression model with
+intercept and the predictions of the neural network only. We included all
+categorical variables in both of the first two regressions, but did not include
+their coefficients in the table due to their high cardinality.
+#+NAME: tab:regression
+#+LABEL: tab:regression
+#+ATTR_LATEX: :label tab:regression :name tab:regression
+#+INCLUDE: "assets/table2.tex" export latex
+We observe a considerable increase in the model's predictive power using
+the NN's predictions over the one that does not include the NN's predictions.
+The \( R^{2} \) value moves from 0.915, to 0.945, and the Residual Std. Error is
+reduced from 0.127 to 0.101, a reduction in error of \( \approx 20\% \). The
+signs of the coefficients in the models are as one would expect them to be and
+do not change with the inclusion of the Neural network prediction. However, the
+magnitude of the coefficients moved toward 0 in every case. Furthermore, the
+previously non-significant factor of "Admin fee" became significant after the
+inclusion of the new feature. A similar pattern holds for the variables included
+in the regression but not in this table. Most of these coefficients moved toward
+0, neither changing sign nor significance.
 
 * Discussion
-Some of our results are hard to interpret, e.g. multimodal learning is worse than the ensembling method. (probably) Why?
-** Problems of very high dimensionality due to many many categories in the categorical variables.
+Our discussion section consists of two parts. The first part discusses the
+predictions of the models, the shortcomings of the models, and some potential
+remedies. The second part discusses the overall results of our papers in a general
+sense. In the paper, more examples for the model's predictions are given, however,
+for the sake of brevity, we only show a single example in the summary.
+
+For this example we will look at the greatest upward movements due to the predictions of the
+neural network.
+#+LABEL: fig:upward
+#+NAME: fig:upward
+#+ATTR_LATEX: :height 4cm :label fig:upward :name fig:upward
+#+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the Neural Network's prediction.
+[[./assets/underpreds.png]]
+
+The first floorplan in figure [[fig:upward]] is a floorplan for only a single room
+depicted on the floor plan. The original listing was for a shared flat, and the
+floorplan depicts all private rooms, as well as the public rooms everyone living
+their may use. For this realestate property, the prediction of the model without
+the NN's prediction is much more accurate than the other two. This is because
+the Neural Network overestimated the rent by a lot. The reason for the NN's
+overestimation might be that the neural network was considering the floorplan as
+a whole, while the actual apartment available for rent is only a single room. A
+similar problem seems to have occurred with the third floorplan, which displays
+the apartment's floorplan and a balcony that everyone living in the building can
+use. The reasons for the high upward shift in the second and fourth floorplans
+are much harder to discern. The problem of the first and third images described
+above, is correctly handled in other images outlined in the main paper.
+
+We suppose that the reason for the effectiveness of the Neural network is twofold:
+1. By using the floorplans, the Neural Network had access to information that
+   influences rent and residential satisfaction (as described in
+   textcite:choi2003) of a particular real estate. Thus it can find features that
+   influence rent that are not available in the tabular dataset, and leverage
+   these for its prediction.
+2. The increase in explanatory power seems extraordinarily high because of our
+   relatively simple dataset. While we had a sizable amount of apartments and
+   floorplans, we had much fewer explanatory variables than other studies on
+   hedonic pricing. Furthermore, we only had apartments from the Tokyo
+   Metropolitan area.
+To further expand on the second point, most studies we reviewed made use of many
+more explanatory variables, especially about structural features of the
+apartments. We presume that by using those, the regression models' predictive
+power would increase, and that of the NN would decrease when used in combination
+with the new features. However, under any circumstances where it might be easier
+to obtain floorplans of apartments rather than the tabular data of the
+categorical features, an approach utilizing computer vision might be worth
+considering. So our method could be used by entities who do not have the
+resources to gather a dataset of tabular features but could obtain the
+floorplans.
+
+This study was exploratory only, and further investigation might include how this
+method fares with floorplans in different markets. The current dataset only
+includes a limited area of rental apartments in and around Tokyo. This, however,
+means that the rent prices we encountered did not deviate as much as they would
+when considering more markets. We can easily imagine that bigger discrepancies
+in rent amount due to location only could disturb our model. The same problem,
+less pronounced, is present in the current dataset already because apartments
+with mostly the same layout in different locations will have different prices.
+One potential remedy for this problem could be training the model on the
+residuals of a multiple linear regression controlling for location. Doing this,
+it might be possible to reduce some of the effects of location on rent.
+
+Another problem with Neural networks, in general, is that they are hard to
+interpret. This also applies to the current study. We have trouble explaining
+why the model is making some of its predictions. textcite:NIPS2017_7062, for
+example, provide an approach for general model interpretation, which sometimes
+is also applied to computer vision. Analyzing the current model using the
+technique outlined there might give us more insight into its internals and observe
+its focus when making predictions. This, in turn, might lead to insights into consumer
+behavior.
+
 * Conclusion
-** Conclude whether using these models might make sense or not
-Some of our
-** Further possible investigations
-Some possible talking points:
- - If the results are good, would looking at a bigger market be interesting
- - If we had a more representative sample, could we use some of the results to make some
-   interesting conclusions
- - It would be interesting to analyze the outputs using methods as described in for example with shap or eli5, to see
-   why it doesn't work if it doesn't or what it focuses on for certain predictions, if it does.
- - How does everything look for the multimodal approach, does it make sense or not?
-And ways to improve the model
+We used real estate data collected from a publicly available website to train a
+residual-based convolutional neural network to predict rent prices based
+solely on that properties' floorplan. We proposed some tweaks to enhance the
+original model to allow for quicker training and convergence in the case of
+real-estate prediction. We showed that it is possible to effectively leverage
+floorplan image information to improve the prediction of rent prices and that these
+predictions can enhance other more traditional models' predictive power. We only
+had limited access to detailed information at the apartment level and thus could not test the effectiveness of floorplan image analysis against models
+making use of a wider variety of tabular data. We suspect that using floorplan
+data could be an option for entities trying to estimate rent prices without the
+need for interviewing participants or employing other costly means of gaining
+apartment-level information. Our results seem to be in line with existing
+literature on the topic of real-estate price composition. Furthermore, we believe
+that this paper shows initial evidence that using computer vision for rent
+prediction in low data-availability situations can be practical.
 
 \printbibliography
