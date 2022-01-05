@@ -11,8 +11,8 @@
 #+LATEX_HEADER: \usepackage{graphics}
 #+LATEX_HEADER: \usepackage{rotating}
 #+LATEX_HEADER: \usepackage[doublespacing]{setspace}
-#+LATEX_CLASS_OPTIONS: [12pt,titlepage]
-#+OPTIONS: toc:2 H:4
+#+LATEX_CLASS_OPTIONS: [11pt,titlepage]
+#+OPTIONS: toc:nil H:4
 
 
 #+begin_abstract
