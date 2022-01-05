@@ -1,4 +1,4 @@
-#+title: Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
+#+title: [COMPLETE PAPER] Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
 #+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
 #+AUTHOR: Jiyan Jonas Schneider
 #+DATE: 2021-12-20
@@ -577,7 +577,7 @@ predictions of the neural network.
 #+LABEL: fig:upward
 #+NAME: fig:upward
 #+ATTR_LATEX: :height 4cm :label fig:upward :name fig:upward
-#+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the Neural Network input.
+#+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the Neural Network's prediction.
 [[./assets/underpreds.png]]
 
 The first floorplan in figure [[fig:upward]] was posted for a room available in a
@@ -610,10 +610,11 @@ To further expand on the second point, most studies we reviewed made use of many
 more explanatory variables, especially about structural features of the
 apartments. We presume that by using those, the regression models' predictive
 power would increase, and that of the NN would decrease when used in combination
-with the new features. However, under any circumstances where it might be easier to
+with the new features. However, under circumstances where it might be easier to
 obtain floorplans of apartments rather than the tabular data of the categorical
-features, so our method could be used by entities who do not have the resources
-to gather a dataset of tabular features but could obtain the floorplans.
+features an approach utilizing computer vision might be worth considering. And
+our method could be used by entities who do not have the resources to gather a
+dataset of tabular features but could obtain the floorplans.
 
 This study was exploratory only, and further investigation might include how this
 method fares with floorplans in different markets. The current dataset only
