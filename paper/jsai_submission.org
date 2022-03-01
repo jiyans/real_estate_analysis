@@ -1,16 +1,15 @@
 # -*- org-latex-pdf-process: ("latexmk -shell-escape -f -latex=platex %f && dvips jsai_submission.dvi && ps2pdf jsai_submission.ps"); -*-
-#+TITLE: JSAI submission
-#+SUBTITLE: WIP An evaluation of an incorporation of deep learning methods for prediction real estate prices
-#+AUTHOR: Jiyan Jonas Schneider, Takahiro Hoshino
+#+TITLE: Incremental informational value of floorplans for rent price prediction
+#+SUBTITLE: Applications of modern computer vision techniques in real-estate
 #+EMAIL:     jiyan.schneider@keio.jp
 #+DATE:      2021-12-20
 #+BIBLIOGRAPHY: ~/Dropbox/Documents/lib/bibliography/bibliography.bib
 #+LATEX_CLASS: jarticle
-#+AFFILIATE: Keio University
-#+latex_class_options: [twocolumn,jsaiac]
-#+LATEX_HEADER: \usepackage[a4paper]{geometry}
-#+OPTIONS: toc:nil email:nil
-
+#+latex_class_options: [twocolumn]
+#+OPTIONS: toc:nil email:nil author:nil title:nil
+#+LATEX_HEADER: \usepackage{jsaiac}
+#+LATEX_HEADER: \author{\ename{Jiyan Jonas Schneider\first} \and \ename{Takahiro Hoshino\first}}
+#+LATEX_HEADER: \affiliate{\ename{\first{}Keio University}}
 #+begin_abstract
 This study strives to examine whether consideration of floorplan images of
 real-estate apartments could be effective for improving real-estate rental price
@@ -26,6 +25,8 @@ investigation, including more explanatory variables about the apartment itself,
 could be used in future research to examine the price structure of real
 estate further and better understand consumer behavior.
 #+end_abstract
+
+\maketitle
 
 * Introduction
 In our paper, we look into the problem of real estate rental price estimation,
