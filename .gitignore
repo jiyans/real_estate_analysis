@@ -13,3 +13,7 @@
 *.pdf
 *.tex
 /paper/.auctex-auto/
+/preprocessing/__pycache__/
+/analysis/python/__pycache__/
+/paper/jsai_submission.dvi
+/paper/jsai_submission.ps

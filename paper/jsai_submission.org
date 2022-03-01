@@ -1,0 +1,190 @@
+# -*- org-latex-pdf-process: ("latexmk -shell-escape -f -latex=platex %f && dvips jsai_submission.dvi && ps2pdf jsai_submission.ps"); -*-
+#+TITLE: JSAI submission
+#+SUBTITLE: WIP An evaluation of an incorporation of deep learning methods for prediction real estate prices
+#+AUTHOR: Jiyan Jonas Schneider, Takahiro Hoshino
+#+EMAIL:     jiyan.schneider@keio.jp
+#+DATE:      2021-12-20
+#+BIBLIOGRAPHY: ~/Dropbox/Documents/lib/bibliography/bibliography.bib
+#+LATEX_CLASS: jarticle
+#+AFFILIATE: Keio University
+#+latex_class_options: [twocolumn,jsaiac]
+#+LATEX_HEADER: \usepackage[a4paper]{geometry}
+#+OPTIONS: toc:nil email:nil
+
+#+begin_abstract
+The aim of this research is to examine the viability of using Deep Learning
+methods and in the real-estate markets. Although there have been quite a few
+studies investigating the use of Machine Learning methods for this kind of task.
+The novelty in our study primarily lies in the use of Deep Learning methods for
+computer vision to analyze the images of the floor plans to assist with
+prediction and our analysis of the way the neural network is able to use the
+floor plans for prediction. There have been have been quite a few papers about
+the use of Machine Learning methods for real estate price predictions, however,
+most of them focus only on the structured data available. In this paper we want
+make use of the actual floor plan, Some recent examples include,
+[cite:@park2015using] and [cite:@sangha21_proper_norweg] , for the German
+housing market and autocite:sangha21_proper_norweg for the Norwegian housing
+market. In order to compare our results to other results, we also reconstruct
+some models often used in the literature as baseline models.
+
+#+end_abstract
+
+* Introduction
+Real estate prices have to be estimated for different purposes (real estate
+appraisal for evalation of net worth, but also for other national surveys.
+Furthermore imputed real estate prices are used in the output of homeowners.
+Here the price of the rent is estimated from the price of the house and other
+values.)
+
+Because real estate product of a ), and the structure of real estate prices is a
+long standing problem. Since [cite:@rosen_1974_hedonic] real estate prices are
+often considered to be of hedonic nature, meaning that the price of a certain
+property would consists of it attributes associated with the property. The most
+tangible example would be, that it is easy to imagine that the rent of an
+apartment is a function of its size. While real estate prices are often
+considered to be hedonic the factors that make up the prices are still being
+researched.
+
+In particular we will try to answer the following 2 main questions
+
+ 1. Does having information about the room layout, help with the prediction? To
+    do this we will construct a model similar to what is described in
+    [cite:@he15:deep_resid_learn_image_recog] to predict monthly rent prices.
+    Afterwards we will use these predictions with other predictors regularly
+    used in real estate market models.
+ 2. If there is an effect of considering the room layout, how do we build the
+    model that is most efficient for prediction? If there is a positive effect
+    of making use of the image data, how do we best incorporate it into our
+    models. In particular, we plan to consider the following 3 kinds of models.
+    1. Using the output of the image model for use in a linear model with the
+       rest of the data.
+    2. Use the output of the image model together with a Neural Network trained
+       on the tabular information and
+    3. We could use a multimodal approach, where we output multiple latent
+       states from each of our submodels, fuse these latent, and use a "head"
+       model to fuse our latent states as described in.
+* Data
+The dataset used is a mix of tabular and image data of real estate properties
+from the Tokyo Metropolitan area, listed on a public website. The data was
+collected for the purpose of writing this paper. The Tokyo Metropolitan area
+includes parts of Yokohama, Saitama and Chiba as well. Since our dataset is not
+a random sample, our anlaysis can not be considered as an analysis of the Tokyo
+realestate market as a whole. Rather it serves as a way for us to outline how to
+use of the methods described in this paper might influence more traditional
+approaches. However, the results from this paper should not be used for
+interpretations on the Tokyo real estate market as a whole.
+
+Two potential sources of bias in the dataset are that we are only considering
+properties that were available for rent at the time of data collection, and that
+we rely on data from only single website, and are not making use of other
+sources. However, these biases are not expected to have an impact on our
+results, in this paper we are more concerned with the efficacy of the different
+measures, rather than making statements about the Tokyo Real-estate market. Our
+dataset consists of 141394 observations. For each of these observations we had
+available 6 continuous explanatory variables and and 3 categorical explanatory
+variables. Our independent variable is the monthly rent price for each
+observation in units of 10000¥.
+
+** 2 main models
+Even though the data consist of Integers only, we will choose the rent price to be
+
+- Cite pretraining paper
+- Cite Embedding paper
+- Cite Learning Rate paper
+
+** Baseline models
+Give reasons for why we chose those models ( e.g. other papers used those models )
+*** Multiple Linear Regression
+*** Random Forest
+*** Neural Network
+** Practical Adjustments that had to be made
+*** Explain how we crop our pictures
+In order to efficiently process images on the GPU, all images have to have the
+same dimensions. However the images in the dataset colected had different
+dimensions, so the images have to be cropped. We cropped all images to 224x224
+pixels. The choice for this size seemed to be a good fit since most images in
+our dataset are between 200-400 pixels in both, height and length. Other than
+for this reason, however, the size was picked mostly out of convention. The
+images were cropped lazily before feeding them into our model, so we were able
+to try different approaches to cropping the image. We found that the third
+approach described below worked best for our dataset.
+
+1. Cropping out just the middle part of the image and padding with black if the
+   images height or size was smaller than the 224 pixels. One drawback with this
+   method is that if we were to crop out an important part of the image, there
+   would be no information for the model to refer to. Furthermore, the padded parts
+   are wasted computations.
+2. Distorting the image so that fits into the 224 pixels by "squashing" it into
+   the 224x224 pixels. With this approach it is possible to retain all parts of the
+   image, so that no important parts are left out, however, when resizing like this,
+   the amount of "squishing" done for each image varies, so the model has to learn
+   to deal with different amounts of distortion.
+3. Cropping out not the middle part of the image, but a random part of the
+   image. This problem entails with it the same problem as approach 1, however
+   by cropping a random part, rather than just the center, we have more possibility of training the neural network, since even if we use the same image twice, there is a
+   high probability that the images are cropped differently. This is a technique that
+   is often used as a means of data augmentation as well.
+We had the best results for training the "Vision" part of our Neural network,
+when using the third approach, and results reported in this paper were done with
+"Random Crop" strategy.
+
+Figure 1. shows how different techniques influence the different cropping methods.
+
+*** Explain what other tricks we used
+*** Hyperparameters (Like the learning rate)
+*** Explain the embeddings I will use for the Neural Network
+For the Neural Network part of the architecture we made use of Categorical Embedding layers
+We used the
+
+*** Exactly explain how the model is trained
+ - Learning rate adjustment
+ - Pretrained resnet 50
+ - For the categorical ensemble thing, that first the network is trained,
+   then weights are frozen, and that only the new head of the resnet50 is trained at first, for a few epochs,
+   and at the end we train both models
+ - Same for the output
+
+* Statistical Methods
+* Results
+** Results of baseline models
+ベースラインのモデルはこんな感じになっています。
+最初の重回帰分析以外は独立変数は家賃のlog になります。
+
+*** Linear Regression
+#+CAPTION:  This is is the result of a log linear regression regression performed with only the continuous variables on the log of the apartment rent: N=141394, Corr=0.86 $R^{2}=0.74$ mse=17.65
+#+Caption: This is is the result of a log linear regression regression performed with only the continuous variables on the log of the apartment rent N=141394, Corr=0.86 $R^{2}=0.74$ mse=0.05
+
+#+Caption: THis is the result of linear regression all previous variables + apt_style Corr=0.877        N=141394 $R^{2} = 0.77$ mse=0.04
+
+#+Caption: This ist the result of a linear regression performed on all variables mse=0.03
+*** Random Forest
+These are the results for random forest
+
+** Results for vision model
+(Is the prediction column statistically significant?)
+
+#+CAPTION:一旦学習してみたところ このような0.05ぐらいの精度でした。 平均だけを予測すれば0.17 になりますので平均よりはいいです。ギリギリ普通の線形回帰と同じような精度になっています。
+
+** Results Regular NN
+#+CAPTION:TabularDataを全結合層の input->100->10->10->1のニューラルネットで一旦学習してみたらこうなりました。
+
+** Results Multimodal
+
+#+CAPTION: まだ途中ですがオプト様とのプロジェクトと同じような作りを使って学習しているところです。 途中結果はこんな感じです。
+* Discussion
+Some of our results are hard to interpret, e.g. multimodal learning is worse than the ensembling method. (probably) Why?
+** Problems of very high dimensionality due to many many categories in the categorical variables.
+* Conclusion
+** Conclude whether using these models might make sense or not
+Some of our
+** Further possible investigations
+Some possible talking points:
+ - If the results are good, would looking at a bigger market be interesting
+ - If we had a more representative sample, could we use some of the results to make some
+   interesting conclusions
+ - It would be interesting to analyze the outputs using methods as described in for example with shap or eli5, to see
+   why it doesn't work if it doesn't or what it focuses on for certain predictions, if it does.
+ - How does everything look for the multimodal approach, does it make sense or not?
+And ways to improve the model
+
+\printbibliography
