@@ -84,28 +84,6 @@ problem of considering multiple markets and focus on the viability of these
 computer vision methods first. For each listing, we have the monthly rent of the
 apartment, the image of the floorplan of the apartment, 6 continuous and 3
 categorical variables. The details for the tabular variables are described in
-Table [[tab:var_explanation]].
-#+LABEL: tab:var_explanation
-#+NAME: tab:var_explanation
-#+CAPTION: Explanation of the variables collected and used in this study.
-#+ATTR_LATEX: :name tab:var_explanation :label tab:var_explanation
-|------------------------+-----------------------------------------------------------------|
-| Variable               | Explanation                                                     |
-|------------------------+-----------------------------------------------------------------|
-|------------------------+-----------------------------------------------------------------|
-| Apt. Floor             | The floor the property is on property                           |
-| Size in \( m^2 \)      | Size of property in $m^2$                                       |
-| Time to station        | No. minutes of taking "method" to the next station              |
-| Age bldg.              | No. of years ago the property was built                         |
-| No Floors bldg         | No of floors of the building                                    |
-| Admin fee \(10,000 ¥\) | Amount of monthly administration fee                            |
-|------------------------+-----------------------------------------------------------------|
-| Station                | Name of the closest public transport station                    |
-| Method                 | How "Time to station" is measured (foot, bus, or car)           |
-| Style                  | Description of the layout type of the apartment (1K, 1LDK,... ) |
-|------------------------+-----------------------------------------------------------------|
-| apt_rent               | Rent per month of the listing. In units of 10000 Yen            |
-|------------------------+-----------------------------------------------------------------|
 
 ** Neural Network architecture
 For the construction of the Neural Network, we relied on the software libraries
