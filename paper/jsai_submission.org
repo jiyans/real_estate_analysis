@@ -1,8 +1,8 @@
 # -*- org-latex-pdf-process: ("latexmk -shell-escape -pdfdvi -synctex=1 -latex=platex %f "); -*-
-#+TITLE: Incremental informational value of floorplans for rent price prediction
+#+TITLE: WIP Incremental informational value of floorplans for rent price prediction
 #+SUBTITLE: Applications of modern computer vision techniques in real-estate
 #+EMAIL:     jiyan.schneider@keio.jp
-#+DATE:      2021-12-20
+#+DATE:      2022-02-28
 #+BIBLIOGRAPHY: ~/Dropbox/Documents/lib/bibliography/bibliography.bib
 #+LATEX_CLASS: jarticle
 #+latex_class_options: [twocolumn]
@@ -114,29 +114,31 @@ was chosen as suggested in
 ** Hedonic Price estimation
 The hedonic price estimation was performed via a multiple linear regression
 model using all variables collected. We log-transform the target variable of
-apartment rent. While preliminary tests of the multiple regression model only
-showed a slight improvement in $R^{2}$, the NN's predictions improved
-significantly. We created dummy matrices for each of our categorical variables,
+apartment rent. We created dummy matrices for each of our categorical variables,
 ending up with 724 columns, including the intercept and continuous columns. The
 "station" variable's cardinality of 684 and the "Style" variable's cardinality
 of 31 caused this significant increase in dimension. Furthermore, we added a
-squared term for the "Time to station." variable to the design matrix. We
-estimated three different models, one using all variables, without the rent
+squared term for the "Time to station" variable to the design matrix.
+
+
+* WIP Results
+We estimated three different models, one using all variables, without the rent
 prediction of the Neural Network, one using all variables with the rent
 prediction of the neural network, using only the neural network and an
 intercept.
 
-* Discussion
+* WIP Discussion
+
 Our discussion section consists of two parts. The first part discusses the
 predictions of the models, the shortcomings of the models, and some potential
 remedies. The second part discusses the overall results of our paper in a general
 sense. In the paper, more examples for the model's predictions are given, however,
 for the sake of brevity, we only show a single example in this summary.
 
-For this example we will look at the greatest upward movements due to the predictions of the
-neural network.
+For this example we will look at the greatest upward movements due to the
+predictions of the neural network.
 
-it depicts all private rooms, as well as the public rooms everyone living there
+It depicts all private rooms, as well as the public rooms everyone living there
 may use. For this realestate property, the prediction of the first model much
 more accurate than the other two. This is because the neural network
 overestimated the rent by a lot. The reason for the NN's overestimation might be
