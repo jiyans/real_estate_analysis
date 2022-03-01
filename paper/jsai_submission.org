@@ -39,7 +39,7 @@ and the structure of real-estate prices in the future.
 
 The underlying hypothesis of the research paper is that the floorplans contain
 characteristics that are valuable to consumers, but are neglected
-with traditional methods. Furthemore, we hypothesize that some of these factors
+with traditional methods. Furthermore, we hypothesize that some of these factors
 could be leveraged with deep learning. In the long run, we hope to advance
 insight into the price structure of real estate and consumer behavior
 surrounding real estate using such methods.
