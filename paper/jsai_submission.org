@@ -138,31 +138,6 @@ prediction of the Neural Network, one using all variables with the rent
 prediction of the neural network, using only the neural network and an
 intercept.
 
-* Results
-Table [[tab:regression]] shows the results for three models described in [[Hedonic
-Price estimation]]. The first column shows the estimated coefficients and standard
-errors, without the predictions obtained from the neural network (hereafter
-referred to as NN Factor), the second shows the estimated coefficients with the
-predictions and the last shows the values for a Linear Regression model with
-intercept and the predictions of the neural network only. We included all
-categorical variables in both of the first two regressions, but did not include
-their coefficients in the table due to their high cardinality.
-#+NAME: tab:regression
-#+LABEL: tab:regression
-#+ATTR_LATEX: :label tab:regression :name tab:regression
-#+INCLUDE: "assets/table2.tex" export latex
-We observe a considerable increase in the model's predictive power using the
-NN's predictions over the one that does not include the NN's predictions. The \(
-R^{2} \) value moves from 0.915, to 0.945, and the residual standard error is
-reduced from 0.127 to 0.101, a reduction in error of \( \approx 20\% \). The
-signs of the coefficients in the models are as one would expect and do not
-change with the inclusion of the Neural network prediction. The magnitude of the
-coefficients moved toward 0 in every case. Moreover, the previously
-non-significant factor of "Admin fee" became significant after the inclusion of
-the new feature. A similar pattern holds for the variables not included in the
-table. Most of these coefficients moved toward 0, neither changing sign nor
-significance.
-
 * Discussion
 Our discussion section consists of two parts. The first part discusses the
 predictions of the models, the shortcomings of the models, and some potential
