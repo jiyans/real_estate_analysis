@@ -325,7 +325,7 @@ y-range for our NN, we used the log-transformed target variable's
 greatest lower and least upper integer bounds. Since the extreme values were
 0.095, and 5.521, so we chose 0 and 6 as our bounds. This layer scales the
 output vector from the Network elementwise according to the following rule.
-\(s(x) = \sigma(x) (hl) + l \), where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \)
+\(s(x) = \sigma(x) (h - l) + l \), where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \)
 is the lower bound, and \( h \) is the upper bound. The outputs of this
 function are then used to calculate the loss, ensuring that initial predictions
 of the network are never unreasonably high, ultimately resulting in easier
