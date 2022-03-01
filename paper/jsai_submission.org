@@ -1,4 +1,4 @@
-# -*- org-latex-pdf-process: ("latexmk -shell-escape -f -latex=platex %f && dvips jsai_submission.dvi && ps2pdf jsai_submission.ps"); -*-
+# -*- org-latex-pdf-process: ("latexmk -shell-escape -pdfdvi -synctex=1 -latex=platex %f "); -*-
 #+TITLE: Incremental informational value of floorplans for rent price prediction
 #+SUBTITLE: Applications of modern computer vision techniques in real-estate
 #+EMAIL:     jiyan.schneider@keio.jp
