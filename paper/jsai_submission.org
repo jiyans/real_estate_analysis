@@ -147,13 +147,7 @@ for the sake of brevity, we only show a single example in this summary.
 
 For this example we will look at the greatest upward movements due to the predictions of the
 neural network.
-#+LABEL: fig:upward
-#+NAME: fig:upward
-#+ATTR_LATEX: :height 4cm :label fig:upward :name fig:upward
-#+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the Neural Network's prediction.
-[[./assets/underpreds.png]]
 
-The first floorplan in figure [[fig:upward]] is a floorplan for a shared flat, and
 it depicts all private rooms, as well as the public rooms everyone living there
 may use. For this realestate property, the prediction of the first model much
 more accurate than the other two. This is because the neural network
