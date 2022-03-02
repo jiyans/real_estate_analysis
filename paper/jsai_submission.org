@@ -46,13 +46,12 @@ the NN's prediction with a traditional hedonic regression model and analyzed the
 effects of including the NN's predictions.
 
 Doing this, we find that the neural network can explain a considerable
-proportion of the rent price of many real-estate properties and considerably
-improve the explanatory power of the hedonic regression model.
-
-One of the main reasons that the floorplans might contain previously
-untapped potential is that studies in real-estate economics tend to find that
-so-called "structural" features have more significance in the consumers' eyes
-than so-called "environmental" ones. [cite:@choi2003;@akiyama_yuki2019320204]
+proportion of the rent price of many real-estate properties and improve the
+explanatory power of the hedonic regression model. One of the main reasons that
+the floorplans might contain previously untapped potential is that studies in
+real-estate economics tend to find that so-called "structural" features have
+more significance in the consumers' eyes than so-called "environmental" ones.
+[cite:@choi2003;@akiyama_yuki2019320204]
 
 * Methodology
 ** Data
@@ -72,39 +71,31 @@ For the construction of the Neural Network, we relied on the software libraries
 ~fastai~ [cite:@howard20_fastai], ~pytorch~ and ~torchvision~. (Pytorch and
 torchvision both by the PyTorch team [cite:@NEURIPS2019_9015]). We built on the
 ~resnet50~ implementation by [cite:@NEURIPS2019_9015] of the model outlined in
-[cite:@he15:deep_resid_learn_image_recog]. We initialized the model's weights
-to the pre-trained weights available in ~torchvision~. These weights are trained
+[cite:@he15:deep_resid_learn_image_recog]. We initialized the model's weights to
+the pre-trained weights available in ~torchvision~. These weights are trained
 using the "ImageNet" [cite:@imagenet2009] dataset.
 
 We replaced the last layers with a custom adaptation to better fit the
 regression task at hand. We used the same base model up until the first fully
-connected layer, after which we replaced all layers with a custom head.
-We found that when using a simple fully-connected network, the model would sometimes make exceedingly high
-predictions, which complicated the model training by abnormally increasing the
-loss, resulting in exploding gradients. Thus, we decided to modify the final
-layer to scale the Neural Network's output between a predetermined range. The
-last layers were scaled with a sigmoid function. By scaling the outputs of the
-neural network, we could prevent these problems at the expense of introducing
-one hyperparameter, they-range. To decide on the y-range for our neural
-network, we used the log-transformed target variable's greatest lower and least
-upper integer bounds. Since the extreme values were 0.095, and 5.521, we chose 0
-and 6 as our bounds. This layer scales the output vector from the Network
-elementwise according to the following rule. \(s(x) = \sigma(x) (hl) + l \),
-where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \) is the lower bound, and \( h
-\) is the upper bound. The outputs of this function are then used to calculate
-the loss, ensuring that initial predictions of the network are never
-unreasonably high, ultimately resulting in easier training and convergence.
+connected layer, after which we replaced all layers with a custom head. We found
+that when using a simple fully-connected network, the model would sometimes make
+exceedingly high predictions, complicating the model training by abnormally
+increasing the loss, resulting in exploding gradients. Thus, we decided to
+modify the final layer to scale its output between a predetermined range. To
+decide on this y-range, we used the log-transformed target variable's greatest
+lower and least upper integer bounds. Since the extreme values were 0.095, and
+5.521, we chose 0 and 6 as our bounds.
 
 We used the mean squared error as a loss function, and before training the whole
 model, we froze the base model and trained the custom head only. After initial
-rounds of training the head only, we "unfroze" the pre-trained weights and
+rounds of training the head only, we unfroze the pre-trained weights and
 trained the whole neural network. The model was optimized with Adam
 [cite:@kingma2017adam], and the learning rate schedule an initial learning rate
 was chosen as suggested in
 [cite:@smith17_cyclic_learn_rates_train_neural_networ].
 
 ** Hedonic Price Estimation
-The hedonic price estimation was performed via a multiple linear regression
+The hedonic price estimation was performed via a multiple linear regression (MLR hereafter)
 model using all variables collected. We log-transform the target variable of
 apartment rent. We created dummy matrices for each of our categorical variables,
 ending up with 724 columns, including the intercept and continuous columns. The
@@ -123,14 +114,14 @@ the buildings, not apartments, to avoid information leakage.
 #+LABEL: tab:regression
 #+CAPTION: \( R^2 \) and sample size for the three models obtained on different parts of the dataset.
 #+ATTR_LATEX: :label tab:regression :name tab:regression
-|------------------------+---------+---------+--------|
-|                        |   total |   train |   test |
-|------------------------+---------+---------+--------|
-| \( R^{2} \) Without NN |   0.915 |   0.915 |  0.914 |
-| \( R^{2} \) With NN    |   0.945 |   0.951 |  0.923 |
-| \( R^{2} \) Only NN    |   0.897 |   0.917 |  0.817 |
-| N                      | 141,394 | 113,116 | 28,278 |
-|------------------------+---------+---------+--------|
+|----------------------------+---------+---------+--------|
+|                            |   total |   train |   test |
+|----------------------------+---------+---------+--------|
+| \( R^{2} \) MLR Without NN |   0.915 |   0.915 |  0.914 |
+| \( R^{2} \) MLR With NN    |   0.945 |   0.951 |  0.923 |
+| \( R^{2} \) LR NN only     |   0.897 |   0.917 |  0.817 |
+| N                          | 141,394 | 113,116 | 28,278 |
+|----------------------------+---------+---------+--------|
 We observe a considerable increase in the model's predictive power using the
 NN's predictions over the one that does not include the NN's predictions. We can
 see that the \(R^{2} \) value improves after including the predictions from the
