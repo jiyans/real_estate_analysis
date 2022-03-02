@@ -127,7 +127,7 @@ NN's predictions over the one that does not include the NN's predictions. We can
 see that the \(R^{2} \) value improves after including the predictions from the
 NN, from 0.915 to 0.945, on the total dataset, and 0.914 to 0.923 on the
 test data set. The residual standard error on the total dataset was reduced from
-0.127 to 0.101, a reduction in error of \( approx 20\% \).
+0.127 to 0.101, a reduction in error of \( \approx 20\% \).
 
 * Discussion
 
