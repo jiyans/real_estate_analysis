@@ -1,4 +1,6 @@
-# -*- org-latex-pdf-process: ("latexmk -shell-escape -pdfdvi -synctex=1 -latex=platex %f "); -*-
+# -*- org-latex-pdf-process: ("latexmk -f -shell-escape -pdfdvi -synctex=1 -latex=platex %f "); -*-
+# -*- bibtex-dialect:  'bibtex; -*-
+# -*- LaTeX-biblatex-use-Biber : 'nil; -*-
 #+TITLE: Incremental informational value of floorplans for rent price prediction
 #+SUBTITLE: Applications of modern computer vision techniques in real-estate
 #+EMAIL:     jiyan.schneider@keio.jp
@@ -8,9 +10,9 @@
 #+OPTIONS: toc:nil email:nil author:nil title:nil H:4 num:nil
 #+LATEX_HEADER: \usepackage{jsaiac}
 #+LATEX_HEADER: \author{\ename{Jiyan Schneider\first \second} \and \ename{Takahiro Hoshino\first \second}}
-#+LATEX_HEADER: \usepackage[backend=biber, style=alphabetic]{biblatex}
 #+LATEX_HEADER: \address{Jiyan Schneider, Faculty of Economics, Keio University, 2-15-45, Mita, Minato City, Tokyo, 108-8345, jiyan.schneider@keio.jp}
 #+LATEX_HEADER: \affiliate{\ename{\first{}Graduate School of Economics, Keio University} \and \ename{\second{}AIP Center, RIKEN}}
+#+cite_export: bibtex jsai
 
 
 #+begin_src latex
@@ -22,8 +24,6 @@
 \def\JBibTeX{\leavevmode\lower .6ex\hbox{J}\kern-0.15em\BibTeX}
 \def\LaTeXe{\LaTeX\kern.15em2$_{\textstyle\varepsilon}$}
 #+end_src
-
-#+BIBLIOGRAPHY: ./local-bib.bib
 
 #+begin_abstract
 This report examines whether a consideration of floorplan images of real-estate
@@ -83,9 +83,9 @@ Figure [[fig:example]]  shows some floorplans and their corresponding targets. T
 is the log of the rent price in 10000 Yen units.
 #+LABEL: fig:example
 #+NAME: fig:example
-#+ATTR_LATEX: :label fig:upward :name fig:upward :width 8cm
+#+ATTR_LATEX: :label fig:upward :name fig:upward :height 3cm
 #+CAPTION: Some floorplans and their targets.
-[[./assets/rand_imgs.eps]]
+[[./assets/rand_imgs_tight.eps]]
 
 
 ** Neural Network Architecture
@@ -104,9 +104,7 @@ between a predetermined range, to avoid exploding gradients.
 We used the mean squared error as a loss function. Initially we trained the
 newly created layers exclusively, and afterwards we unfroze unfroze the
 pre-trained weights and trained the whole neural network. The model was
-optimized with Adam [cite:@kingma2017adam], and the learning rate schedule an
-initial learning rate was chosen as suggested in
-[cite:@smith17_cyclic_learn_rates_train_neural_networ].
+optimized with Adam [cite:@kingma2017adam].
 
 ** Hedonic Price Estimation
 The hedonic price estimation was performed via a multiple linear regression (MLR
@@ -172,4 +170,7 @@ data could be an option in situations where apartment-level tabular data is not
 available but floorplans are and that this paper shows initial evidence for the
 practicality of using computer vision in such situations.
 
-\printbibliography
+
+\bibliographystyle{jsai}
+\renewcommand{\refname}{References}
+\bibliography{local-bib}
