@@ -1,0 +1,43 @@
+\begin{table}[!htbp] 
+\caption{\label{tab:regression}Esimated coefficients (standard errors) for the variables in table \ref{tab:var_explanation}. 
+The categorical variables, "Style" and "Station", were excluded due to their high cardinality.%
+}
+ \centering
+\begin{tabular}{@{\extracolsep{5pt}}lccc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+& \multicolumn{3}{c}{\textit{Dependent variable: \( log(apt\_rent) \)}} \
+\cr \cline{3-4}
+\\[-1.8ex] & \multicolumn{1}{c}{1) Without NN} & \multicolumn{1}{c}{2) With NN} & \multicolumn{1}{c}{3) Only NN}  \\
+\hline \\[-1.8ex]
+ Intercept & 1.962$^{***}$ & 1.050$^{***}$ & 0.032$^{***}$ \\
+  & (0.011) & (0.009) & (0.002) \\
+ Size in \(m^2\) & 0.015$^{***}$ & 0.007$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ Age Bldg. & -0.008$^{***}$ & -0.005$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ No Floors Building  & 0.006$^{***}$ & 0.003$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ Apt. Floor & 0.006$^{***}$ & 0.004$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ Admin Fee & -0.000$^{}$ & -0.000$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ Time to Station & -0.003$^{***}$ & -0.002$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ Time to Station\(^2\) & -0.000$^{***}$ & -0.000$^{***}$ & \\
+  & (0.000) & (0.000) & \\
+ NN Factor & & 0.485$^{***}$ & 0.986$^{***}$ \\
+  & & (0.002) & (0.001) \\
+\hline \\[-1.8ex]
+ Degrees of Freedom & 722.0 & 723.0 & 1.0 \\
+ Observations & 141,394 & 141,394 & 141,394 \\
+ $R^2$ & 0.915 & 0.946 & 0.897 \\
+ Adjusted $R^2$ & 0.915 & 0.945 & 0.897 \\
+ Residual Std. Error & 0.127 & 0.101 & 0.139  \\
+ F Statistic & 2098.527$^{***}$  & 3383.452$^{***}$  & 1237891.037$^{***}$  \\
+\hline
+\hline \\[-1.8ex]
+\textit{Note:} & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+ & \multicolumn{3}{r}\textit{} \\
+\end{tabular}
+\end{table}
