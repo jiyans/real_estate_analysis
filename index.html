@@ -21,22 +21,22 @@
 <h1>Incremental informational value of floorplans for rent price prediction</h1><br><h2>Applications of modern computer vision techniques in real-estate</h2><br><h4>Jiyan Schneider* and Takahiro Hoshino*</h4><br>*Keio University, Graduate school of Economics <br> *RIKEN AIP
 </section>
 <section>
-<section id="slide-org208299e">
-<h2 id="org208299e">Welcome</h2>
+<section id="slide-orgd27a8f3">
+<h2 id="orgd27a8f3">Welcome</h2>
 <ul>
 <li><a href="https://jiyans.github.io/real_estate_analysis/">https://jiyans.github.io/real_estate_analysis/</a></li>
 
 </ul>
 
-<div id="org1d46755" class="figure">
+<div id="org81e5548" class="figure">
 <p><img src="./assets/pres_qr.jpg" alt="pres_qr.jpg" width="500px" />
 </p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org5743e60">
-<h2 id="org5743e60">Introduction</h2>
+<section id="slide-org59f4cb0">
+<h2 id="org59f4cb0">Introduction</h2>
 <aside class="notes">
 <ul>
 <li>Tax appraisers Property Appraisal
@@ -77,8 +77,8 @@ Further research into this topic might lead to further insights into the price s
 </p>
 
 </section>
-<section id="slide-org4c59bc8">
-<h4 id="org4c59bc8">Price structure of real estate</h4>
+<section id="slide-orgd5514f7">
+<h4 id="orgd5514f7">Price structure of real estate</h4>
 <aside class="notes">
 <ul>
 <li>Hedonic meaning that their price is determined by the properties that make it up</li>
@@ -153,8 +153,8 @@ Further research into this topic might lead to further insights into the price s
 
 </ul>
 </section>
-<section id="slide-org123cd28">
-<h4 id="org123cd28">Machine Learning in real estate</h4>
+<section id="slide-org1acf8b7">
+<h4 id="org1acf8b7">Machine Learning in real estate</h4>
 <aside class="notes">
 <ul>
 <li>(<a href="#citeproc_bib_item_3">Hattori, Okamoto, and Shibata 2019</a>) use PCA to extract feature vectors from floorplans
@@ -191,13 +191,13 @@ Hattori, Okamoto, and Shibata (<a href="#citeproc_bib_item_3">2019</a>)  use Pri
 </section>
 </section>
 <section>
-<section id="slide-org53bd748">
-<h2 id="org53bd748">Methodology</h2>
-<div class="outline-text-2" id="text-org53bd748">
+<section id="slide-org452f78b">
+<h2 id="org452f78b">Methodology</h2>
+<div class="outline-text-2" id="text-org452f78b">
 </div>
 </section>
-<section id="slide-org5bd721b">
-<h3 id="org5bd721b">Data</h3>
+<section id="slide-org943c5fc">
+<h3 id="org943c5fc">Data</h3>
 <ul>
 <li>Snapshot of tabular and image data of real estate properties</li>
 <li>140,000 observations, 3 categorical and 7 continuous features</li>
@@ -206,8 +206,8 @@ Hattori, Okamoto, and Shibata (<a href="#citeproc_bib_item_3">2019</a>)  use Pri
 
 </ul>
 </section>
-<section id="slide-org1b19b54">
-<h4 id="org1b19b54">Floorplan example</h4>
+<section id="slide-orgd1c348f">
+<h4 id="orgd1c348f">Floorplan example</h4>
 <aside class="notes">
 <p>
 log of the price in 10000 Yen units.
@@ -215,16 +215,16 @@ log of the price in 10000 Yen units.
 
 </aside>
 
-<div id="orga093884" class="figure">
+<div id="orga0fe125" class="figure">
 <p><img src="./assets/rand_imgs.png" alt="rand_imgs.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>An example of randomly chosen floorplans and the log of their rent prices. (rent price denoted in 10000 Yen units.)</p>
 </div>
 
 </section>
-<section id="slide-orgf5bb829">
-<h4 id="orgf5bb829">Tabular data</h4>
-<table id="org845de8c" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-org5ecaacb">
+<h4 id="org5ecaacb">Tabular data</h4>
+<table id="org3b0ab17" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
@@ -293,8 +293,8 @@ log of the price in 10000 Yen units.
 </table>
 
 </section>
-<section id="slide-org64bed53">
-<h3 id="org64bed53">Neural Network</h3>
+<section id="slide-orgfb50700">
+<h3 id="orgfb50700">Neural Network</h3>
 <aside class="notes">
 <ul>
 <li>scaling of the last layer is important for the model to converge</li>
@@ -316,8 +316,8 @@ log of the price in 10000 Yen units.
 
 </ul>
 </section>
-<section id="slide-org14a4506">
-<h4 id="org14a4506">Training</h4>
+<section id="slide-org8868f44">
+<h4 id="org8868f44">Training</h4>
 <ul>
 <li>When training the Neural network we split the data into a train and test set.</li>
 <li>The above splits were performed on the building level (as opposed to the apartment level)</li>
@@ -332,10 +332,10 @@ log of the price in 10000 Yen units.
 
 </ul>
 </section>
-<section id="slide-org6dbc24c">
-<h3 id="org6dbc24c">Augmentations</h3>
+<section id="slide-orgf0f619b">
+<h3 id="orgf0f619b">Augmentations</h3>
 
-<div id="org9f5d44e" class="figure">
+<div id="org4df8405" class="figure">
 <p><img src="./assets/resizes.jpg" alt="resizes.jpg" />
 </p>
 </div>
@@ -344,18 +344,18 @@ log of the price in 10000 Yen units.
 </section>
 </section>
 <section>
-<section id="slide-org2ade976">
-<h2 id="org2ade976">Results</h2>
-<div class="outline-text-2" id="text-org2ade976">
+<section id="slide-org574d9ac">
+<h2 id="org574d9ac">Results</h2>
+<div class="outline-text-2" id="text-org574d9ac">
 </div>
 </section>
-<section id="slide-org4073d8c">
-<h3 id="org4073d8c">Quantitative</h3>
-<div class="outline-text-3" id="text-org4073d8c">
+<section id="slide-org1152398">
+<h3 id="org1152398">Quantitative</h3>
+<div class="outline-text-3" id="text-org1152398">
 </div>
 </section>
-<section id="slide-org5f49cdb">
-<h4 id="org5f49cdb">Models</h4>
+<section id="slide-org3055d19">
+<h4 id="org3055d19">Models</h4>
 <aside class="notes">
 <ul>
 <li>NN Factor is is the output of the NN based on the floorplans seen.</li>
@@ -366,16 +366,16 @@ log of the price in 10000 Yen units.
 </aside>
 
 
-<div id="orgbda0717" class="figure">
+<div id="orgb26fddf" class="figure">
 <p><img src="./assets/model_table.jpg" alt="model_table.jpg" height="500px" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Regression table of the 3 estimated models (categorical features omitted).</p>
 </div>
 
 </section>
-<section id="slide-orgf1d01a4">
-<h4 id="orgf1d01a4">Performance</h4>
-<table id="org9826353" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-orge91fad7">
+<h4 id="orge91fad7">Performance</h4>
+<table id="org2193f6a" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> \( R^2 \) and sample size for the three models obtained on different parts of the dataset.</caption>
 
 <colgroup>
@@ -433,23 +433,23 @@ log of the price in 10000 Yen units.
 </ul>
 
 </section>
-<section id="slide-orgc6f67fb">
-<h3 id="orgc6f67fb">Qualitative</h3>
-<div class="outline-text-3" id="text-orgc6f67fb">
+<section id="slide-org4770306">
+<h3 id="org4770306">Qualitative</h3>
+<div class="outline-text-3" id="text-org4770306">
 </div>
 </section>
-<section id="slide-org16afae5">
-<h4 id="org16afae5">Randomly Extracted sample</h4>
+<section id="slide-org55ee45a">
+<h4 id="org55ee45a">Randomly Extracted sample</h4>
 
-<div id="orgc27096c" class="figure">
+<div id="orgc89d484" class="figure">
 <p><img src="./assets/random_table.png" alt="random_table.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>NN predictions and ground truths for a randomly extracted sample of the dataset. (in 10,000¥)</p>
 </div>
 
 </section>
-<section id="slide-org4975af4">
-<h4 id="org4975af4">Lowest predictions of the neural net</h4>
+<section id="slide-orgc1171b2">
+<h4 id="orgc1171b2">Lowest predictions of the neural net</h4>
 <aside class="notes">
 <ul>
 <li>All of the lowest predictions are of single room apartments in dormitories</li>
@@ -462,14 +462,14 @@ log of the price in 10000 Yen units.
 </aside>
 
 
-<div id="orgfd60d97" class="figure">
+<div id="orgdb31606" class="figure">
 <p><img src="./assets/rand_neg_top_100.png" alt="rand_neg_top_100.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>The four predictions the model predicted the lowest rent for. (in 10,000¥)</p>
 </div>
 </section>
-<section id="slide-org97a3bf9">
-<h4 id="org97a3bf9">Highest predictions of the neural net</h4>
+<section id="slide-org58598a6">
+<h4 id="org58598a6">Highest predictions of the neural net</h4>
 <aside class="notes">
 <ul>
 <li>The highest predictions all have multiple bed rooms</li>
@@ -483,18 +483,26 @@ log of the price in 10000 Yen units.
 
 
 
-<div id="orgbd0f518" class="figure">
+<div id="orga6749e4" class="figure">
 <p><img src="./assets/rand_top_100.png" alt="rand_top_100.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>The floorplans of four apartments with very highest predicted rents. (in 10,000¥)</p>
 </div>
 
+</section>
+<section id="slide-orga9e4cc2">
+<h4 id="orga9e4cc2">残差プロット</h4>
+
+<div id="orgea140b8" class="figure">
+<p><img src="./assets/residual_plot.png" alt="residual_plot.png" />
+</p>
+</div>
 
 </section>
 </section>
 <section>
-<section id="slide-org54999c3">
-<h2 id="org54999c3">Limitations</h2>
+<section id="slide-org7951967">
+<h2 id="org7951967">Limitations</h2>
 <ul>
 <li class="fragment roll-in">Improvements might decrease when more structural variables are available</li>
 <li class="fragment roll-in">Using more recent or bigger models, might give better results than the Resnet50</li>
@@ -505,8 +513,8 @@ log of the price in 10000 Yen units.
 </section>
 </section>
 <section>
-<section id="slide-orgcc7cc9a">
-<h2 id="orgcc7cc9a">Conclusion</h2>
+<section id="slide-org1da35eb">
+<h2 id="org1da35eb">Conclusion</h2>
 <ul>
 <li class="fragment roll-in">Hypothesis was that floorplans contain valuable information about prices, which we can leverage with neural networks</li>
 <li class="fragment roll-in">Trained a Resnet model to predict rent prices using the floor plans images</li>
@@ -518,8 +526,8 @@ log of the price in 10000 Yen units.
 </section>
 </section>
 <section>
-<section id="slide-org5818010">
-<h2 id="org5818010">Bibliography</h2>
+<section id="slide-org458d877">
+<h2 id="org458d877">Bibliography</h2>
 <style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
   <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Akiyama, Yuki. 2019. “マイクロジオデータを用いた日本全国の家賃形成メカニズムの研 究–-住環境と住宅の市場価値の意外な関係性–-.” <i>環境科学会誌</i> 32 (2): 53–64. <a href="https://doi.org/10.11353/sesj.32.53">https://doi.org/10.11353/sesj.32.53</a>.</div>
   <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Choi, J. M., and Y. Asami. 2003. “賃貸住宅居住者の満足度評価に見られる潜在的評価構造.” <i>都市住宅学</i> 2003 (42): 86–97. <a href="https://doi.org/10.11531/uhs1993.2003.42_86">https://doi.org/10.11531/uhs1993.2003.42_86</a>.</div>
