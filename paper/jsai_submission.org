@@ -65,7 +65,7 @@ properties and improve the explanatory power of the hedonic regression model.
 One of the main reasons that the floorplans might contain previously untapped
 potential is that studies in real-estate economics tend to find that so-called
 "structural" features have more significance in the consumers' eyes than
-so-called "environmental" ones. [cite:@choi2003;@akiyama_yuki2019320204]
+so-called "environmental" ones. [cite:@choi2003;@akiyamayuki2019230204]
 
 * Methodology
 ** Data

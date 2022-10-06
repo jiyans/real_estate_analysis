@@ -79,7 +79,7 @@ over 140,000 observations, but only 3 categorical and 7 continuous variables
 including the target variable. THus we have more observations, but less
 categories than in most papers the author reviewed. We focused on rental
 apartments in Tokyo in particular because, as outlined in
-textcite:moriizumi1986,weko_55303_1 and textcite:akiyama_yuki2019320204,
+textcite:moriizumi1986,weko_55303_1 and textcite:akiyamayuki2019230204,
 estimating real estate prices throughout different markets are more challenging
 and causes complications. This paper is primarily an exploratory study, so we
 decided that by focusing on "roughly" a single market, we can sidestep the
