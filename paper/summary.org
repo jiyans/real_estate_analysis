@@ -66,7 +66,7 @@ previously unconsidered factors.
 One of the main reasons, we think that the floorplans might contain
 previously untapped potential, is that economics studies tend to find that
 so-called "structural" features have more significance in the consumers' eyes
-than so-called "environmental" ones. [cite:@choi2003;@akiyama_yuki2019320204]
+than so-called "environmental" ones. [cite:@choi2003;@akiyamayuki2019230204]
 In the complete paper we discuss these sources in more detail, and also present some
 other previous attempts of using computer vision models in real-estate estimation.
 

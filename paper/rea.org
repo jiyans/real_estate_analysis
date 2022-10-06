@@ -37,7 +37,7 @@ throughout economics and society, with many kinds of agents being interested in
 predicting housing and real estate prices. Appraisers and tax assessors conduct
 real-estate appraisals, investors conduct fundamental value analyses
 [cite:@krainer2004], and it is reasonable to assume that other agents such as
-banks have methods of assessing the price of a property as well, for their
+banks have methods of assessing the price of a property as well, for example for their
 mortgage lending operations. The real estate appraisal done by appraisers and
 tax assessors is often done individually. This kind of appraisal is usually done
 on a by-house basis, with nationally certified appraisers estimating the value of a
@@ -155,7 +155,7 @@ a higher relative value on property location than in other places.
 The importance of finer subdivision of markets is a topic that often comes up
 in the Discussion about real-estate price estimation and is dealt with in
 different ways. An example of an advanced method of subdivision of markets
-is textcite:akiyama_yuki2019320204. They use a vast dataset containing
+is textcite:akiyamayuki2019230204. They use a vast dataset containing
 information on buildings throughout all of Japan. They rely on the K-Means++
 algorithm to create clusters and use the Gap statistic to determine the optimal
 Amount of clusters to use. Their subsequent analysis uses these clusters
@@ -196,7 +196,7 @@ particular, have a larger impact on satisfaction than the environmental factors.
 |                       | Washing room space         |
 |                       | Washing room facilities    |
 |                       | Bathtub size               |
-A similar conclusion is shared by textcite:akiyama_yuki2019320204, who find
+A similar conclusion is shared by textcite:akiyamayuki2019230204, who find
 that structural characteristics are generally preferred over environmental
 features, even in Tokyo, where environmental features are regularly valued more
 highly than in other parts of Japan. They also conclude that
@@ -210,7 +210,7 @@ obtain. Although apartment size is a standard characteristic available in most
 datasets, more specific features like washing room or kitchen space are
 harder to acquire. However, many of the structural features are available in
 floorplan information. For example, while about residential satisfaction and not
-explicitly about rent prices, we expect that floorplans contain information
+explicitly about rents, we expect that floorplans contain information
 about all features in the "Size and Facilities" section. Furthermore, many
 floorplans even contain information about balconies, windows, the cardinal
 direction of the apartment, and some even include the placement of air
@@ -230,7 +230,7 @@ properties listed on a public website from the Tokyo Metropolitan area. The
 data was collected to write this paper.
 
 We focused on rental apartments in Tokyo in particular because, as outlined in
-textcite:moriizumi1986;weko_55303_1 and textcite:akiyama_yuki2019320204,
+textcite:moriizumi1986;weko_55303_1 and textcite:akiyamayuki2019230204,
 estimating real estate prices throughout different markets are more challenging and causes complications as described earlier. This paper is primarily an exploratory study, so
 we decided that by focusing on "roughly" a single market, we can sidestep the problem of considering multiple markets and focus on the viability of these computer vision methods first.
 
@@ -470,7 +470,7 @@ their actual values to try and see whether there are any patterns of
 mispredictions in our models. We can see that all of our models seem to
 overpredict the most expensive properties. In [[fig:residual_plots]] we drew a
 dotted line at \(x=log(100) \approx 4.6\). After this point, all models seem to
-overpredict some rent prices greatly. While the linear models have few but very
+overpredict some rents greatly. While the linear models have few but very
 high over-predictions, the NN's residuals are smaller but have
 shifted systematically above the identity line. The reason for the relatively
 low residuals of the NN is that we scaled its predictions with the
@@ -619,7 +619,7 @@ dataset of tabular features but could obtain the floorplans.
 This study was exploratory only, and further investigation might include how this
 method fares with floorplans in different markets. The current dataset only
 includes a limited area of rental apartments in and around Tokyo. This, however,
-means that the rent prices we encountered did not deviate as much as they would
+means that the rents we encountered did not deviate as much as they would
 when considering more markets. We can easily imagine that bigger discrepancies
 in rent amount due to location only could disturb our model. The same problem,
 less pronounced, is present in the current dataset already because apartments
@@ -639,15 +639,15 @@ behavior.
 
 * Conclusion
 We used real estate data collected from a publicly available website to train a
-residual-based convolutional NN to predict rent prices based
+residual-based convolutional NN to predict rents based
 solely on that properties' floorplan. We proposed some tweaks to enhance the
 original model to allow for quicker training and convergence in the case of
 real-estate prediction. We showed that it is possible to effectively leverage
-floorplan image information to improve the prediction of rent prices and that these
+floorplan image information to improve the prediction of rents and that these
 predictions can enhance other more traditional models' predictive power. We only
 had limited access to detailed information at the apartment level and thus could not test the effectiveness of floorplan image analysis against models
 making use of a wider variety of tabular data. We suspect that using floorplan
-data could be an option for entities trying to estimate rent prices without the
+data could be an option for entities trying to estimate rents without the
 need for interviewing participants or employing other costly means of gaining
 apartment-level information. Our results seem to be in line with existing
 literature on the topic of real-estate price composition. Furthermore, we believe
