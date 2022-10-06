@@ -23,7 +23,7 @@ rental price of apartments using the floorplan of the apartment exclusively.
 Afterward, we use these predictions combined with a more traditional
 hedonic pricing method to see whether its predictions improved. We found that
 by including the predictions, we were able to increase the accuracy of the
-predictions from an \( R^{2} \) of 0.915 to an \( R^{2} \) of 0.945. This
+predictions from an \( R^{2} \) of 0.914 to an \( R^{2} \) of 0.923. This
 suggests that floorplans contain considerable information about rent
 prices, not captured in the other explanatory variables used. Further
 investigation, including more explanatory variables about the apartment itself,
