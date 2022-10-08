@@ -1,16 +1,14 @@
-#+title: [COMPLETE PAPER] Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
+#+title: Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
 #+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
-#+AUTHOR: Jiyan Jonas Schneider
-#+DATE: 2021-12-20
+#+AUTHOR: Jiyan Jonas Schneider, Takahiro Hoshino
 #+LATEX_HEADER: \usepackage{xeCJK}
-#+BIBLIOGRAPHY: /Users/jiyanschneider/Dropbox/Documents/lib/bibliography/bibliography.bib
-#+LATEX_HEADER: \setCJKmainfont{HiraginoSans-W3}
 #+LATEX_HEADER: \usepackage[backend=biber, style=apa]{biblatex}
-#+LATEX_HEADER: \setmainfont{EBGaramond-Regular}
-#+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+#+LATEX_HEADER: \setmainfont{EB Garamond}
+# #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+#+LATEX_HEADER: \usepackage[a4paper]{geometry}
 #+LATEX_HEADER: \usepackage{graphics}
 #+LATEX_HEADER: \usepackage{rotating}
-#+LATEX_HEADER: \usepackage[doublespacing]{setspace}
+#+LATEX_HEADER: \usepackage[singlespacing]{setspace}
 #+LATEX_CLASS_OPTIONS: [11pt,titlepage]
 #+OPTIONS: toc:2 H:4
 
@@ -30,7 +28,7 @@ investigation, including more explanatory variables about the apartment itself,
 could be used in future research to examine the price structure of real
 estate further and better understand consumer behavior.
 #+end_abstract
-
+* TODO Maybe change title
 * Introduction
 The problem of real estate value estimation comes up in multiple forms
 throughout economics and society, with many kinds of agents being interested in
@@ -43,7 +41,7 @@ tax assessors is often done individually. This kind of appraisal is usually done
 on a by-house basis, with nationally certified appraisers estimating the value of a
 house.
 
-However, in most other contexts that are on a larger scale, real-estate prices
+However, in other contexts, operating on a larger scale, real-estate prices
 have to be estimated with more quantitative methods. For example, the potential
 rent that an estate would receive on the market at a given time has to be
 estimated or imputed to determine certain economic variables such as the GDP. In
@@ -52,7 +50,7 @@ the final price of a good is determined by the parts that make it up, and
 hedonic methods are often the de facto methods for real estate price estimation.
 
 These methods, however, do not readily incorporate information about the real-estate
-properties at the apartment level, as this kind of information is hard to obtain and formulate.
+properties at the apartment level, as this kind of information is hard to obtain and formulate into distinct features.
 Most previous research uses tabular data for price estimation, and detailed information
 on, for example, apartment-level is not available. Such features might include the size
 of the kitchen or the bathtub. However, such information would be expected to affect real-estate prices as well.
@@ -65,7 +63,7 @@ surrounding real estate using such methods.
 
 To test our hypothesis, we first collected tabular data and floorplans of over
 140,000 rental apartments in the Tokyo Metropolitan area from a publicly
-available website. Then we devised some minor changes to a widely used neural
+available website. Then we devised some minor adjustments to a widely used neural
 network architecture and trained a NN (NN hereafter) to predict the
 rent of an apartment given only its floorplan. Finally, we combined the NN's
 prediction with a traditional hedonic regression model and analyzed the effects
@@ -89,7 +87,7 @@ implications and limitations of this study and our methods.
 * Background
 ** Machine Learning methods in real estate
 Previous research on using Machine learning methods for real estate data
-has been conducted. For example, textcite:hattori2019rent uses Principal
+has been conducted. For example, [textcite:hattori2019rent] uses Principal
 Component Analysis extracts a feature vector from floorplan data and
 subsequently uses this vector in various models. However, they report that while
 there are slight improvements in prediction, it is challenging to find merits
@@ -118,22 +116,22 @@ city planning and housing quality should be considered as well.
 Another attempt to use computer vision for estimation was made in
 textcite:poursaeed2018. They use pictures of exteriors and interiors of
 properties to improve price predictions. They had success with their approach
-and improved on the base model used in their study. Their research differs from ours
-in that they are not using the actual floorplans of the estates. Their
+and improved on the base model used in their study. Their research differs from
+ours in that they are not using the actual floorplans of the estates. Their
 approach certainly seems valuable, especially for agents that have access to
 pictures of the interiors of the apartments. However, floorplans contain
-characteristics that are intrinsic to the real estate property
-they are describing. While pictures of interiors carry with them much
-subjectivity. When analyzing photographs, the resolution, lighting, angles, and
-interior furniture would all be expected to affect the evaluation of a property.
-Floorplans, however, especially when prepared professionally, include
-information inherent to a specific estate, for example, the sizes of the
-different rooms and their relative location to each other.
+characteristics that are intrinsic to their real estate property. While pictures
+of interiors carry with them much subjectivity. When analyzing photographs, the
+resolution, lighting, angles, and interior furniture would all be expected to
+affect the evaluation of a property. Floorplans, however, especially when
+prepared professionally, include information inherent to a specific estate, for
+example, the sizes of the different rooms and their relative location to each
+other.
 
 ** Price structure of real estate
 Moving onto the price structure of real-estate, textcite:krainer2004 note, using
 time-series data, that house price and rent price, while related, are not the
-same, and identify the change in the price-rent ratio between the year from 1982
+same, and identify the change in the price-rent ratio between the years from 1982
 to 2002. Determining the price structure of real estate, in general, is more
 complicated than doing a regular regression, as noted in
 textcite:rosen_1974_hedonic,nelson1978. Most studies in the
@@ -164,9 +162,7 @@ to analyze their data on a by-market basis.
 Lastly, textcite:choi2003, a study about the causes of residential satisfaction.
 In the study, they conducted a survey, and one of their findings is that the above
 two categories of "structural" and "environmental" can be further subdivided. This study's unique quality is that it considers real estate prices not only
-econometrically but also tries to understand their users' psychology in more
-detail. This is relevant for our paper because it might give insight into
-the price structure of real estate. Their survey asks its participants
+econometrically but also tries to understand their subjects consumer perferences. This is relevant for our paper because it gives insight into the price structure of real estate. Their survey asks its participants
 to list their satisfaction levels about several items in their current
 apartment. In total, they list 35 items. These items are initially subdivided
 into the aforementioned categories: "Structural" and "Environmental".
@@ -197,31 +193,22 @@ particular, have a larger impact on satisfaction than the environmental factors.
 |                       | Washing room facilities    |
 |                       | Bathtub size               |
 A similar conclusion is shared by textcite:akiyamayuki2019230204, who find
-that structural characteristics are generally preferred over environmental
+that structural characteristics are generally more impactful than environmental
 features, even in Tokyo, where environmental features are regularly valued more
-highly than in other parts of Japan. They also conclude that
-the security level of the environment an apartment is located in is mostly
-unconsidered by most people when choosing where to live. Here, "security" refers
-to an estimated risk of destruction due to earthquakes or other natural
-disasters.
+highly than in other parts of Japan.
 
 While structural features seem to be more impactful, they are also harder to
 obtain. Although apartment size is a standard characteristic available in most
-datasets, more specific features like washing room or kitchen space are
+datasets, more specific features like washing room or kitchen size are
 harder to acquire. However, many of the structural features are available in
-floorplan information. For example, while about residential satisfaction and not
-explicitly about rents, we expect that floorplans contain information
-about all features in the "Size and Facilities" section. Furthermore, many
-floorplans even contain information about balconies, windows, the cardinal
-direction of the apartment, and some even include the placement of air
+the floorplan images, and humans could identify them from the images alone.
+Furthermore, many floorplans even contain information about balconies, windows, the cardinal direction of the apartment, and some even include the placement of air
 conditioning machines. This information could help determine some of
 the items listed in "Fundamentals".
-
 Lastly, floorplans also expose information about more complicated notions that
 were not posed in the survey of textcite:choi2003, possibly because they are too
-complicated. Examples of this could be the proportions of rooms relative to each
-other, the location of shower and toilet (for example, whether they are in the
-same room), or how much cooking space is available in the kitchen.
+complicated. However, consumers might still have preferences about such criteria. Some examples of this could be the proportions of rooms relative to each
+other, whether shower and toilet are in the same room, or how much cooking space is available in the kitchen.
 
 * Methodology
 ** Data
@@ -231,8 +218,9 @@ data was collected to write this paper.
 
 We focused on rental apartments in Tokyo in particular because, as outlined in
 textcite:moriizumi1986;weko_55303_1 and textcite:akiyamayuki2019230204,
-estimating real estate prices throughout different markets are more challenging and causes complications as described earlier. This paper is primarily an exploratory study, so
-we decided that by focusing on "roughly" a single market, we can sidestep the problem of considering multiple markets and focus on the viability of these computer vision methods first.
+estimating real estate prices throughout different markets is more challenging and causes complications.
+An intuitive way to see this is that the exact same property would have different prices, based on whether it is based in Tokyo or in a more rural place.
+This paper is primarily an exploratory study, so we decided that by focusing on "roughly" a single market, we can sidestep the problem of considering multiple markets and focus on the viability of these computer vision methods first.
 
 For each listing, we have the monthly rent of the apartment, the image of the
 floorplan of the apartment, 6 continuous and 3 categorical variables. The
@@ -263,18 +251,35 @@ real estate market as a whole.
 
 In figure [[fig:hists]] we can see the distribution of values our variables take on.
 We include further summary statistics in the appendix (Table [[tab:app:summ_cont]]
-and [[tab:app:summ_cat]]). We see that the rent price, "apt_rent", has a very
-long, thin tail to the right. After taking the logarithm, the values move
-closer to 0 and take on a more symmetric shape. As for the distribution of
-building age, we can see that the number of buildings declines with age. In the
-number of floors of the buildings, we see a spike at two floors, then two
-sudden declines, at 5 and 15 floors respectively. The reason for these drops
-most likely lies in a change of building regulation at certain heights. In the
-"Time to station" variable, we also observe some irregularity around the 5, 8,
-and 10-minute marks, there being sudden declines at each of the values. While
-most of these times were given in minutes by foot, some also were given in
-minutes by Bus (1041 cases) / and minutes by car (24 cases), which can be seen
-in the "Methods" plot and is the reason the "methods" variable was included.
+and [[tab:app:summ_cat]]).
+
+
+# TODO: Should this stay commented out???
+# We see that the rent price, has a very
+# long, thin tail to the right. After taking the logarithm, the values move
+# closer to 0 and take on a more symmetric shape.
+# As for the distribution of
+# building age, we can see that the number of buildings declines with age. In the
+# number of floors of the buildings, we see a spike at two floors, then two
+# sudden declines, at 5 and 15 floors respectively. The reason for these drops
+# most likely lies in a change of building regulation at certain heights. In the
+# "Time to station" variable, we also observe some irregularity around the 5, 8,
+# and 10-minute marks, there being sudden declines at each of the values. While
+# most of these times were given in minutes by foot, some also were given in
+# minutes by Bus (1041 cases) / and minutes by car (24 cases), which can be seen
+# in the "Methods" plot and is the reason the "methods" variable was included.
+
+# "Styles" shows the distribution of the layouts classifications of the rooms. 1R
+# means "One room".[fn:1] The original dataset included layouts of apartments
+# until "11LDK", leading to a high cardinality. We included all layouts with more
+# than five bedrooms under the category "5+", which seems to be a comparatively
+# small group nonetheless. We can see that other than 1K and 1R, the "LDK" type
+# rooms seem to be the most popular layouts.
+# Figure [[fig:corrplot]] shows a correlation plot of all of the variables. Many of
+# the explanatory variables are quite highly correlated. This high correlation means
+# that an interpretation of coefficients in a linear regression model would be less
+# reliable. In this paper, however, we will not make any strong interpretations
+# based on our coefficients.
 
 #+NAME: fig:hists
 #+LABEL: fig:hists
@@ -282,18 +287,6 @@ in the "Methods" plot and is the reason the "methods" variable was included.
 #+CAPTION: This figure depicts the value frequencies of the variables used in our paper. Note that for the "Styles" variable, the x and y axes have been flipped for the readability of the labels.
 [[./assets/varhists.png]]
 
-"Styles" shows the distribution of the layouts classifications of the rooms. 1R
-means "One room".[fn:1] The original dataset included layouts of apartments
-until "11LDK", leading to a high cardinality. We included all layouts with more
-than five bedrooms under the category "5+", which seems to be a comparatively
-small group nonetheless. We can see that other than 1K and 1R, the "LDK" type
-rooms seem to be the most popular layouts.
-
-Figure [[fig:corrplot]] shows a correlation plot of all of the variables. Many of
-the explanatory variables are quite highly correlated. This high correlation means
-that an interpretation of coefficients in a linear regression model would be less
-reliable. In this paper, however, we will not make any strong interpretations
-based on our coefficients.
 #+NAME: fig:corrplot
 #+LABEL: fig:corrplot
 #+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm
@@ -313,13 +306,13 @@ using the "ImageNet" [cite:@imagenet2009] dataset.
 We replaced the last layers with a custom adaptation to better fit the
 regression task at hand. We used the same base model up until the first fully
 connected layer, which we replaced with another untrained fully connected layer.
-Initially, we used a fully connected layer with a single output as the final
+Initially, we used a simple fully connected layer as the final
 layer. However, we found that sometimes the model would make unreasonably high
 predictions, which complicated the model training by abnormally increasing the
 loss, resulting in "exploding gradients". Thus, we decided to add
 another layer to scale the NNs output between a predetermined range.
 In particular, we scaled the last layer's outputs with a sigmoid function. By
-scaling the outputs of The NN, we could prevent these problems at
+scaling the outputs of the NN, we could prevent these problems at
 the expense of introducing one hyperparameter, the y-range. To decide on the
 y-range for our NN, we used the log-transformed target variable's
 greatest lower and least upper integer bounds. Since the extreme values were
@@ -328,11 +321,11 @@ output vector from the Network elementwise according to the following rule.
 \(s(x) = \sigma(x) (h - l) + l \), where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \)
 is the lower bound, and \( h \) is the upper bound. The outputs of this
 function are then used to calculate the loss, ensuring that initial predictions
-of the network are never unreasonably high, ultimately resulting in easier
+of the network are never unreasonably high, ultimately resulting in smoother
 training and convergence.
 
 We used the mean squared error as a loss function, and before training the whole
-model, we "froze" the base model and trained our custom head only. After
+model, we "froze" the base model and trained the head only. After
 initial rounds of training the head only, we "unfroze" the pre-trained weights
 and trained the whole NN. The Resnet model was optimized with Adam
 [cite:@kingma2017adam], and the learning rate schedule an initial learning rate
@@ -361,7 +354,7 @@ be considered the same floorplan. Furthermore, many floorplans have compass
 roses on them to find out the orientation of the rooms. Note that mirroring the
 images would change the compass' orientation. Thus we can easily see that
 mirrored floorplans are not functionally the same, which is why we avoid
-mirroring our images.
+mirroring the images.
 
 **** Resizing
 All images have to have the same size for efficient processing of the images.
@@ -387,11 +380,10 @@ all 0's, they result in wasted computation and more inefficient training.
 
 /Randomly cropping out/ a part of the image with the desired size. This method
 has the same problem as the second approach, however by cropping out a random
-part, rather than just the center, we can input the NN a
+part, rather than just the center, we can use a
 wider variety of images, since even if we use the same image twice, there is a
-high probability that the images are cropped differently. Furthermore, at evaluation
-time we can crop the same image a few times, predict the different crops and
-then average their predictions to obtain a prediction that considers more
+high probability that the images are cropped differently. Furthermore, we can perform Test-time augmentation. Meaning that at evaluation time, we can crop the image multiple times, predict the different crops and
+then aggregate the predictions to obtain a prediction that considers more
 area of each floorplan.
 
 Figure [[fig:floorplan_transforms]] (Figure [[fig:app:resizes]] in the appendix shows a larger larger version) shows how different techniques influence the
@@ -416,9 +408,9 @@ using the "Random Crop" strategy.
 #+ATTR_LATEX: :name fig:floorplan_transforms :label fig:floorplan_transforms :width 15cm
 [[file:./assets/resizes.jpg]]
 
-** Hedonic Price estimation
-The hedonic price estimation was performed via a multiple linear regression
-model using all variables collected and outlined in [[tab:var_explanation]]. We
+** Multiple Linear Regression
+The price estimation was performed via a multiple linear regression
+model using all colelcted variables and outlined in [[tab:var_explanation]]. We
 log-transform the target variable of apartment rent. While preliminary tests of
 the multiple regression model only showed a slight improvement in $R^{2}$, and
 the coefficients, the NN's predictions improved significantly.
@@ -432,10 +424,10 @@ variable to the design matrix. We estimated three different models, one using
 all variables, without the rent prediction of the NN, one using all
 variables with the rent prediction of the NN, using only the neural
 network and an intercept.
+
 * Results
 In this section, we will first describe the results of our analysis. Table
-[[tab:regression]] shows the results for three models described in [[Hedonic Price
-estimation]]. The first column shows the estimated coefficients and standard
+[[tab:regression]] shows the results for three models described in [[Multiple Linear Regression]]. The first column shows the estimated coefficients and standard
 errors, without the predictions obtained from the NN (hereafter
 referred to as NN Factor), the second shows the estimated coefficients with the
 predictions and the last shows the values for a Linear Regression model with
@@ -457,6 +449,8 @@ previously non-significant factor of "Admin fee" became significant after the
 inclusion of the new feature. A similar pattern holds for the variables included
 in the regression but not in this table. Most of these coefficients moved toward
 0, neither changing sign nor significance.
+** TODO Table with test data results
+** TODO Maybe Some other stats like improvement in prediction in Yen
 
 * Discussion
 Our discussion section consists of two parts. The first part discusses the
@@ -595,7 +589,7 @@ shift in the second and fourth floorplans are much harder to discern.
 In this paper, we found that utilizing the floorplans of rental apartments can
 improve the predictive power of linear regression models when not many variables are available.
 
-We suppose that the reason for the effectiveness of the NN is twofold:
+We suppose that the reason for the perceived effectiveness of the NN is twofold:
 1. By using the floorplans, the NN had access to information that
    influences rent and residential satisfaction (as described in
    textcite:choi2003) of a particular real estate. Thus it can find features that
@@ -624,16 +618,13 @@ when considering more markets. We can easily imagine that bigger discrepancies
 in rent amount due to location only could disturb our model. The same problem,
 less pronounced, is present in the current dataset already because apartments
 with mostly the same layout in different locations will have different prices.
-One potential remedy for this problem could be training the model on the
-residuals of a multiple linear regression controlling for location. Doing this,
-it might be possible to reduce some of the effects of location on rent.
 
 Another problem with NNs, in general, is that they are hard to
 interpret. This also applies to the current study. We have trouble explaining
 why the model is making some of its predictions. textcite:NIPS2017_7062, for
-example, provide an approach for general model interpretation, which sometimes
-is also applied to computer vision. Analyzing the current model using the
-technique outlined there might give us more insight into its internals and observe
+example, provide an approach for general model interpretation, which can be
+applied to computer vision. Analyzing the current model using the
+outlined technique might give us more insight into its internals and observe
 its focus when making predictions. This, in turn, might lead to insights into consumer
 behavior.
 
@@ -654,6 +645,7 @@ literature on the topic of real-estate price composition. Furthermore, we believ
 that this paper shows initial evidence that using computer vision for rent
 prediction in low data-availability situations can be practical.
 
+* TODO translate japanese citations to english
 \printbibliography
 
 #+LaTeX: \clearpage
