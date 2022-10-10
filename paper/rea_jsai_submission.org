@@ -2,7 +2,7 @@
 #+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
 #+AUTHOR: Jiyan Jonas Schneider, Takahiro Hoshino
 #+LATEX_HEADER: \usepackage{xeCJK}
-#+LATEX_HEADER: \usepackage[backend=biber, style=apa]{biblatex}
+#+LATEX_HEADER: \usepackage[backend=biber,style=apa]{biblatex}
 #+LATEX_HEADER: \setmainfont{EB Garamond}
 # #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 #+LATEX_HEADER: \usepackage[a4paper]{geometry}
@@ -86,8 +86,7 @@ implications and limitations of this study and our methods.
 
 * Background
 ** Machine Learning methods in real estate
-Previous research on using Machine learning methods for real estate data
-has been conducted. For example, [textcite:hattori2019rent] uses Principal
+Previous research on using Machine learning methods for real estate data has been conducted. For example, [textcite:hattori2019rent] uses Principal
 Component Analysis extracts a feature vector from floorplan data and
 subsequently uses this vector in various models. However, they report that while
 there are slight improvements in prediction, it is challenging to find merits
@@ -96,7 +95,7 @@ for using their approach because these improvements are too small.
 Likewise, textcite:zeng2019deep use computer vision techniques on floorplan
 images. However, they are looking to find out functionalities of different
 elements within the floorplan rather than using it for rent prediction. The earliest example of the use of NNs for rent price prediction the author
-could find was text cite:limsombunchai2004, in which they already argue for the
+could find was text [cite:@limsombunchai2004], in which they already argue for the
 use of NNs in real-estate price predictions over hedonic methods in
 spite of the hardships of interpreting NNs, simply due to their
 increased predictive powers.
@@ -108,13 +107,13 @@ willing to obtain more data to get more accurate predictions
 than governments, who want to estimate rents home-owners would receive for
 properties on the market. These estimates would then be used to calculate economic variables such as the gross domestic product; or
 used in other government statistics. Due to these diverse uses, different kinds of
-criticisms are offered. For example, textcite:weko_55303_1 criticizes imputation
+criticisms are offered. For example, textcite:weko_55303_1en criticizes imputation
 methods the Japanese government is using for being too simplistic. They argue
 that the locations of properties should be considered on a finer level and that
 city planning and housing quality should be considered as well.
 
 Another attempt to use computer vision for estimation was made in
-textcite:poursaeed2018. They use pictures of exteriors and interiors of
+textcite:@poursaeed2018. They use pictures of exteriors and interiors of
 properties to improve price predictions. They had success with their approach
 and improved on the base model used in their study. Their research differs from
 ours in that they are not using the actual floorplans of the estates. Their
@@ -148,18 +147,18 @@ structural and environmental factors might change depending on the market as
 different markets tend to have their peculiarities. For example, in big Japanese
 cities, people spend a higher proportion of their income on rent and tend to put
 a higher relative value on property location than in other places.
-[cite:@salarymen1999]
+[cite:@salarymen1999en]
 
 The importance of finer subdivision of markets is a topic that often comes up
 in the Discussion about real-estate price estimation and is dealt with in
 different ways. An example of an advanced method of subdivision of markets
-is textcite:akiyamayuki2019230204. They use a vast dataset containing
+is textcite:akiyamayuki2019320204en. They use a vast dataset containing
 information on buildings throughout all of Japan. They rely on the K-Means++
 algorithm to create clusters and use the Gap statistic to determine the optimal
 Amount of clusters to use. Their subsequent analysis uses these clusters
 to analyze their data on a by-market basis.
 
-Lastly, textcite:choi2003, a study about the causes of residential satisfaction.
+Lastly, textcite:choi2003en, a study about the causes of residential satisfaction.
 In the study, they conducted a survey, and one of their findings is that the above
 two categories of "structural" and "environmental" can be further subdivided. This study's unique quality is that it considers real estate prices not only
 econometrically but also tries to understand their subjects consumer perferences. This is relevant for our paper because it gives insight into the price structure of real estate. Their survey asks its participants
@@ -179,7 +178,7 @@ particular, have a larger impact on satisfaction than the environmental factors.
 #+LABEL: tab:satisfaction_items
 #+NAME: tab:satisfaction_items
 #+ATTR_LATEX: :name tab:satisfaction_items :label tab:satisfaction_items
-#+CAPTION: Table describing the groups and items participants were asked to judge their satisfaction by, in textcite:choi2003.
+#+CAPTION: Table describing the groups and items participants were asked to judge their satisfaction by, in textcite:choi2003en.
 | Fundamental           | Size and Facilities        |
 |-----------------------+----------------------------|
 | Lighting              | Overall Size               |
@@ -192,7 +191,7 @@ particular, have a larger impact on satisfaction than the environmental factors.
 |                       | Washing room space         |
 |                       | Washing room facilities    |
 |                       | Bathtub size               |
-A similar conclusion is shared by textcite:akiyamayuki2019230204, who find
+A similar conclusion is shared by textcite:akiyamayuki2019320204en, who find
 that structural characteristics are generally more impactful than environmental
 features, even in Tokyo, where environmental features are regularly valued more
 highly than in other parts of Japan.
@@ -206,7 +205,7 @@ Furthermore, many floorplans even contain information about balconies, windows, 
 conditioning machines. This information could help determine some of
 the items listed in "Fundamentals".
 Lastly, floorplans also expose information about more complicated notions that
-were not posed in the survey of textcite:choi2003, possibly because they are too
+were not posed in the survey of textcite:choi2003en, possibly because they are too
 complicated. However, consumers might still have preferences about such criteria. Some examples of this could be the proportions of rooms relative to each
 other, whether shower and toilet are in the same room, or how much cooking space is available in the kitchen.
 
@@ -217,7 +216,7 @@ properties listed on a public website from the Tokyo Metropolitan area. The
 data was collected to write this paper.
 
 We focused on rental apartments in Tokyo in particular because, as outlined in
-textcite:moriizumi1986;weko_55303_1 and textcite:akiyamayuki2019230204,
+textcite:moriizumi1986en,weko_55303_1en and textcite:akiyamayuki2019320204en,
 estimating real estate prices throughout different markets is more challenging and causes complications.
 An intuitive way to see this is that the exact same property would have different prices, based on whether it is based in Tokyo or in a more rural place.
 This paper is primarily an exploratory study, so we decided that by focusing on "roughly" a single market, we can sidestep the problem of considering multiple markets and focus on the viability of these computer vision methods first.
@@ -328,7 +327,7 @@ We used the mean squared error as a loss function, and before training the whole
 model, we "froze" the base model and trained the head only. After
 initial rounds of training the head only, we "unfroze" the pre-trained weights
 and trained the whole NN. The Resnet model was optimized with Adam
-[cite:@kingma2017adam], and the learning rate schedule an initial learning rate
+[cite:kingma2017adam], and the learning rate schedule an initial learning rate
 was chosen as suggested in
 textcite:smith17_cyclic_learn_rates_train_neural_networ.
 
@@ -592,7 +591,7 @@ improve the predictive power of linear regression models when not many variables
 We suppose that the reason for the perceived effectiveness of the NN is twofold:
 1. By using the floorplans, the NN had access to information that
    influences rent and residential satisfaction (as described in
-   textcite:choi2003) of a particular real estate. Thus it can find features that
+   textcite:choi2003en) of a particular real estate. Thus it can find features that
    influence rent that are not available in the tabular dataset, and leverage
    these for its prediction.
 2. The increase in explanatory power seems extraordinarily high because of our
@@ -656,11 +655,11 @@ prediction in low data-availability situations can be practical.
 #+NAME: tab:app:summ_cat
 #+ATTR_LATEX: :label tab:app:summ_cat :name tab:app:summ_cat
 #+CAPTION: Summary statistics for the categorical variables
- | Name    | Unique | Most Frequent           | No. Occurences |
- |---------+--------+-------------------------+----------------|
- | Style   |     31 | 1K                      |          63573 |
- | Station |    684 | 東京メトロ東西線/葛西駅 |           1839 |
- | Method  |      3 | 歩                      |         140329 |
+ | Name    | Unique | Most Frequent         | No. Occurences |
+ |---------+--------+-----------------------+----------------|
+ | Style   |     31 | 1K                    |          63573 |
+ | Station |    684 | Tokyo Metro Kasai st. |           1839 |
+ | Method  |      3 | Walking               |         140329 |
 
 #+LABEL: tab:app:summ_cont
 #+NAME: tab:app:summ_cont
