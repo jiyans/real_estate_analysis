@@ -104,6 +104,7 @@ Further research into this topic might lead to further insights into the price s
 #+BEGIN_NOTES
 log of the price in 10000 Yen units.
 #+END_NOTES
+#+ATTR_HTML:
 #+CAPTION: An example of randomly chosen floorplans and the log of their rent prices. (rent price denoted in 10000 Yen units.)
 [[./assets/rand_imgs.png]]
 
@@ -151,6 +152,8 @@ log of the price in 10000 Yen units.
    - Afterwards, unfroze them and trained the whole model for 10 epochs (~1h:30 per epoch)
  - The sigmoid layer was essential for the convergence of the model
 ** Augmentations
+#+ATTR_LATEX:
+#+CAPTION: This figure showcases the properties of each resizing method. The first and second rows compare nine floorplans. The third shows different crops of the leftmost floorplan.
 [[./assets/resizes.jpg]]
 
 
@@ -182,9 +185,24 @@ log of the price in 10000 Yen units.
 
  - We can see an improvement on the total dataset  \( R^2: 0.915 \rightarrow 0.945 \)
  - test data improvement is smaller \( R^2: 0.914 \rightarrow 0.923 \)
+*** Performance
+#+NAME: tab:error_reduction
+#+LABEL: tab:error_reduction
+#+CAPTION: Reduction of error in predictions on test set. \( (N=28,278) \)
+#+ATTR_LATEX: :label tab:regression :name tab:regression
+| Model              | Total Error (10,000 Yen) | MAE (10,000 Yen) |
+|--------------------+--------------------------+------------------|
+| Model 1 (Baseline) |                    43813 |           1.5493 |
+| Model 2 (w/ NN)    |                    32131 |           1.1362 |
+
+
+Reduction of error of \( \approx 26\% \).
+ - \( 438,130,000 - 321,310,000  = 116,820,000 \)
+ - \( 116,820,000 \) Yen improvement in prediction
 
 ** Qualitative
 *** Randomly Extracted sample
+#+ATTR_HTML:
 #+CAPTION: NN predictions and ground truths for a randomly extracted sample of the dataset. (in 10,000¥)
 [[./assets/random_table.png]]
 
@@ -198,6 +216,7 @@ log of the price in 10000 Yen units.
 
 #+END_NOTES
 
+#+ATTR_HTML:
 #+CAPTION: The four predictions the model predicted the lowest rent for. (in 10,000¥)
 [[./assets/rand_neg_top_100.png]]
 *** Highest predictions of the neural net
@@ -209,10 +228,14 @@ log of the price in 10000 Yen units.
 #+END_NOTES
 
 
+#+ATTR_HTML:
 #+CAPTION: The floorplans of four apartments with very highest predicted rents. (in 10,000¥)
 [[./assets/rand_top_100.png]]
 
-*** 残差プロット
+*** Plot of residulas
+
+#+ATTR_HTML:
+#+CAPTION: The floorplans of four apartments with very highest predicted rents. (in 10,000¥)
 [[./assets/residual_plot.png]]
 
 * Limitations
