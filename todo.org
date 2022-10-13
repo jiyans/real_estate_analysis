@@ -1,12 +1,5 @@
 * Inbox
 ** TODO Make picture of architecture
 [[file:~/dev/proj/zemi/real_estate_analysis/paper/architecture.org::*Multimodal][Multimodal]]
-** TODO Get summary statistic tables and put them out to ../../paper/assets/cont.tex and ../../paper/assets/cats.tex
-[[file:~/dev/proj/zemi/real_estate_analysis/analysis/python/eda.py::"+ apt_floor"]]
-** TODO Get vision learner predictions for dataframe
-[[file:~/dev/proj/zemi/real_estate_analysis/analysis/python/eda.py::"+ apt_floor"]]
-** TODO Get graphs with vision learner
-[[file:~/dev/proj/zemi/real_estate_analysis/analysis/python/eda.py::"+ apt_floor"]]
-** TODO Get graphs of regression without vision learner
-[[file:~/dev/proj/zemi/real_estate_analysis/analysis/python/eda.py::"+ apt_floor"]]
 ** TODO find all of the citations
+ - The last two papers I send to Prof Hoshino
