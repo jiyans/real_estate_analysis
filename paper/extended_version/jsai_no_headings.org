@@ -20,15 +20,15 @@
 This study strives to examine whether consideration of floorplan images of
 real-estate apartments could be effective for improving rental price
 predictions. We use a well-established computer vision technique to predict the rental
-price of apartments exclusively using the floorplan of the apartment. Afterward,
+price of apartments exclusively using their floorplan. Afterward,
 we use these predictions in a traditional hedonic pricing method
 to see whether its predictions improved. We found that by including
-floorplans, we were able to increase the accuracy of the out of sample
+floorplans, we were able to increase the accuracy of the out-of-sample
 predictions from an \( R^{2} \) of 0.914 to an \( R^{2} \) of 0.923. This
 suggests that floorplans contain considerable information about rent prices, not
 captured in the other explanatory variables used. Further investigation,
 including more explanatory variables about the apartment itself, could be used
-in future research to examine the price structure of real estate further and
+in future research to further examine the price structure of real estate and
 better understand consumer behavior.
 #+end_abstract
 
@@ -36,25 +36,25 @@ better understand consumer behavior.
 The problem of real estate value estimation comes up in multiple forms
 throughout economics and society, with many kinds of agents being interested in
 predicting housing and real estate prices. Real-estate appraisers conduct
-property valuations, investors conduct fundamental value analyses , and it is
-reasonable to assume that other agents such as banks have methods of assessing
-the price of a property as well, for example for their mortgage lending
+property valuations, investors conduct fundamental value analyses, and it is
+reasonable to assume that other agents, such as banks, have methods of assessing
+the price of a property as well, for example, for their mortgage lending
 operations. [cite:@krainer2004] The real estate appraisal done by appraisers and
 tax assessors is often done individually. This kind of appraisal is usually done
 on a by-house basis, with nationally certified appraisers estimating the value
 of a property.
 
-On the other hand, in other larger scale contexts, real-estate prices have to be
-estimated with quantitative methods. For example, the potential rent that an
+On the other hand, in other larger-scale contexts, real-estate prices have to be
+estimated with quantitative methods. For example, the potential rent an
 estate would receive on the market at a given time has to be imputed to
 determine certain economic variables such as the GDP. In economics, real estate
 prices are often considered hedonic prices, meaning that the total price of a
 good is determined by the parts that make it up, and hedonic methods are often
 the de facto methods for real estate price estimation. These methods, however,
-do not readily incorporate information about the real-estate properties at the
+do not readily incorporate information about the real estate properties at the
 apartment level, as this kind of information is hard to obtain and formulate
-into distinct features.  Most previous research uses tabular data for price
-estimation, and detailed information on, for example, apartment-level is not
+into distinct features. Most previous research uses tabular data for price
+estimation, and detailed information on, for example, apartment level is not
 available. Such features might include the size of the kitchen or the bathtub.
 However, such information would be expected to affect real-estate prices as
 well.
@@ -71,12 +71,11 @@ available website. Then we devised some minor adjustments to a widely used
 neural network architecture and trained a Residual Neural Network (NN hereafter)
 to predict the rent of an apartment given only its floorplan. Finally, we
 combined the NN's prediction with a linear regression model and analyzed the
-effects of including the NN's predictions.  Doing this, we find that the NN can
+effects of including the NN's predictions. Doing this, we find that the NN can
 explain a sizable proportion of the rent price of many real-estate properties
 and considerably improve the explanatory power of the hedonic regression model.
-Including the NN does not overly take away explanatory power from variables that
-would be considered important in a more traditional model or affect the other
-variables in other unexpected ways, showing that the NN captures at least partly
+Including the NN does not overly remove explanatory power from variables considered important in a more traditional model or affect the other
+variables in unexpected ways, showing that the NN captures at least partly
 some previously unconsidered factors.
 
 The structure of the remaining paper is as follows: First, we will introduce the
@@ -89,15 +88,14 @@ implications and limitations of this study and our methods.
 * Background
 ** Price structure of real estate
 First, some past research on the price structure of real estate will be lined
-out.  And afterwards we will discuss the machine learning methods with this
-research in mind.  When considering the price structure of real-estate, it is
+out, and afterward, we will discuss the machine learning methods with this
+research in mind. When considering the price structure of real estate, it is
 important to note that while the value of a house and its rent are certainly
 related, they are not the same. This was noted in textcite:krainer2004, where
 the authors identify the change in the price-rent ratio between the years from
-1982 to 2002. In this research we are strictly considering rent, and not the
-assessing the propeties actual value.
+1982 to 2002. In this research, we are strictly considering rent and not the property's actual value.
 
-Furthermore, in general, determining the price structure of real estate, is more
+Furthermore, in general, determining the price structure of real eestate is more
 complicated than doing a regular regression, as noted in
 textcite:rosen_1974_hedonic,nelson1978. Most studies in the literature, starting
 from textcite:nelson1978, assume that factors for real-estate prices can
@@ -133,7 +131,7 @@ real estate.
 
 Their survey asks its participants to list their satisfaction levels about
 several items in their current apartment. These items are subdivided into the
-aforementioned categories: "Structural" and "Environmental".  While conducting
+aforementioned categories: "Structural" and "Environmental". While conducting
 their analysis, they obtain results of how much each of the items influence
 overall residential satisfaction. In table [[tab:satisfaction_items]], we show the
 items that the survey participants were asked about. One of the findings of
@@ -201,7 +199,7 @@ space is available in the kitchen.
 # should be considered on a finer level and that city planning and housing quality
 # should be considered as well to achieve better predictions. Research like the
 # above shows that there is interest in having more accurate predictions even in
-# low-data environments.  Our method shows that if floorplans available, it is
+# low-data environments. Our method shows that if floorplans available, it is
 # possible to leverage them to improve predictions, possibly making their use more
 # attractive than regular tabular data, provided that they are easier to obtain
 # than some of the more complicated apartment-level structural features.
@@ -241,8 +239,8 @@ using floorplans has been conducted as well, and has yielded some contradictory
 results. For example, textcite:solovev2021rent successfully use a ResNet50
 architecture to improve rent appraisal in a European real-estate market.
 Research conducted slightly earlier in the japanese markets, however, showed
-less success.  textcite:hattori2019rentcnn use PCA and a CNN to create a feature
-vector for use in  a linear model in the Tokyo markets.  They find that while
+less success. textcite:hattori2019rentcnn use PCA and a CNN to create a feature
+vector for use in  a linear model in the Tokyo markets. They find that while
 PCA does improve predictions in the Tokyo market, the CNN based method does not.
 Furthermore, in the same year textcite:hattori2019rentpca find that using PCA
 for apartments throughout all of Japan does not seem to improve predictions
@@ -250,7 +248,7 @@ noticeably. While textcite:solovev2021rent were successful using the CNN and
 textcite:hattori2019rentcnn were not, the sample size that
 textcite:hattori2019rentcnn used was an order of magnitude greater.
 textcite:solovev2021rent used 9174 samples, and textcite:hattori2019rentcnn used
-over 90,000 samples.  There are multiple plausible causes for these
+over 90,000 samples. There are multiple plausible causes for these
 contradictory findings. Examples for some of these could be a difference in
 European and Japanese markets, the difference in size of the sample, or a
 difference in the Computer vision techniques used. We found that by using a
@@ -359,7 +357,7 @@ textcite:he15:deep_resid_learn_image_recog. We initialized the model's weights
 to the pre-trained weights available in ~torchvision~. These weights are trained
 using the "ImageNet" [cite:@imagenet2009] dataset.
 
-Initially, we used the pretrained weights for all layers, except the final fully connected one, which was randomly initialized. However, we found that doing this sometimes the model would make unreasonably high predictions, which complicated model training by abnormally increasing the loss, resulting in "exploding gradients". Thus, we decided to add another layer after the fully connected one to scale the outputs between to a predetermined range. In particular, we scaled the last layer's outputs with a sigmoid function.  This layer scales the output vector elementwise according to the following formula.
+Initially, we used the pretrained weights for all layers, except the final fully connected one, which was randomly initialized. However, we found that doing this sometimes the model would make unreasonably high predictions, which complicated model training by abnormally increasing the loss, resulting in "exploding gradients". Thus, we decided to add another layer after the fully connected one to scale the outputs between to a predetermined range. In particular, we scaled the last layer's outputs with a sigmoid function. This layer scales the output vector elementwise according to the following formula.
 \(s(x) = \sigma(x) (h - l) + l \), where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \) is the lower bound, and \( h \) is the upper bound.
 The outputs of this function are then used to calculate the loss, ensuring that initial predictions of the network are never unreasonably high, ultimately resulting in smoother training and convergence.
 
@@ -387,7 +385,7 @@ We performed three steps of preprocessing for all of the floorplan images.
 2. Rotation
 3. Resizing
 
-Normalization:  We used the means and standard deviations of the pre-trained
+Normalization:  We used the same means and standard deviations of the pre-trained
 model to normalize all input images. The original model was normalized with
 those weights, and thus all of the weights are calibrated to expect normalized
 inputs. Should our inputs not be normalized with the same values, the model's
@@ -410,9 +408,9 @@ have different sizes, so we had to choose how to prepare the images. We decided
 to choose 224x224 pixels for our images. This size is a conventional choice,
 which we did not find any problems with. Most images in the dataset are between
 200 and 400 pixels in height and length, and we did not see a reason to adjust
-the conventional size.  Images were cropped lazily before feeding them into our
+the conventional size. Images were cropped lazily before feeding them into our
 model, so we were able to try different approaches to resizing the image. Each
-approach has advantages and disadvantages, which we will outline below. We tried
+approach has advantages and disadvantages, and some are outlined below. We tried
 the following three approaches.
 
 /Distorting/ the image by "squashing and squeezing" it to fit into the 224x224
@@ -444,8 +442,8 @@ prediction that considers more area of each floorplan.
 
 Figure [[fig:floorplan_transforms]] (Figure [[fig:app:resizes]] in the appendix shows a
 larger larger version) shows how different techniques influence the different
-cropping methods and lets us observe some of the problems outlined.  The first
-row shows the distorted images.  The second shows the center croppoed images,
+cropping methods and lets us observe some of the problems outlined. The first
+row shows the distorted images. The second shows the center croppoed images,
 and the third shows some random crops of the leftmost apartment in the other two
 rows. All images with the label 7.7 look highly alike and are actually from the
 same building. However, while the first and eighth picture images look the same,
@@ -485,7 +483,7 @@ design matrix. We estimated three different models,
  - Model 3: usiing only NN's prediction and an intercept
 
 * Results
-In this section, we will first describe the results of our analysis. Table
+In this section, we will first present the results of our analysis. Table
 [[tab:regression]] shows the results for three models described in [[Multiple Linear
 Regression]]. Note that we included all categorical variables in Models 1 and 2,
 but did not include their coefficients in the table due to their high
@@ -495,7 +493,7 @@ cardinality.
 #+ATTR_LATEX: :label tab:regression :name tab:regression
 #+INCLUDE: "assets/table2.tex" export latex
 We observe a considerable increase in the model's predictive power using the
-NN's predictions over the one that does not include the NN's predictions.  The
+NN's predictions over the one that does not include the NN's predictions. The
 \( R^{2} \) value moves from 0.915, to 0.945, and the Residual Std. Error is
 reduced from 0.127 to 0.101, a reduction of \( \approx 20\% \). The signs of the
 coefficients in the models are as one would expect them to be and do not change
@@ -541,15 +539,15 @@ remedies. The second part discusses the overall results of our papers in a gener
 sense.
 ** Discussion and critique of the Neural Network
 In this section we will look at our models' predictions qualitatively. All
-predictions and images in this section are taken from the test dataset.  In
+predictions and images in this section are taken from the test dataset. In
 figure [[fig:residual_plots]] we plotted the predictions against their actual values
 to try and see whether there are any patterns of mispredictions in our models.
 The dotted line is drawn at \( x = log(100) \approx 4.6 \). We can see that
 after all models seem to overpredict some rents greatly. While the linear models
 have few but very high over-predictions, the NN's residuals are smaller but seem
 to have shifted systematically above the identity line. One of the reasons for
-the relatively low residuals of the NN is probably that we forcibly scaled its
-predictions with the sigmoid layer discussed in Section [[Methodology]].  The NN
+the somewhat low residuals of the NN is probably that we forcibly scaled its
+predictions with the sigmoid layer discussed in section [[Methodology]]. The NN
 also seems to make greater errors with low rent properties. A possible reason
 for this could be a relatively high contribution of environmental factors which
 can not be observed from the floorplans alone. Overall, we can see that the
@@ -570,7 +568,7 @@ with any prediction in this example, with the highest difference in prediction
 and price being \(17,000 \)¥. Seen in relative terms, the model overpredicts the
 apartment's value by about \( 25 \% \). However, it is hard to tell exactly why
 the NN made the predictions it did, and some of the more extreme predictions
-show more easily discernible patterns.  While some of these extreme predictions
+show more easily discernible patterns. While some of these extreme predictions
 come about simply due to problems with the dataset. They also provide insight
 into how the NN is making its predictions. (Larger images are provided in the
 appendix)
@@ -590,8 +588,8 @@ appendix)
 Figures [[fig:negtop]] and [[fig:postop]] exhibit images that the NN's predictions were
 the lowest and highest for. The floorplans for figure [[fig:negtop]], the models'
 lowest predictions, are solely for dormitory or boarding house-like apartments.
-The model seems to have picked up on the repetitive pattern in the floorplan
-often present in these apartments.  Although the overall size is of the floors
+The model seems to have noticed the repetitive pattern in the floorplan
+often present in these apartments. Although the overall size is of the floors
 is quite spacious, and the floorplan spans multiple floors the model's
 predictions, having been exposed to many of these kinds of plans, seem to
 predict the price for only a single room. However, as we see later in figure
@@ -599,7 +597,7 @@ predict the price for only a single room. However, as we see later in figure
 spaces apart from big apartments intended for a single household. Note that the
 predictions for the middle two floorplans were different even though the
 floorplans are the same. This is due to the preprocessing step where we randomly
-crop our images.  When making the two predictions for the middle floorplans, the
+crop our images. When making the two predictions for the middle floorplans, the
 model thus had slightly different inputs and outputs. This image appears twice
 in the dataset because two different rooms in this building were open for rent,
 which explains the difference in actual prices. If the prices for each room are
@@ -641,11 +639,11 @@ differences in the predictions of models 1 and 2 for a given apartment.
 Furthermore, we also depict the NN's prediction and the actual rent value.
 Figure [[fig:downward]] shows downward shifts due to consideration of the NN. We can
 see that most of the depicted downward shifts are caused by the linear model's
-large overpredictions being somewhat corrected by the NN.  However, in 3 out of
-the 4 examples, the NN is still overpredicting by a large amount.  Finally, we
+large overpredictions being somewhat corrected by the NN. However, in 3 out of
+the 4 examples, the NN is still overpredicting by a large amount. Finally, we
 will look at the greatest upward movements after considering the predictions of
-the NN.  In figure [[fig:upward]] the first and second postings seem to be for
-share-houses, or shared flats.  The NN however, having no information other than
+the NN. In figure [[fig:upward]] the first and second postings seem to be for
+share-houses, or shared flats. The NN however, having no information other than
 the floorplan, did not successfully predict a very low rent price as it did in
 figure [[fig:negtop]], causing Model 2's prediction to stray away from the actual
 rent rather than improving it.
@@ -653,7 +651,7 @@ rent rather than improving it.
 In the third and fourth posting, the NN's prediction does improve Model 2's
 prediction. The linear model seems to assign a very low rent to these
 properties, possibly based on environmental factors, which the NN did not have
-information about.  These properties were located, while in the Tokyo
+information about. These properties were located, while in the Tokyo
 Metropolitan area, quite remotely. The NN did not have any information about
 this location, but seeing only data from Tokyo, was conditioned on Tokyo prices,
 and thus gave these apartments a comparably high prediction.
