@@ -16,71 +16,74 @@
 #+begin_abstract
 This study strives to examine whether consideration of floorplan images of
 real-estate apartments could be effective for improving rental price
-predictions. We use a modern computer vision technique to predict the
-rental price of apartments using the floorplan of the apartment exclusively.
-Afterward, we use these predictions combined with a more traditional
-hedonic pricing method to see whether its predictions improved. We found that
-by including the predictions, we were able to increase the accuracy of the
+predictions. We use a well-established computer vision technique to predict the rental
+price of apartments exclusively using the floorplan of the apartment. Afterward,
+we use these predictions in a traditional hedonic pricing method
+to see whether its predictions improved. We found that by including
+floorplans, we were able to increase the accuracy of the out of sample
 predictions from an \( R^{2} \) of 0.914 to an \( R^{2} \) of 0.923. This
-suggests that floorplans contain considerable information about rent
-prices, not captured in the other explanatory variables used. Further
-investigation, including more explanatory variables about the apartment itself,
-could be used in future research to examine the price structure of real
-estate further and better understand consumer behavior.
+suggests that floorplans contain considerable information about rent prices, not
+captured in the other explanatory variables used. Further investigation,
+including more explanatory variables about the apartment itself, could be used
+in future research to examine the price structure of real estate further and
+better understand consumer behavior.
 #+end_abstract
+
 * TODO Maybe change title
 * Introduction
 The problem of real estate value estimation comes up in multiple forms
 throughout economics and society, with many kinds of agents being interested in
-predicting housing and real estate prices. Appraisers and tax assessors conduct
-real-estate appraisals, investors conduct fundamental value analyses
-[cite:@krainer2004], and it is reasonable to assume that other agents such as
-banks have methods of assessing the price of a property as well, for example for their
-mortgage lending operations. The real estate appraisal done by appraisers and
+predicting housing and real estate prices. Real-estate appraisers conduct
+property valuations, investors conduct fundamental value analyses , and it is
+reasonable to assume that other agents such as banks have methods of assessing
+the price of a property as well, for example for their mortgage lending
+operations. [cite:@krainer2004] The real estate appraisal done by appraisers and
 tax assessors is often done individually. This kind of appraisal is usually done
-on a by-house basis, with nationally certified appraisers estimating the value of a
-house.
+on a by-house basis, with nationally certified appraisers estimating the value
+of a property.
 
-However, in other contexts, operating on a larger scale, real-estate prices
-have to be estimated with more quantitative methods. For example, the potential
-rent that an estate would receive on the market at a given time has to be
-estimated or imputed to determine certain economic variables such as the GDP. In
-economics, real estate prices are often considered hedonic prices, meaning that
-the final price of a good is determined by the parts that make it up, and
-hedonic methods are often the de facto methods for real estate price estimation.
+However, in other, larger scale contexts, real-estate prices have to be
+estimated with quantitative methods. For example, the potential rent that an
+estate would receive on the market at a given time has to be imputed to
+determine certain economic variables such as the GDP. In economics, real estate
+prices are often considered hedonic prices, meaning that the total price of a
+good is determined by the parts that make it up, and hedonic methods are often
+the de facto methods for real estate price estimation.
 
-These methods, however, do not readily incorporate information about the real-estate
-properties at the apartment level, as this kind of information is hard to obtain and formulate into distinct features.
-Most previous research uses tabular data for price estimation, and detailed information
-on, for example, apartment-level is not available. Such features might include the size
-of the kitchen or the bathtub. However, such information would be expected to affect real-estate prices as well.
+These methods, however, do not readily incorporate information about the
+real-estate properties at the apartment level, as this kind of information is
+hard to obtain and formulate into distinct features.  Most previous research
+uses tabular data for price estimation, and detailed information on, for
+example, apartment-level is not available. Such features might include the size
+of the kitchen or the bathtub. However, such information would be expected to
+affect real-estate prices as well.
 
-The underlying hypothesis of this research paper is that the floorplans contain
-some characteristics that are valuable to consumers, neglected with traditional
-methods, and can be leveraged with Deep Learning. In the long run, we hope to
-advance insight into the price structure of real estate and consumer behavior
-surrounding real estate using such methods.
+The underlying hypothesis of this research paper is that floorplans contain
+information about  characteristics that are valuable to consumers, neglected
+with traditional methods, and can be leveraged with Deep Learning. In the long
+run, we hope to advance insight into the price structure of real estate and
+consumer behavior surrounding real estate.
 
-To test our hypothesis, we first collected tabular data and floorplans of over
+To test this hypothesis, we first collected tabular data and floorplans of over
 140,000 rental apartments in the Tokyo Metropolitan area from a publicly
-available website. Then we devised some minor adjustments to a widely used neural
-network architecture and trained a NN (NN hereafter) to predict the
-rent of an apartment given only its floorplan. Finally, we combined the NN's
-prediction with a traditional hedonic regression model and analyzed the effects
-of including the NN's predictions.
+available website. Then we devised some minor adjustments to a widely used
+neural network architecture and trained a Residual Neural Network (NN hereafter)
+to predict the rent of an apartment given only its floorplan. Finally, we
+combined the NN's prediction with a linear regression model and analyzed the
+effects of including the NN's predictions.
 
-Doing this, we find that the NN can explain a considerable proportion of the
-rent price of many real-estate properties and considerably improve the
-explanatory power of the hedonic regression model. Including the NN
-does not overly take away explanatory power from variables that would be
-considered important in a more traditional model or affect the other variables
-in other unexpected ways, showing that the NN captures at least some
-previously unconsidered factors.
+Doing this, we find that the NN can explain a sizable proportion of the rent
+price of many real-estate properties and considerably improve the explanatory
+power of the hedonic regression model. Including the NN does not overly take
+away explanatory power from variables that would be considered important in a
+more traditional model or affect the other variables in other unexpected ways,
+showing that the NN captures at least partly some previously unconsidered
+factors.
 
 The structure of the remaining paper is as follows: First, we will introduce the
-reader to some background about the topic of real estate prices. After that, in the
-[[Methodology]] section, we describe the dataset used, explain the Architecture and
-training process of the NN, and the linear regression base models we
+reader to some background about the topic of real estate prices. After that, in section
+[[Methodology]], we describe the dataset used, explain the architecture and
+training process of the NN, and the linear regression base model we
 used. Finally, we will present our results, discussing the
 implications and limitations of this study and our methods.
 
@@ -448,8 +451,26 @@ previously non-significant factor of "Admin fee" became significant after the
 inclusion of the new feature. A similar pattern holds for the variables included
 in the regression but not in this table. Most of these coefficients moved toward
 0, neither changing sign nor significance.
-** TODO Table with test data results
-** TODO Maybe Some other stats like improvement in prediction in Yen
+
+** TODO Below table and statement are new. Not sure where to place them.
+#+NAME: tab:regression
+#+LABEL: tab:regression
+#+CAPTION: \( R^2 \) and sample size for the three models obtained on different parts of the dataset.
+#+ATTR_LATEX: :label tab:regression :name tab:regression
+|-------------------------------------+---------+---------+--------|
+|                                     |   total |   train |   test |
+|-------------------------------------+---------+---------+--------|
+| Model 1: \( R^{2} \) MLR Without NN |   0.915 |   0.915 |  0.914 |
+| Model 2: \( R^{2} \) MLR With NN    |   0.945 |   0.951 |  0.923 |
+| Model 3: \( R^{2} \) LR NN only     |   0.897 |   0.917 |  0.817 |
+| N                                   | 141,394 | 113,116 | 28,278 |
+|-------------------------------------+---------+---------+--------|
+
+The total error in prediction for model 1 on the test dataset is 438130000 Yen.
+Whereas the error of including the floorplans results in total error of
+321310000 Yen. This means we have a 26% reduction in prediction error.
+Furthermore, on the test dataset the mean absolute error of the baseline model
+is 15493 Yen, and for the Machine Learning model its 11362 Yen.
 
 * Discussion
 Our discussion section consists of two parts. The first part discusses the
@@ -644,7 +665,6 @@ literature on the topic of real-estate price composition. Furthermore, we believ
 that this paper shows initial evidence that using computer vision for rent
 prediction in low data-availability situations can be practical.
 
-* TODO translate japanese citations to english
 \printbibliography
 
 #+LaTeX: \clearpage
@@ -675,6 +695,7 @@ prediction in low data-availability situations can be practical.
 | Time to station  |    6.034167 |    3.284996 | 1.00 |    4.00 |    5.0 |     8.0 |     40.00 |
 | Rent \(10,000¥\) |   11.119562 |    8.232117 | 1.10 |    7.50 |    9.1 |    12.1 |    250.00 |
 
+** TODO The caption for this figure might be wrong
 #+LABEL: fig:app:resizes
 #+NAME: fig:app:resizes
 #+ATTR_LATEX: :label fig:app:resizes :name fig:app:resizes
