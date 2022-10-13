@@ -88,130 +88,182 @@ used. Finally, we will present our results, discussing the
 implications and limitations of this study and our methods.
 
 * Background
-** Machine Learning methods in real estate
-Previous research on using Machine learning methods for real estate data has been conducted. For example, [textcite:hattori2019rent] uses Principal
-Component Analysis extracts a feature vector from floorplan data and
-subsequently uses this vector in various models. However, they report that while
-there are slight improvements in prediction, it is challenging to find merits
-for using their approach because these improvements are too small.
-
-Likewise, textcite:zeng2019deep use computer vision techniques on floorplan
-images. However, they are looking to find out functionalities of different
-elements within the floorplan rather than using it for rent prediction. The earliest example of the use of NNs for rent price prediction the author
-could find was text [cite:@limsombunchai2004], in which they already argue for the
-use of NNs in real-estate price predictions over hedonic methods in
-spite of the hardships of interpreting NNs, simply due to their
-increased predictive powers.
-
-Real-estate prices must be estimated in various situations, with varying
-amounts of granularity in data and differing objectives. They are often
-criticized from various perspectives. For example, mortgage lenders might be
-willing to obtain more data to get more accurate predictions
-than governments, who want to estimate rents home-owners would receive for
-properties on the market. These estimates would then be used to calculate economic variables such as the gross domestic product; or
-used in other government statistics. Due to these diverse uses, different kinds of
-criticisms are offered. For example, textcite:weko_55303_1en criticizes imputation
-methods the Japanese government is using for being too simplistic. They argue
-that the locations of properties should be considered on a finer level and that
-city planning and housing quality should be considered as well.
-
-Another attempt to use computer vision for estimation was made in
-textcite:@poursaeed2018. They use pictures of exteriors and interiors of
-properties to improve price predictions. They had success with their approach
-and improved on the base model used in their study. Their research differs from
-ours in that they are not using the actual floorplans of the estates. Their
-approach certainly seems valuable, especially for agents that have access to
-pictures of the interiors of the apartments. However, floorplans contain
-characteristics that are intrinsic to their real estate property. While pictures
-of interiors carry with them much subjectivity. When analyzing photographs, the
-resolution, lighting, angles, and interior furniture would all be expected to
-affect the evaluation of a property. Floorplans, however, especially when
-prepared professionally, include information inherent to a specific estate, for
-example, the sizes of the different rooms and their relative location to each
-other.
-
 ** Price structure of real estate
-Moving onto the price structure of real-estate, textcite:krainer2004 note, using
-time-series data, that house price and rent price, while related, are not the
-same, and identify the change in the price-rent ratio between the years from 1982
-to 2002. Determining the price structure of real estate, in general, is more
+First, some past research on the price structure of real estate will be lined out.
+Secondly, we will discuss the machine learning methods with this research in mind.
+
+When considering the price structure of real-estate, it is important to note
+that while the value of a house and its rent are certainly related, they are not
+the same. This was noted in textcite:krainer2004, where the authors identify the
+change in the price-rent ratio between the years from 1982 to 2002. In this
+research we are strictly considering rent, and not the assessing the
+propeties actual value.
+
+Furthermore, in general, determining the price structure of real estate, is more
 complicated than doing a regular regression, as noted in
-textcite:rosen_1974_hedonic,nelson1978. Most studies in the
-literature, starting from textcite:nelson1978, assume that factors for real-estate
-prices can primarily be divided into two categories, the physical and environmental characteristics
-of the property. This paper will refer
-to what textcite:nelson1978 called "physical" characteristics as structural
-"characteristics". Examples of such characteristics might be
-an apartment's size, the number of rooms, or layout type. On the other hand, the
-environmental factors are not directly included in the apartment but are related
-to the environment of the properties' location. Examples could be the distance
-to the closest schools, the city center, or the nearest train station. The
-structural and environmental factors might change depending on the market as
-different markets tend to have their peculiarities. For example, in big Japanese
-cities, people spend a higher proportion of their income on rent and tend to put
-a higher relative value on property location than in other places.
-[cite:@salarymen1999en]
+textcite:rosen_1974_hedonic,nelson1978. Most studies in the literature, starting
+from textcite:nelson1978, assume that factors for real-estate prices can
+primarily be divided into two categories, the physical and environmental
+characteristics of the property. This paper will refer to what
+textcite:nelson1978 called "physical" characteristics as "structural"
+characteristics. Examples of structural characteristics might be an apartment's
+size, the number of rooms, or layout type. On the other hand, the environmental
+factors are not directly a part of the apartment but are related to its
+environment. Examples could be the name of the closest train stationm, the
+distance to it, or the distance to the city center. Structural and
+environmental factors might change depending on the market as different markets
+tend to have their peculiarities. For example, in big Japanese cities, people
+spend a higher proportion of their income on rent and tend to put a higher
+relative value on property location than in other places. [cite:@salarymen1999en]
 
-The importance of finer subdivision of markets is a topic that often comes up
-in the Discussion about real-estate price estimation and is dealt with in
-different ways. An example of an advanced method of subdivision of markets
-is textcite:akiyamayuki2019320204en. They use a vast dataset containing
-information on buildings throughout all of Japan. They rely on the K-Means++
-algorithm to create clusters and use the Gap statistic to determine the optimal
-Amount of clusters to use. Their subsequent analysis uses these clusters
-to analyze their data on a by-market basis.
+The importance of markets is a topic that often comes up in the discussion about
+real-estate price estimation and is dealt with in different ways. An example of
+of a paper dealing with this problem of different markets is
+textcite:akiyamayuki2019320204en. They want to conduct their analysis using all
+available data, but want to differentiate between the markets. Thus they rely on
+the K-Means++ algorithm to create clusters, use the Gap statistic to determine
+the optimal amount of clusters to use. Afterward they can then use these
+clusters in their research to analyze their data on a by-market basis.
 
-Lastly, textcite:choi2003en, a study about the causes of residential satisfaction.
-In the study, they conducted a survey, and one of their findings is that the above
-two categories of "structural" and "environmental" can be further subdivided. This study's unique quality is that it considers real estate prices not only
-econometrically but also tries to understand their subjects consumer perferences. This is relevant for our paper because it gives insight into the price structure of real estate. Their survey asks its participants
-to list their satisfaction levels about several items in their current
-apartment. In total, they list 35 items. These items are initially subdivided
-into the aforementioned categories: "Structural" and "Environmental".
-While conducting their analysis, they obtain results of how much each of the 35
-items influence overall residential satisfaction. Furthermore, they establish
-that the above two categories could be further subclassified. Roughly, they
-subdivide the items in the "Structural" category further into "Fundamentals (基
-礎環境)[fn:2]" and "Size and Facilities (広さ・設備)". In table
-[[tab:satisfaction_items]], we show the items that the survey participants were
-asked about. These items are items from the "Structural" category and were
-further subdivided into the categories shown. Their study also shows that these
-two categories have the most impact on residential satisfaction, and in
-particular, have a larger impact on satisfaction than the environmental factors.
+The price structure of real-estate is expected to be largely influenced by
+consumer preferences. textcite:choi2003en, is a study about the causes of
+residential satisfaction. This study's unique quality relevant for our research,
+is that it considers real estate prices not only econometrically but also tries
+to understand the survey participants' consumer preferences. This is relevant
+for our paper because as such it provides insight into the price structure of
+real estate.
+
+Their survey asks its participants to list their satisfaction levels about
+several items in their current apartment. These items are subdivided into the
+aforementioned categories: "Structural" and "Environmental".  While conductinG
+their analysis, they obtain results of how much each of the items influence
+overall residential satisfaction. In table [[tab:satisfaction_items]], we show the
+items that the survey participants were asked about. One of the findings of
+their study is, that overall structural factors have a larger impact than the
+environmental factors.
+
 #+LABEL: tab:satisfaction_items
 #+NAME: tab:satisfaction_items
 #+ATTR_LATEX: :name tab:satisfaction_items :label tab:satisfaction_items
-#+CAPTION: Table describing the groups and items participants were asked to judge their satisfaction by, in textcite:choi2003en.
-| Fundamental           | Size and Facilities        |
-|-----------------------+----------------------------|
-| Lighting              | Overall Size               |
-| Ventilation           | Floorplan                  |
-| Condensation (or dew) | number of rooms            |
-| Insulation            | Interior design and Finish |
-| Noise                 | Storage space              |
-| Outward appearance    | Kitchen space              |
-|                       | Kitchen facilities         |
-|                       | Washing room space         |
-|                       | Washing room facilities    |
-|                       | Bathtub size               |
-A similar conclusion is shared by textcite:akiyamayuki2019320204en, who find
-that structural characteristics are generally more impactful than environmental
-features, even in Tokyo, where environmental features are regularly valued more
-highly than in other parts of Japan.
+#+CAPTION: Table showing items textcite:choi2003en asked participants to judge their satisfaction by and their rough classifications into Fundamental and Structural.
+
+| Fundamental                  | Structural                 |
+|------------------------------+----------------------------|
+| Traffic                      | Overall Size               |
+| Shops                        | Floorplan                  |
+| Medical facilities           | Number of rooms            |
+| Educational institutions     | Interior design and Finish |
+| Nature / Parks               | Storage space              |
+| Exposure to sun              | Kitchen space              |
+| Airflow                      | Kitchen facilities         |
+| Security (Natural disasters) | Washing room space         |
+| Crime and crime prevention   | Washing room facilities    |
+|                              | Bathtub size               |
+|                              | Ventilation                |
+|                              | Heat Insulation            |
+|                              | Outward appearance         |
+|                              | Sound insulation           |
+|                              | Privacy                    |
+|                              | View                       |
+|                              | Lighting                   |
+
+A similar conclusion is shared by textcite:akiyamayuki2019320204en, mentioned
+earlier, who find that structural characteristics are generally more impactful
+than environmental features, even in Tokyo, where environmental features are
+regularly valued more highly than in other parts of Japan.
 
 While structural features seem to be more impactful, they are also harder to
 obtain. Although apartment size is a standard characteristic available in most
-datasets, more specific features like washing room or kitchen size are
-harder to acquire. However, many of the structural features are available in
-the floorplan images, and humans could identify them from the images alone.
-Furthermore, many floorplans even contain information about balconies, windows, the cardinal direction of the apartment, and some even include the placement of air
-conditioning machines. This information could help determine some of
-the items listed in "Fundamentals".
-Lastly, floorplans also expose information about more complicated notions that
-were not posed in the survey of textcite:choi2003en, possibly because they are too
-complicated. However, consumers might still have preferences about such criteria. Some examples of this could be the proportions of rooms relative to each
-other, whether shower and toilet are in the same room, or how much cooking space is available in the kitchen.
+datasets, more specific features like storage space or kitchen size are harder
+to acquire. Having said that, many of the structural features shown in table
+[[tab:satisfaction_items]] are available in floorplan images, and humans should be
+able to identify them from the images alone. Furthermore, many floorplans even
+contain more detailed information, for example about balconies, position of
+windows, the cardinal direction of the apartment, and some even include the
+placement of air conditioning machines or other regularly used household
+appliances. All of this information seems like it should be relevant for
+predicting rent. Lastly, floorplans also expose information about more
+complicated notions that were not posed in the survey of textcite:choi2003en,
+possibly because they are complicated and thus too difficult to ask survey
+participants about. However, consumers might still have preferences about such
+criteria. Some examples of this could be the proportions of rooms relative to
+each other, whether shower and toilet are in the same room, or how much cooking
+space is available in the kitchen.
 
+** Estimation methods in real estate
+*** Other research on estimation methods
+Real-estate prices must be estimated in various situations, with varying amounts
+of granularity in data and with differing objectives. Thus they are often
+criticized from various perspectives. For example, mortgage lenders might be
+willing to obtain more data to get more accurate predictions than governments,
+who want to roughly estimate rents home-owners would receive for properties on
+the market. These estimates would then be used to calculate economic variables
+such as the gross domestic product; or used in other government statistics.
+textcite:weko_55303_1en criticizes imputation methods the Japanese government is
+using for being too simplistic. They argue that the locations of properties
+should be considered on a finer level and that city planning and housing quality
+should be considered as well to achieve better predictions. Research like the
+above shows that there is interest in having more accurate predictions even in
+low-data environments.  Our method shows that if floorplans available, it is
+possible to leverage them to improve predictions, possibly making their use more
+attractive than regular tabular data, provided that they are easier to obtain
+than some of the more complicated apartment-level structural features.
+
+** Machine Learning methods
+
+*** Earliest Neural Network
+The earliest example of the use of NNs for rent price prediction the author
+could find was textcite:@limsombunchai2004, in which the authors already argue
+for the use of NNs in real-estate price predictions over hedonic methods in
+spite of the hardships of interpreting NNs, simply due to their increased
+predictive powers. However, in this early paper, the authors were not yet using
+floorplans or computer vision techniques.
+
+*** Pictures of interiors
+Moving onto research utilizing computer vision techniques in real-estate.
+textcite:@poursaeed2018 uses pictures of exteriors and interiors of properties
+to improve price predictions. They had success with their approach and improved
+on the base model used in their study and their research differs from ours in
+that they are not using the actual floorplans of the estates. Their approach
+certainly seems valuable, especially for agents who have access to pictures of
+the interiors of the apartments. However, floorplans contain characteristics
+that are intrinsic to their real estate property, while pictures of interiors
+entail much subjectivity. When analyzing photographs, lighting, angles, and
+interior furniture would all be expected to affect the evaluation of a property.
+Floorplans, however, especially when prepared professionally, include
+information inherent to a specific estate, for example, the sizes of the
+different rooms and their relative location to each other. Even when the
+floorplans are prepared by different parties, the end results would be expected
+to look quite similar.
+
+*** Floorplans + Function
+Likewise, textcite:zeng2019deep use computer vision techniques on floorplan
+images. However, they are looking to find out functionalities of different
+elements within the floorplan rather than using it for rent prediction.
+
+*** Floorplans + Rent
+Lastly, previous research on using Machine learning methods for real estate data
+using floorplans has been conducted as well, and has yielded some contradictory
+results. For example, textcite:solovev2021rent successfully use a ResNet50
+architecture to improve rent appraisal in a European real-estate market.
+Research conducted slightly earlier in the japanese markets, however, showed
+less success.  textcite:hattori2019rentcnn use PCA and a CNN to create a feature
+vector for use in  a linear model in the Tokyo markets.  They find that while
+PCA does improve predictions in the Tokyo market, the CNN based method does not.
+Furthermore, in the same year textcite:hattori2019rentpca find that using PCA
+for apartments throughout all of Japan does not seem to improve predictions
+noticeably. While textcite:solovev2021rent were successful using the CNN and
+textcite:hattori2019rentcnn were not, the sample size that
+textcite:hattori2019rentcnn used was an order of magnitude greater.
+textcite:solovev2021rent used 9174 samples, and textcite:hattori2019rentcnn used
+over 90,000 samples.
+
+There are multiple plausible causes for these contradictory findings. Examples
+for some of these could be a difference in European and Japanese markets, the
+difference in size of the sample, or a difference in the Computer vision
+techniques used. We found that by using a residual network, employing some small
+adjustments to the architecture and data input, we were able to train a network
+to noticeably improve predictions in the Tokyo real-estate market, with a sample size similar to textcite:hattori2019rentcnn.
 * Methodology
 ** Data
 The dataset used is a mix of tabular and image data of rental real estate
