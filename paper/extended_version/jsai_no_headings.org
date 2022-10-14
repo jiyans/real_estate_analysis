@@ -518,13 +518,13 @@ appendix)
 #+LABEL: fig:random_examples
 #+NAME: fig:random_examples
 #+ATTR_LATEX: :height 4cm :label fig:random_examples :name fig:random_examples
-#+CAPTION: Randomly extracted sample with ground truths and NN's prediction. (in \( 10,000 \)¥)
+#+CAPTION: Randomly extracted sample with ground truths and NN's prediction (in \( 10,000 \)¥). (Taken from test dataset)
 [[./assets/random_table.png]]
 
 #+LABEL: fig:negtop
 #+NAME: fig:negtop
 #+ATTR_LATEX: :label fig:negtop :name fig:negtop :height 4cm
-#+CAPTION: Four of the lowest predictions of the NN. (in \( 10,000 \)¥)
+#+CAPTION: Four of the lowest predictions of the NN (in \( 10,000 \)¥). (Taken from test dataset)
 [[./assets/rand_neg_top_100.png]]
 
 Figures [[fig:negtop]] and [[fig:postop]] exhibit images that the NN's predictions were
@@ -551,7 +551,7 @@ are depicted in the same floor plan.
 #+LABEL: fig:postop
 #+NAME: fig:postop
 #+ATTR_LATEX: :label fig:postop :name fig:postop :height 4cm
-#+CAPTION: Four of the highest predictions of the NN. (in \(10,000 \)¥)
+#+CAPTION: Four of the highest predictions of the NN (in \(10,000 \)¥). (Taken from test dataset)
 [[./assets/rand_top_100.png]]
 
 Figure [[fig:postop]] shows the floorplans with the highest predictions, and the
@@ -565,13 +565,13 @@ due to the input of the NN factor.
 #+LABEL: fig:downward
 #+NAME: fig:downward
 #+ATTR_LATEX: :height 4cm :label fig:downward :name fig:downward
-#+CAPTION: Image showing floorplans of apartments with the biggest decreases in prediction after considering NN. (in \( 10,000 \)¥)
+#+CAPTION: Image showing floorplans of apartments with the biggest decreases in prediction after considering NN (in \( 10,000 \)¥). (Taken from test dataset)
 [[./assets/overpreds.png]]
 
 #+LABEL: fig:upward
 #+NAME: fig:upward
 #+ATTR_LATEX: :height 4cm :label fig:upward :name fig:upward
-#+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the NN's prediction. (Taken from test dataset)
+#+CAPTION: The floorplans of the apartments with the biggest increases in predicted rent due to the NN's prediction (in \( 10,000 \)¥). (Taken from test dataset)
 [[./assets/underpreds.png]]
 
 We will look at the largest downward changes first and at the largest upward changes
@@ -699,7 +699,7 @@ can be practical.
 #+LABEL: fig:app:top
 #+NAME: fig:app:top
 #+ATTR_LATEX: :label fig:app:top :name fig:app:top
-#+CAPTION: This figure shows some of the NN's minimal and maximal predictions.
+#+CAPTION: This figure shows some of the NN's minimal and maximal predictions (in \( 10,000 \)¥). (Taken from test dataset)
 #+begin_sidewaysfigure
 [[./assets/rand_neg_top_100.png]]
 [[./assets/rand_top_100.png]]
@@ -708,7 +708,7 @@ can be practical.
 #+LABEL: fig:app:impact
 #+NAME: fig:app:impact
 #+ATTR_LATEX: :label fig:app:impact :name fig:app:impact
-#+CAPTION: This figure shows floorplans of the predictions where an inclusion of the NN's predictions introduced the largest changes.
+#+CAPTION: This figure shows floorplans of the predictions where an inclusion of the NN's predictions introduced the largest changes (in \( 10,000 \)¥). (Taken from test dataset)
 #+begin_sidewaysfigure
 [[./assets/underpreds.png]]
 [[./assets/overpreds.png]]
