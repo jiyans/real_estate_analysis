@@ -14,7 +14,6 @@
 #+LATEX_CLASS_OPTIONS: [runningheads]
 #+OPTIONS: toc:2 H:4
 
-
 #+begin_abstract
 This study strives to examine whether consideration of floorplan images of
 real-estate apartments could be effective for improving rental price
@@ -30,7 +29,7 @@ including more explanatory variables about the apartment itself, could be used
 in future research to examine the price structure of real estate further and
 better understand consumer behavior.
 #+end_abstract
-* TODO Maybe change title
+
 * Introduction
 The problem of real estate value estimation comes up in multiple forms
 throughout economics and society, with many kinds of agents being interested in
@@ -367,7 +366,9 @@ to the pre-trained weights available in ~torchvision~. These weights are trained
 using the "ImageNet" [cite:@imagenet2009] dataset.
 
 Initially, we used the pretrained weights for all layers, except the final fully connected one, which was randomly initialized. However, we found that doing this sometimes the model would make unreasonably high predictions, which complicated model training by abnormally increasing the loss, resulting in "exploding gradients". Thus, we decided to add another layer after the fully connected one to scale the outputs between to a predetermined range. In particular, we scaled the last layer's outputs with a sigmoid function.  This layer scales the output vector elementwise according to the following formula.
-\(s(x) = \sigma(x) (h - l) + l \), where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \) is the lower bound, and \( h \) is the upper bound.
+\(s(x) = \sigma(x) (h - l) + l \)
+, where \( \sigma(x) = \frac{1}{1+e^{-x}} \), \( l \)
+is the lower bound, and \( h \) is the upper bound.
 The outputs of this function are then used to calculate the loss, ensuring that initial predictions of the network are never unreasonably high, ultimately resulting in smoother training and convergence.
 
 By forcibly scaling the outputs of the NN, we prevented the above problem at the
