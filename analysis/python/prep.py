@@ -6,7 +6,6 @@ import numpy as np
 
 Stats = namedtuple("Stats", ["corr", "mse", "rmse", "N"])
 
-
 def apt_style_clean(s):
     fd, sd = s[0], s[1]
     if fd.isnumeric():
@@ -16,7 +15,6 @@ def apt_style_clean(s):
             return s
     else:
         return s
-
 
 def annotate_string(sl):
     r1 = "{:7s}{:15s}{:15s}{:15s}{:5s}".format("", "Correlation", "MSE", "RMSE", "N")
@@ -29,7 +27,6 @@ def annotate_string(sl):
         row_strings.append(r3)
     annotated_string = "\n".join(row_strings)
     return annotated_string
-
 
 def plot_regression_once(preds, targs, model_name):
     targs = pd.Series(targs).reset_index(drop=True)
@@ -63,7 +60,6 @@ def plot_regression_once(preds, targs, model_name):
     )
     plt.title(f"{model_name}", fontsize=22)
     return fig, annotation_string
-
 
 def plot_regression(tp, tt, vp, vt, model_name=""):
     # Preds steals the indices, so we remove them from targs as
@@ -109,7 +105,6 @@ def plot_regression(tp, tt, vp, vt, model_name=""):
     )
     plt.title(f"{model_name}", fontsize=22)
     return fig, annotation_string
-
 
 def get_summary(learner, model_name="", dls=None):
     if dls is None:

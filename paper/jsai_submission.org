@@ -127,14 +127,14 @@ the buildings, not apartments, to avoid information leakage.
 #+LABEL: tab:regression
 #+CAPTION: \( R^2 \) and sample size for the three models obtained on different parts of the dataset.
 #+ATTR_LATEX: :label tab:regression :name tab:regression
-|----------------------------+---------+---------+--------|
-|                            |   total |   train |   test |
-|----------------------------+---------+---------+--------|
-| \( R^{2} \) MLR Without NN |   0.915 |   0.915 |  0.914 |
-| \( R^{2} \) MLR With NN    |   0.945 |   0.951 |  0.923 |
-| \( R^{2} \) LR NN only     |   0.897 |   0.917 |  0.817 |
-| N                          | 141,394 | 113,116 | 28,278 |
-|----------------------------+---------+---------+--------|
+|----------------------------+-----------+----------+--------|
+|                            |     total |    train |   test |
+|----------------------------+-----------+----------+--------|
+| \( R^{2} \) MLR Without NN |     0.915 |    0.915 |  0.914 |
+| \( R^{2} \) MLR With NN    |     0.945 |    0.951 |  0.923 |
+| \( R^{2} \) LR NN only     |     0.897 |    0.917 |  0.817 |
+| N                          |   141,394 |  113,116 | 28,278 |
+|----------------------------+-----------+----------+--------|
 We observe a considerable increase in the model's predictive power using the
 NN's predictions over the one that does not include the NN's predictions. We can
 see that the \(R^{2} \) value improves after including the predictions from the
@@ -159,6 +159,7 @@ only included information from the Tokyo metropolitan area, the
 discrepancies in rent based solely on the location were comparatively small.
 This study was exploratory only, and further investigation might include how to
 deal with the problem of different markets.
+
 
 * Conclusion
 We showed that it is possible to effectively leverage floorplan images to
