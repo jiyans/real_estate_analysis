@@ -156,7 +156,6 @@ log of the price in 10000 Yen units.
 #+CAPTION: This figure showcases the properties of each resizing method. The first and second rows compare nine floorplans. The third shows different crops of the leftmost floorplan.
 [[./assets/resizes.jpg]]
 
-
 * Results
 ** Quantitative
 *** Models
@@ -232,7 +231,7 @@ Reduction of error of \( \approx 26\% \).
 #+CAPTION: The floorplans of four apartments with very highest predicted rents. (in 10,000¥)
 [[./assets/rand_top_100.png]]
 
-*** Plot of residulas
+*** Plot of residuals
 
 #+ATTR_HTML:
 #+CAPTION: The floorplans of four apartments with very highest predicted rents. (in 10,000¥)
@@ -256,49 +255,37 @@ Reduction of error of \( \approx 26\% \).
 :CUSTOM_ID:bibliography
 :END:
 #+print_bibliography:
-# * Appendix
-# **** Largest decreases in Regression prediction after including NN output
-# #+CAPTION: Floorplans of apartments with the biggest decreases in predicted rent due to NN output (in 10,000¥)
-# [[./assets/overpreds.png]]
+* Appendix
+** Largest decreases in Regression prediction after including NN output
+#+CAPTION: Floorplans of apartments with the biggest decreases in predicted rent due to NN output (in 10,000¥)
+./assets/overpreds.png]]
 
-# **** Largest increases
-# #+CAPTION: Floorplans of apartments with the biggest increases in predicted rent due to NN output (in 10,000¥)
-# [[./assets/underpreds.png]]
+** Largest increases
+#+CAPTION: Floorplans of apartments with the biggest increases in predicted rent due to NN output (in 10,000¥)
+./assets/underpreds.png]]
 
-# *** Preprocessing of Images
-# #+BEGIN_NOTES
-#  - We chose 224x224 because many image models use this size, we found that using bigger pictures gave better results
-#  - Cropping out of the image is done randomly as a augmentation technique
-#  - Image rotations were done at 90, 180, 270, 0 degree angles
-#  - We did not mirror the floorplans on purpose, as that would change the floorplans fundamentally ( Doors open the wrong ways, the compass shows the wrong direction )
-# #+END_NOTES
+** Preprocessing of Images
+#+BEGIN_NOTES
+ - We chose 224x224 because many image models use this size, we found that using bigger pictures gave better results
+ - Cropping out of the image is done randomly as a augmentation technique
+ - Image rotations were done at 90, 180, 270, 0 degree angles
+ - We did not mirror the floorplans on purpose, as that would change the floorplans fundamentally ( Doors open the wrong ways, the compass shows the wrong direction )
+#+END_NOTES
 
-#  - Normalization of images with normalization statistics of pretrained model
-#  - 2 augmentations
-#    - Randomly rotating the images
-#    - randomly cropping out a 224x224 square of the image
-#    - We did not mirror the floorplans on purpose, as that would change the floorplans fundamentally
+ - Normalization of images with normalization statistics of pretrained model
+ - 2 augmentations
+   - Randomly rotating the images
+   - randomly cropping out a 224x224 square of the image
+   - We did not mirror the floorplans on purpose, as that would change the floorplans fundamentally
 
-# *** Resizing Methods
-# #+BEGIN_NOTES
-# In this picture we can see two other resizing techniques often used
-#  - Distortion
-#  - Center cropping
-#  - Distorting is bad because it distorts the proportions of the floor plan, making it another floorplan all together
-#  - Center cropping is bad because we might crop off important parts of the image
-# #+END_NOTES
+** Resizing Methods
+#+BEGIN_NOTES
+In this picture we can see two other resizing techniques often used
+ - Distortion
+ - Center cropping
+ - Distorting is bad because it distorts the proportions of the floor plan, making it another floorplan all together
+ - Center cropping is bad because we might crop off important parts of the image
+#+END_NOTES
 
-# #+CAPTION: Showcasing different resizing methods
-# [[file:./assets/resizes.jpg]]
-# ** Cuts
-#  - [X] Cut 3:00-3:20
-#  - [X] Cut 4:55-5:05
-#  - [X] Cut 8:21 - 8:26
-#  - [X] At about 8:30 cut the silence around "That"
-#  - [X] Around 9:45, fix the start
-#  - [X] Cut at 11:33-11:43
-#  - Maybe retake the "Limitations" after ~13:05
-#  - Also retake 13:40
-#  - Cut after 14:50
-# *** From the "limitations" video
-#  - use 01:57~02:30
+#+CAPTION: Showcasing different resizing methods
+file:./assets/resizes.jpg]]
