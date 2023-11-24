@@ -1,9 +1,9 @@
-#+title: Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
+#+TITLE: Using Deep Learning to Assist Modelling of Tokyo Real Estate Prices
 #+SUBTITLE: An evaluation of an incorporation of deep learning methods for prediction real estate prices
 #+AUTHOR: Jiyan Jonas Schneider, Takahiro Hoshino
 #+LATEX_HEADER: \usepackage{xeCJK}
 #+LATEX_HEADER: \usepackage[backend=biber,style=alphabetic]{biblatex}
-#+BIBLIOGRAPHY: /home/jjs/Dropbox/Documents/lib/bibliography/bibliography.bib
+#+BIBLIOGRAPHY: /Users/jjs/Dropbox/drive/lib/bibliography/bibliography.bib
 #+LATEX_HEADER: \setmainfont{EB Garamond}
 # #+LATEX_HEADER: \usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 #+LATEX_HEADER: \usepackage[a4paper]{geometry}

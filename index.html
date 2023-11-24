@@ -1,628 +1,955 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<title>Incremental informational value of floorplans for rent price prediction</title>
-<meta name="author" content="Jiyan Schneider* and Takahiro Hoshino*"/>
-<style type="text/css">
-.underline { text-decoration: underline; }
-</style>
-<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/serif.css" id="theme"/>
-
-<link rel="stylesheet" href="custom.css"/>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</head>
-<body>
-<div class="reveal">
-<div class="slides">
-<section id="sec-title-slide">
-<h1>Incremental informational value of floorplans for rent price prediction</h1><br><h2>Applications of modern computer vision techniques in real-estate</h2><br><h4>Jiyan Schneider* and Takahiro Hoshino*</h4><br>*Keio University, Graduate school of Economics <br> *RIKEN AIP
-</section>
-<section>
-<section id="slide-org59b1100">
-<h2 id="org59b1100">Welcome</h2>
-<ul>
-<li><a href="https://jiyans.github.io/real_estate_analysis/">https://jiyans.github.io/real_estate_analysis/</a></li>
-
-</ul>
-
-<div id="orgdd690fb" class="figure">
-<p><img src="./assets/pres_qr.jpg" alt="pres_qr.jpg" width="500px" />
-</p>
-</div>
-</section>
-</section>
-<section>
-<section id="slide-orgc997278">
-<h2 id="orgc997278">Introduction</h2>
-<aside class="notes">
-<ul>
-<li>Tax appraisers Property Appraisal
-<ul>
-<li>Governments doing rent price imputation</li>
-<li>Firms estimating real-estate prices for investing purposes</li>
-<li>Value appraisal for tax purposes</li>
-
-</ul></li>
-<li>For example, governments have to impute rent prices to calculate the GDP</li>
-<li>Real estate rent/price predictions are conducted in different contexts:</li>
-<li>Currently most large-scale estimations are conducted using tabular data</li>
-
-</ul>
-
-</aside>
-
-<ul>
-<li class="fragment roll-in">Real estate price estimations are done in many contexts
-<ul>
-<li>Governments doing rent price imputation</li>
-<li>Firms estimating real-estate prices for investing purposes</li>
-<li>Value appraisal for tax purposes</li>
-
-</ul></li>
-<li class="fragment roll-in">Depending on the context, availability of data and necessity of accuracy in predictions changes</li>
-<li class="fragment roll-in">In this study we used a Neural Network to analyze floor plan images</li>
-<li class="fragment roll-in">We couple the predictions of the NN with a linear regression model</li>
-
-</ul>
-
-<p class="fragment (roll-in)">
-Hypothesis: floor plan images contain information about consumer preferences, so they should help with predictions
-</p>
-
-<p class="fragment (roll-in)">
-Further research into this topic might lead to further insights into the price structure of real estate
-</p>
-
-</section>
-<section id="slide-org3475b17">
-<h4 id="org3475b17">Price structure of real estate</h4>
-<aside class="notes">
-<ul>
-<li>Hedonic meaning that their price is determined by the properties that make it up</li>
-<li>It is harder to obtain information on structural features than on environmental ones</li>
-<li>Structural features are harder to obtain
-<ul>
-<li>They could be essentially infinite (for example)</li>
-
-</ul></li>
-<li>However, we think that most of these &ldquo;structural&rdquo; features are in some way or another encapsulated in the floorplans</li>
-
-</ul>
-
-</aside>
-
-<ul>
-<li class="fragment roll-in">Real estate prices are usually considered Hedonic prices in economics (<a href="#citeproc_bib_item_8">Rosen 1974</a>)</li>
-<li class="fragment roll-in">Factors making up real estate prices can be divided into two categories</li>
-
-</ul>
-<br>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" class="fragment (roll-in)">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-left" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">Structural</th>
-<th scope="col" class="org-left">Environmental</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">Apartment size</td>
-<td class="org-left">Name of Closest station</td>
-</tr>
-
-<tr>
-<td class="org-left">Floor of apartment</td>
-<td class="org-left">No. of supermarkets</td>
-</tr>
-
-<tr>
-<td class="org-left">Material used in construction</td>
-<td class="org-left">Distance to the city center</td>
-</tr>
-
-<tr>
-<td class="org-left">Floor layout</td>
-<td class="org-left">No. of schools</td>
-</tr>
-
-<tr>
-<td class="org-left">Kitchen Space</td>
-<td class="org-left">No. of Parks</td>
-</tr>
-
-<tr>
-<td class="org-left">Interior design and finish</td>
-<td class="org-left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
-<br>
-
-<ul>
-<li class="fragment roll-in">Consumers tend to value structural factors more than environmental ones (<a href="#citeproc_bib_item_2">Choi and Asami 2003</a>; <a href="#citeproc_bib_item_1">Akiyama 2019</a>)</li>
-
-</ul>
-</section>
-<section id="slide-orgc7e53b1">
-<h4 id="orgc7e53b1">Machine Learning in real estate</h4>
-<aside class="notes">
-<ul>
-<li>(<a href="#citeproc_bib_item_3">Hattori, Okamoto, and Shibata 2019</a>) use PCA to extract feature vectors from floorplans
-<ul>
-<li>They use it in various models</li>
-<li>While they note slight improvements, they say that it is challenging to find merits for their improvements, because they are too small</li>
-
-</ul></li>
-<li>(<a href="#citeproc_bib_item_5">Limsombunchai, Gan, and Lee 2004</a>)
-<ul>
-<li>In this paper the authors argue for the usage of NN&rsquo;s in real-estate price prediction despite the hardships of their interpretation, simply due to their predictive power</li>
-<li>They are using tabular data</li>
-
-</ul></li>
-<li>At the time of writing the paper we are not aware of any research using a Neural Netowrk trained with floor plan images for rental price predictions</li>
-
-</ul>
-
-</aside>
-<ul>
-<li class="fragment roll-in">Earliest example we could find of research being done using NN&rsquo;s for rent price prediction is from 2004 (<a href="#citeproc_bib_item_5">Limsombunchai, Gan, and Lee 2004</a>)</li>
-<li class="fragment roll-in"><p>
-Hattori, Okamoto, and Shibata (<a href="#citeproc_bib_item_3">2019</a>)  use Principal Component Analysis to extract feature vectors of floorplan data
-</p>
-<blockquote>
-<p>
-[H]owever, the differences are not significant and it is difficult to find merits to use FPIs for rent prediction model. - Hattori, Okamoto, and Shibata (<a href="#citeproc_bib_item_3">2019</a>)
-</p>
-</blockquote></li>
-<li class="fragment roll-in">Zeng, Li, Yu, and Fu (<a href="#citeproc_bib_item_9">2019</a>) use Computer Vision techniques for floorplans, to try detect the functionalities of the rooms</li>
-<li class="fragment roll-in">We have also found research using Computer Vision techniques for price estimation using photos of the interior and exteriors (<a href="#citeproc_bib_item_7">Poursaeed, Matera, and Belongie 2018</a>)</li>
-
-</ul>
-</section>
-</section>
-<section>
-<section id="slide-org00ab34a">
-<h2 id="org00ab34a">Methodology</h2>
-<div class="outline-text-2" id="text-org00ab34a">
-</div>
-</section>
-<section id="slide-orgdbaf88a">
-<h3 id="orgdbaf88a">Data</h3>
-<ul>
-<li>Snapshot of tabular and image data of real estate properties</li>
-<li>140,000 observations, 3 categorical and 7 continuous features</li>
-<li>Only include properties from the Tokyo Metropolitan area</li>
-<li>Limit observations to Tokyo Metropolitan area to avoid having to deal with multiple markets</li>
-
-</ul>
-</section>
-<section id="slide-org76fad34">
-<h4 id="org76fad34">Floorplan example</h4>
-<aside class="notes">
-<p>
-log of the price in 10000 Yen units.
-</p>
-
-</aside>
-
-<div id="org0b0a2d7" class="figure">
-<p><img src="./assets/rand_imgs.png" alt="rand_imgs.png" />
-</p>
-<p><span class="figure-number">Figure 1: </span>An example of randomly chosen floorplans and the log of their rent prices. (rent price denoted in 10000 Yen units.)</p>
-</div>
-
-</section>
-<section id="slide-orgb6e702d">
-<h4 id="orgb6e702d">Tabular data</h4>
-<table id="orge30b2b1" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-left" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">Variable</th>
-<th scope="col" class="org-left">Explanation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">apt_rent</td>
-<td class="org-left">Rent per month of the listing. In units of 10000 Yen</td>
-</tr>
-</tbody>
-<tbody>
-<tr>
-<td class="org-left">Apt. Floor</td>
-<td class="org-left">The floor the property is on</td>
-</tr>
-
-<tr>
-<td class="org-left">Size in \( m^{2} \)</td>
-<td class="org-left">Size of property in \(m^2\)</td>
-</tr>
-
-<tr>
-<td class="org-left">No Floors bldg</td>
-<td class="org-left">No of floors of the building</td>
-</tr>
-
-<tr>
-<td class="org-left">Age bldg.</td>
-<td class="org-left">No. of years ago the property was built</td>
-</tr>
-
-<tr>
-<td class="org-left">Style</td>
-<td class="org-left">Description of the layout type of the apartment (1K, 1LDK,&#x2026; )</td>
-</tr>
-
-<tr>
-<td class="org-left">Admin fee  10,000¥</td>
-<td class="org-left">Amount of monthly administration fee</td>
-</tr>
-
-<tr>
-<td class="org-left">Station</td>
-<td class="org-left">Name of the closest public transport station</td>
-</tr>
-
-<tr>
-<td class="org-left">Method</td>
-<td class="org-left">How &ldquo;Time to station&rdquo; is measured (foot, bus, or car)</td>
-</tr>
-
-<tr>
-<td class="org-left">Time to station</td>
-<td class="org-left">No. minutes of taking &ldquo;method&rdquo; to the next station</td>
-</tr>
-</tbody>
-</table>
-
-</section>
-<section id="slide-orgd6c0f3d">
-<h3 id="orgd6c0f3d">Neural Network</h3>
-<aside class="notes">
-<ul>
-<li>scaling of the last layer is important for the model to converge</li>
-<li>the model would put out predictions that are too high -&gt; makes the gradients become big -&gt; weight adjustments too big -&gt; model diverges</li>
-<li>Just scaling the outputs in the last layers is enough, but we now have a new hyperparameter with this y-range</li>
-<li>We used Resnet50, because many models use this size, but again, we found that using a bigger model e.g. Resnet152 gave better results</li>
-<li>We chose Resnet50 over newer models, because it is a well studied model</li>
-<li>The predetermined range was the lower and upper integer bounds of the data</li>
-
-</ul>
-
-</aside>
-
-<ul>
-<li class="fragment roll-in">Used a <code>Resnet50</code> architecture (<a href="#citeproc_bib_item_4">He et al. 2015</a>)</li>
-<li class="fragment roll-in">Weights were initialized to pretrained weights available from <code>torchvision</code> (<a href="#citeproc_bib_item_6">Paszke et al. 2019</a>)</li>
-<li class="fragment roll-in">Randomly initialized fully connected layers at the end of the usual <code>Resnet50</code> model</li>
-<li class="fragment roll-in">added a sigmoid &ldquo;layer&rdquo; to scale the outputs of the last layer into a predetermined range</li>
-
-</ul>
-</section>
-<section id="slide-orgaa0c0e9">
-<h4 id="orgaa0c0e9">Training</h4>
-<ul>
-<li>When training the Neural network we split the data into a train and test set.</li>
-<li>The above splits were performed on the building level (as opposed to the apartment level)</li>
-<li>This was done to make sure that the NN doesn&rsquo;t simply remember the style of floorplans of certain buildings</li>
-<li>We fine-tuned the model as follows:
-<ul>
-<li>First we froze pretrained layers, trained for a 5 epochs (~1h per epoch)</li>
-<li>Afterwards, unfroze them and trained the whole model for 10 epochs (~1h:30 per epoch)</li>
-
-</ul></li>
-<li>The sigmoid layer was essential for the convergence of the model</li>
-
-</ul>
-</section>
-<section id="slide-org805efc9">
-<h3 id="org805efc9">Augmentations</h3>
-
-<div id="orge8775cc" class="figure">
-<p><img src="./assets/resizes.jpg" alt="resizes.jpg" />
-</p>
-<p><span class="figure-number">Figure 2: </span>This figure showcases the properties of each resizing method. The first and second rows compare nine floorplans. The third shows different crops of the leftmost floorplan.</p>
-</div>
-
-
-</section>
-</section>
-<section>
-<section id="slide-org3b0ce90">
-<h2 id="org3b0ce90">Results</h2>
-<div class="outline-text-2" id="text-org3b0ce90">
-</div>
-</section>
-<section id="slide-orgcc1d373">
-<h3 id="orgcc1d373">Quantitative</h3>
-<div class="outline-text-3" id="text-orgcc1d373">
-</div>
-</section>
-<section id="slide-orgebf2594">
-<h4 id="orgebf2594">Models</h4>
-<aside class="notes">
-<ul>
-<li>NN Factor is is the output of the NN based on the floorplans seen.</li>
-<li>Model estimated on data as a whole</li>
-
-</ul>
-
-</aside>
-
-
-<div id="org1484ead" class="figure">
-<p><img src="./assets/model_table.jpg" alt="model_table.jpg" height="500px" />
-</p>
-<p><span class="figure-number">Figure 3: </span>Regression table of the 3 estimated models (categorical features omitted).</p>
-</div>
-
-</section>
-<section id="slide-orgc4d066c">
-<h4 id="orgc4d066c">Performance</h4>
-<table id="orgc15ff50" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 1:</span> \( R^2 \) and sample size for the three models obtained on different parts of the dataset.</caption>
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-right" />
-
-<col  class="org-right" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">&#xa0;</th>
-<th scope="col" class="org-right">total</th>
-<th scope="col" class="org-right">train</th>
-<th scope="col" class="org-right">test</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">Model 1:  \( R^{2} \) MLR Without NN</td>
-<td class="org-right">0.915</td>
-<td class="org-right">0.915</td>
-<td class="org-right">0.914</td>
-</tr>
-
-<tr>
-<td class="org-left">Model 2: \( R^{2} \) MLR With NN</td>
-<td class="org-right">0.945</td>
-<td class="org-right">0.951</td>
-<td class="org-right">0.923</td>
-</tr>
-
-<tr>
-<td class="org-left">Model 3: \( R^{2} \) LR NN only</td>
-<td class="org-right">0.897</td>
-<td class="org-right">0.917</td>
-<td class="org-right">0.817</td>
-</tr>
-
-<tr>
-<td class="org-left">N</td>
-<td class="org-right">141,394</td>
-<td class="org-right">113,116</td>
-<td class="org-right">28,278</td>
-</tr>
-</tbody>
-</table>
-
-<ul>
-<li>We can see an improvement on the total dataset  \( R^2: 0.915 \rightarrow 0.945 \)</li>
-<li>test data improvement is smaller \( R^2: 0.914 \rightarrow 0.923 \)</li>
-
-</ul>
-</section>
-<section id="slide-org6137821">
-<h4 id="org6137821">Performance</h4>
-<table id="orgd40b4ee" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-<caption class="t-above"><span class="table-number">Table 2:</span> Reduction of error in predictions on test set. \( (N=28,278) \)</caption>
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-right" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">Model</th>
-<th scope="col" class="org-right">Total Error (10,000 Yen)</th>
-<th scope="col" class="org-right">MAE (10,000 Yen)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">Model 1 (Baseline)</td>
-<td class="org-right">43813</td>
-<td class="org-right">1.5493</td>
-</tr>
-
-<tr>
-<td class="org-left">Model 2 (w/ NN)</td>
-<td class="org-right">32131</td>
-<td class="org-right">1.1362</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>
-Reduction of error of \( \approx 26\% \).
-</p>
-<ul>
-<li>\( 438,130,000 - 321,310,000  = 116,820,000 \)</li>
-<li>\( 116,820,000 \) Yen improvement in prediction</li>
-
-</ul>
-
-</section>
-<section id="slide-orgd2585e9">
-<h3 id="orgd2585e9">Qualitative</h3>
-<div class="outline-text-3" id="text-orgd2585e9">
-</div>
-</section>
-<section id="slide-orgc58f735">
-<h4 id="orgc58f735">Randomly Extracted sample</h4>
-
-<div id="orgdbec2c3" class="figure">
-<p><img src="./assets/random_table.png" alt="random_table.png" />
-</p>
-<p><span class="figure-number">Figure 4: </span>NN predictions and ground truths for a randomly extracted sample of the dataset. (in 10,000¥)</p>
-</div>
-
-</section>
-<section id="slide-orgb420ad8">
-<h4 id="orgb420ad8">Lowest predictions of the neural net</h4>
-<aside class="notes">
-<ul>
-<li>All of the lowest predictions are of single room apartments in dormitories</li>
-<li>The model probably picked up on the repetitive nature of these floorplans</li>
-<li>thus knows to predict these apartments to have lower rents</li>
-<li>The middle 2 pics are actually the same, but predictions are different ( Due to random cropping )</li>
-
-</ul>
-
-</aside>
-
-
-<div id="org268e6fb" class="figure">
-<p><img src="./assets/rand_neg_top_100.png" alt="rand_neg_top_100.png" />
-</p>
-<p><span class="figure-number">Figure 5: </span>The four predictions the model predicted the lowest rent for. (in 10,000¥)</p>
-</div>
-</section>
-<section id="slide-orgffef6b9">
-<h4 id="orgffef6b9">Highest predictions of the neural net</h4>
-<aside class="notes">
-<ul>
-<li>The highest predictions all have multiple bed rooms</li>
-<li>Multiple floors</li>
-<li>complicated layouts</li>
-<li>The magnitude of the overpredictions is quite high ()</li>
-
-</ul>
-
-</aside>
-
-
-
-<div id="org4da6683" class="figure">
-<p><img src="./assets/rand_top_100.png" alt="rand_top_100.png" />
-</p>
-<p><span class="figure-number">Figure 6: </span>The floorplans of four apartments with very highest predicted rents. (in 10,000¥)</p>
-</div>
-
-</section>
-<section id="slide-org0bed746">
-<h4 id="org0bed746">Plot of residulas</h4>
-
-<div id="org9fef642" class="figure">
-<p><img src="./assets/residual_plot.png" alt="residual_plot.png" />
-</p>
-<p><span class="figure-number">Figure 7: </span>The floorplans of four apartments with very highest predicted rents. (in 10,000¥)</p>
-</div>
-
-</section>
-</section>
-<section>
-<section id="slide-org15006d1">
-<h2 id="org15006d1">Limitations</h2>
-<ul>
-<li class="fragment roll-in">Improvements might decrease when more structural variables are available</li>
-<li class="fragment roll-in">Using more recent or bigger models, might give better results than the Resnet50</li>
-<li class="fragment roll-in">Currently we are only considering a single market</li>
-
-</ul>
-
-</section>
-</section>
-<section>
-<section id="slide-orgfc17b93">
-<h2 id="orgfc17b93">Conclusion</h2>
-<ul>
-<li class="fragment roll-in">Hypothesis was that floorplans contain valuable information about prices, which we can leverage with neural networks</li>
-<li class="fragment roll-in">Trained a Resnet model to predict rent prices using the floor plans images</li>
-<li class="fragment roll-in">We were able to improve the accuracy over the model using tabular data only</li>
-<li class="fragment roll-in">We believe that using floorplans can be a practically viable option, especially in situations where it is hard to obtain many structural features</li>
-
-</ul>
-
-</section>
-</section>
-<section>
-<section id="slide-org3eb7a88">
-<h2 id="org3eb7a88">Bibliography</h2>
-<style>.csl-entry{text-indent: -1.5em; margin-left: 1.5em;}</style><div class="csl-bib-body">
-  <div class="csl-entry"><a id="citeproc_bib_item_1"></a>Akiyama, Yuki. 2019. “マイクロジオデータを用いた日本全国の家賃形成メカニズムの研 究–-住環境と住宅の市場価値の意外な関係性–-.” <i>環境科学会誌</i> 32 (2): 53–64. <a href="https://doi.org/10.11353/sesj.32.53">https://doi.org/10.11353/sesj.32.53</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_2"></a>Choi, J. M., and Y. Asami. 2003. “賃貸住宅居住者の満足度評価に見られる潜在的評価構造.” <i>都市住宅学</i> 2003 (42): 86–97. <a href="https://doi.org/10.11531/uhs1993.2003.42_86">https://doi.org/10.11531/uhs1993.2003.42_86</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_3"></a>Hattori, Ryosuke, Kazushi Okamoto, and Atsushi Shibata. 2019. “Rent Prediction Models with Floor Plan Images.” In <i>2019 Ieee 8th Global Conference on Consumer Electronics (Gcce)</i>, 451–52. <a href="https://doi.org/10.1109/GCCE46687.2019.9015208">https://doi.org/10.1109/GCCE46687.2019.9015208</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_4"></a>He, Kaiming, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2015. “Deep Residual Learning for Image Recognition.” 2015.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_5"></a>Limsombunchai, Visit, Christopher Gan, and Minsoo Lee. 2004. “House Price Prediction: Hedonic Price Model Vs. Artificial Neural Network.” <i>American Journal of Applied Sciences</i> 1. <a href="https://doi.org/10.3844/ajassp.2004.193.201">https://doi.org/10.3844/ajassp.2004.193.201</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_6"></a>Paszke, Adam, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, et al. 2019. “Pytorch: An Imperative Style, High-Performance Deep Learning Library.” In <i>Advances in Neural Information Processing Systems 32</i>, edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. d Alché-Buc, E. Fox, and R. Garnett, 8024–35. Curran Associates, Inc. <a href="http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf">http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_7"></a>Poursaeed, Omid, Tomáš Matera, and Serge Belongie. 2018. “Vision-Based Real Estate Price Estimation.” <i>Machine Vision and Applications</i> 29 (4): 667–76. <a href="https://doi.org/10.1007/s00138-018-0922-2">https://doi.org/10.1007/s00138-018-0922-2</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_8"></a>Rosen, Sherwin. 1974. “Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition.” <i>Journal of Political Economy</i> 82 (1): 34–55. <a href="http://www.jstor.org/stable/1830899">http://www.jstor.org/stable/1830899</a>.</div>
-  <div class="csl-entry"><a id="citeproc_bib_item_9"></a>Zeng, Zhiliang, Xianzhi Li, Ying Kin Yu, and Chi-Wing Fu. 2019. “Deep Floor Plan Recognition Using a Multi-Task Network with Room-Boundary-Guided Attention.”</div>
-</div>
-</section>
-</section>
-</div>
-</div>
-<script src="./reveal.js/dist/reveal.js"></script>
-<script src="./reveal.js/plugin/markdown/markdown.js"></script>
-<script src="./reveal.js/plugin/notes/notes.js"></script>
-<script src="./reveal.js/plugin/search/search.js"></script>
-<script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script>
-// Full list of configuration options available here:
-// https://github.com/hakimel/reveal.js#configuration
-Reveal.initialize({
-
-controls: true,
-progress: true,
-history: true,
-center: true,
-slideNumber: 'c',
-rollingLinks: false,
-keyboard: true,
-mouseWheel: false,
-fragmentInURL: true,
-hashOneBasedIndex: false,
-pdfSeparateFragments: true,
-overview: true,
-
-transition: 'linear',
-transitionSpeed: 'default',
-
-// Plugins with reveal.js 4.x
-plugins: [ RevealMarkdown, RevealNotes, RevealSearch, RevealZoom ],
-
-// Optional libraries used to extend reveal.js
-dependencies: [
-]
-
-});
-</script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Incremental informational value of floorplans for rent price prediction
+    </title>
+    <meta name="author" content="Jiyan Schneider* and Takahiro Hoshino*" />
+    <style type="text/css">
+      .underline {
+        text-decoration: underline;
+      }
+    </style>
+    <link rel="stylesheet" href="./reveal.js/dist/reveal.css" />
+
+    <link rel="stylesheet" href="./reveal.js/dist/theme/serif.css" id="theme" />
+
+    <link rel="stylesheet" href="custom.css" />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    ></script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section id="sec-title-slide">
+          <h1>
+            Incremental informational value of floorplans for rent price
+            prediction
+          </h1>
+          <br />
+          <h2>
+            Applications of modern computer vision techniques in real-estate
+          </h2>
+          <br />
+          <h4>Jiyan Schneider* and Takahiro Hoshino*</h4>
+          <br />*Keio University, Graduate school of Economics <br />
+          *RIKEN AIP
+        </section>
+        <section>
+          <section id="slide-org59b1100">
+            <h2 id="org59b1100">Welcome</h2>
+            <ul>
+              <li>
+                <a href="https://jiyans.github.io/real_estate_analysis/"
+                  >https://jiyans.github.io/real_estate_analysis/</a
+                >
+              </li>
+            </ul>
+
+            <div id="orgdd690fb" class="figure">
+              <p>
+                <img
+                  src="./assets/pres_qr.jpg"
+                  alt="pres_qr.jpg"
+                  width="500px"
+                />
+              </p>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section id="slide-orgc997278">
+            <h2 id="orgc997278">Introduction</h2>
+            <aside class="notes">
+              <ul>
+                <li>
+                  Tax appraisers Property Appraisal
+                  <ul>
+                    <li>Governments doing rent price imputation</li>
+                    <li>
+                      Firms estimating real-estate prices for investing purposes
+                    </li>
+                    <li>Value appraisal for tax purposes</li>
+                  </ul>
+                </li>
+                <li>
+                  For example, governments have to impute rent prices to
+                  calculate the GDP
+                </li>
+                <li>
+                  Real estate rent/price predictions are conducted in different
+                  contexts:
+                </li>
+                <li>
+                  Currently most large-scale estimations are conducted using
+                  tabular data
+                </li>
+              </ul>
+            </aside>
+
+            <ul>
+              <li class="fragment roll-in">
+                Real estate price estimations are done in many contexts
+                <ul>
+                  <li>Governments doing rent price imputation</li>
+                  <li>
+                    Firms estimating real-estate prices for investing purposes
+                  </li>
+                  <li>Value appraisal for tax purposes</li>
+                </ul>
+              </li>
+              <li class="fragment roll-in">
+                Depending on the context, availability of data and necessity of
+                accuracy in predictions changes
+              </li>
+              <li class="fragment roll-in">
+                In this study we used a Neural Network to analyze floor plan
+                images
+              </li>
+              <li class="fragment roll-in">
+                We couple the predictions of the NN with a linear regression
+                model
+              </li>
+            </ul>
+
+            <p class="fragment (roll-in)">
+              Hypothesis: floor plan images contain information about consumer
+              preferences, so they should help with predictions
+            </p>
+
+            <p class="fragment (roll-in)">
+              Further research into this topic might lead to further insights
+              into the price structure of real estate
+            </p>
+          </section>
+          <section id="slide-org3475b17">
+            <h4 id="org3475b17">Price structure of real estate</h4>
+            <aside class="notes">
+              <ul>
+                <li>
+                  Hedonic meaning that their price is determined by the
+                  properties that make it up
+                </li>
+                <li>
+                  It is harder to obtain information on structural features than
+                  on environmental ones
+                </li>
+                <li>
+                  Structural features are harder to obtain
+                  <ul>
+                    <li>They could be essentially infinite (for example)</li>
+                  </ul>
+                </li>
+                <li>
+                  However, we think that most of these &ldquo;structural&rdquo;
+                  features are in some way or another encapsulated in the
+                  floorplans
+                </li>
+              </ul>
+            </aside>
+
+            <ul>
+              <li class="fragment roll-in">
+                Real estate prices are usually considered Hedonic prices in
+                economics (<a href="#citeproc_bib_item_8">Rosen 1974</a>)
+              </li>
+              <li class="fragment roll-in">
+                Factors making up real estate prices can be divided into two
+                categories
+              </li>
+            </ul>
+            <br />
+            <table
+              border="2"
+              cellspacing="0"
+              cellpadding="6"
+              rules="groups"
+              frame="hsides"
+              class="fragment (roll-in)"
+            >
+              <colgroup>
+                <col class="org-left" />
+
+                <col class="org-left" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col" class="org-left">Structural</th>
+                  <th scope="col" class="org-left">Environmental</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="org-left">Apartment size</td>
+                  <td class="org-left">Name of Closest station</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Floor of apartment</td>
+                  <td class="org-left">No. of supermarkets</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Material used in construction</td>
+                  <td class="org-left">Distance to the city center</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Floor layout</td>
+                  <td class="org-left">No. of schools</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Kitchen Space</td>
+                  <td class="org-left">No. of Parks</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Interior design and finish</td>
+                  <td class="org-left">&#xa0;</td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+
+            <ul>
+              <li class="fragment roll-in">
+                Consumers tend to value structural factors more than
+                environmental ones (<a href="#citeproc_bib_item_2"
+                  >Choi and Asami 2003</a
+                >; <a href="#citeproc_bib_item_1">Akiyama 2019</a>)
+              </li>
+            </ul>
+          </section>
+          <section id="slide-orgc7e53b1">
+            <h4 id="orgc7e53b1">Machine Learning in real estate</h4>
+            <aside class="notes">
+              <ul>
+                <li>
+                  (<a href="#citeproc_bib_item_3"
+                    >Hattori, Okamoto, and Shibata 2019</a
+                  >) use PCA to extract feature vectors from floorplans
+                  <ul>
+                    <li>They use it in various models</li>
+                    <li>
+                      While they note slight improvements, they say that it is
+                      challenging to find merits for their improvements, because
+                      they are too small
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  (<a href="#citeproc_bib_item_5"
+                    >Limsombunchai, Gan, and Lee 2004</a
+                  >)
+                  <ul>
+                    <li>
+                      In this paper the authors argue for the usage of
+                      NN&rsquo;s in real-estate price prediction despite the
+                      hardships of their interpretation, simply due to their
+                      predictive power
+                    </li>
+                    <li>They are using tabular data</li>
+                  </ul>
+                </li>
+                <li>
+                  At the time of writing the paper we are not aware of any
+                  research using a Neural Netowrk trained with floor plan images
+                  for rental price predictions
+                </li>
+              </ul>
+            </aside>
+            <ul>
+              <li class="fragment roll-in">
+                Earliest example we could find of research being done using
+                NN&rsquo;s for rent price prediction is from 2004 (<a
+                  href="#citeproc_bib_item_5"
+                  >Limsombunchai, Gan, and Lee 2004</a
+                >)
+              </li>
+              <li class="fragment roll-in">
+                <p>
+                  Hattori, Okamoto, and Shibata (<a href="#citeproc_bib_item_3"
+                    >2019</a
+                  >) use Principal Component Analysis to extract feature vectors
+                  of floorplan data
+                </p>
+                <blockquote>
+                  <p>
+                    [H]owever, the differences are not significant and it is
+                    difficult to find merits to use FPIs for rent prediction
+                    model. - Hattori, Okamoto, and Shibata (<a
+                      href="#citeproc_bib_item_3"
+                      >2019</a
+                    >)
+                  </p>
+                </blockquote>
+              </li>
+              <li class="fragment roll-in">
+                Zeng, Li, Yu, and Fu (<a href="#citeproc_bib_item_9">2019</a>)
+                use Computer Vision techniques for floorplans, to try detect the
+                functionalities of the rooms
+              </li>
+              <li class="fragment roll-in">
+                We have also found research using Computer Vision techniques for
+                price estimation using photos of the interior and exteriors (<a
+                  href="#citeproc_bib_item_7"
+                  >Poursaeed, Matera, and Belongie 2018</a
+                >)
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section id="slide-org00ab34a">
+            <h2 id="org00ab34a">Methodology</h2>
+            <div class="outline-text-2" id="text-org00ab34a"></div>
+          </section>
+          <section id="slide-orgdbaf88a">
+            <h3 id="orgdbaf88a">Data</h3>
+            <ul>
+              <li>
+                Snapshot of tabular and image data of real estate properties
+              </li>
+              <li>
+                140,000 observations, 3 categorical and 7 continuous features
+              </li>
+              <li>Only include properties from the Tokyo Metropolitan area</li>
+              <li>
+                Limit observations to Tokyo Metropolitan area to avoid having to
+                deal with multiple markets
+              </li>
+            </ul>
+          </section>
+          <section id="slide-org76fad34">
+            <h4 id="org76fad34">Floorplan example</h4>
+            <aside class="notes">
+              <p>log of the price in 10000 Yen units.</p>
+            </aside>
+
+            <div id="org0b0a2d7" class="figure">
+              <p><img src="./assets/rand_imgs.png" alt="rand_imgs.png" /></p>
+              <p>
+                <span class="figure-number">Figure 1: </span>An example of
+                randomly chosen floorplans and the log of their rent prices.
+                (rent price denoted in 10000 Yen units.)
+              </p>
+            </div>
+          </section>
+          <section id="slide-orgb6e702d">
+            <h4 id="orgb6e702d">Tabular data</h4>
+            <table
+              id="orge30b2b1"
+              border="2"
+              cellspacing="0"
+              cellpadding="6"
+              rules="groups"
+              frame="hsides"
+            >
+              <colgroup>
+                <col class="org-left" />
+
+                <col class="org-left" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col" class="org-left">Variable</th>
+                  <th scope="col" class="org-left">Explanation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="org-left">apt_rent</td>
+                  <td class="org-left">
+                    Rent per month of the listing. In units of 10000 Yen
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td class="org-left">Apt. Floor</td>
+                  <td class="org-left">The floor the property is on</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Size in \( m^{2} \)</td>
+                  <td class="org-left">Size of property in \(m^2\)</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">No Floors bldg</td>
+                  <td class="org-left">No of floors of the building</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Age bldg.</td>
+                  <td class="org-left">
+                    No. of years ago the property was built
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Style</td>
+                  <td class="org-left">
+                    Description of the layout type of the apartment (1K,
+                    1LDK,&#x2026; )
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Admin fee 10,000¥</td>
+                  <td class="org-left">Amount of monthly administration fee</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Station</td>
+                  <td class="org-left">
+                    Name of the closest public transport station
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Method</td>
+                  <td class="org-left">
+                    How &ldquo;Time to station&rdquo; is measured (foot, bus, or
+                    car)
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Time to station</td>
+                  <td class="org-left">
+                    No. minutes of taking &ldquo;method&rdquo; to the next
+                    station
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="slide-orgd6c0f3d">
+            <h3 id="orgd6c0f3d">Neural Network</h3>
+            <aside class="notes">
+              <ul>
+                <li>
+                  scaling of the last layer is important for the model to
+                  converge
+                </li>
+                <li>
+                  the model would put out predictions that are too high -&gt;
+                  makes the gradients become big -&gt; weight adjustments too
+                  big -&gt; model diverges
+                </li>
+                <li>
+                  Just scaling the outputs in the last layers is enough, but we
+                  now have a new hyperparameter with this y-range
+                </li>
+                <li>
+                  We used Resnet50, because many models use this size, but
+                  again, we found that using a bigger model e.g. Resnet152 gave
+                  better results
+                </li>
+                <li>
+                  We chose Resnet50 over newer models, because it is a well
+                  studied model
+                </li>
+                <li>
+                  The predetermined range was the lower and upper integer bounds
+                  of the data
+                </li>
+              </ul>
+            </aside>
+
+            <ul>
+              <li class="fragment roll-in">
+                Used a <code>Resnet50</code> architecture (<a
+                  href="#citeproc_bib_item_4"
+                  >He et al. 2015</a
+                >)
+              </li>
+              <li class="fragment roll-in">
+                Weights were initialized to pretrained weights available from
+                <code>torchvision</code> (<a href="#citeproc_bib_item_6"
+                  >Paszke et al. 2019</a
+                >)
+              </li>
+              <li class="fragment roll-in">
+                Randomly initialized fully connected layers at the end of the
+                usual <code>Resnet50</code> model
+              </li>
+              <li class="fragment roll-in">
+                added a sigmoid &ldquo;layer&rdquo; to scale the outputs of the
+                last layer into a predetermined range
+              </li>
+            </ul>
+          </section>
+          <section id="slide-orgaa0c0e9">
+            <h4 id="orgaa0c0e9">Training</h4>
+            <ul>
+              <li>
+                When training the Neural network we split the data into a train
+                and test set.
+              </li>
+              <li>
+                The above splits were performed on the building level (as
+                opposed to the apartment level)
+              </li>
+              <li>
+                This was done to make sure that the NN doesn&rsquo;t simply
+                remember the style of floorplans of certain buildings
+              </li>
+              <li>
+                We fine-tuned the model as follows:
+                <ul>
+                  <li>
+                    First we froze pretrained layers, trained for a 5 epochs
+                    (~1h per epoch)
+                  </li>
+                  <li>
+                    Afterwards, unfroze them and trained the whole model for 10
+                    epochs (~1h:30 per epoch)
+                  </li>
+                </ul>
+              </li>
+              <li>
+                The sigmoid layer was essential for the convergence of the model
+              </li>
+            </ul>
+          </section>
+          <section id="slide-org805efc9">
+            <h3 id="org805efc9">Augmentations</h3>
+
+            <div id="orge8775cc" class="figure">
+              <p><img src="./assets/resizes.jpg" alt="resizes.jpg" /></p>
+              <p>
+                <span class="figure-number">Figure 2: </span>This figure
+                showcases the properties of each resizing method. The first and
+                second rows compare nine floorplans. The third shows different
+                crops of the leftmost floorplan.
+              </p>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section id="slide-org3b0ce90">
+            <h2 id="org3b0ce90">Results</h2>
+            <div class="outline-text-2" id="text-org3b0ce90"></div>
+          </section>
+          <section id="slide-orgcc1d373">
+            <h3 id="orgcc1d373">Quantitative</h3>
+            <div class="outline-text-3" id="text-orgcc1d373"></div>
+          </section>
+          <section id="slide-orgebf2594">
+            <h4 id="orgebf2594">Models</h4>
+            <aside class="notes">
+              <ul>
+                <li>
+                  NN Factor is is the output of the NN based on the floorplans
+                  seen.
+                </li>
+                <li>Model estimated on data as a whole</li>
+              </ul>
+            </aside>
+
+            <div id="org1484ead" class="figure">
+              <p>
+                <img
+                  src="./assets/model_table.jpg"
+                  alt="model_table.jpg"
+                  height="500px"
+                />
+              </p>
+              <p>
+                <span class="figure-number">Figure 3: </span>Regression table of
+                the 3 estimated models (categorical features omitted).
+              </p>
+            </div>
+          </section>
+          <section id="slide-orgc4d066c">
+            <h4 id="orgc4d066c">Performance</h4>
+            <table
+              id="orgc15ff50"
+              border="2"
+              cellspacing="0"
+              cellpadding="6"
+              rules="groups"
+              frame="hsides"
+            >
+              <caption class="t-above">
+                <span class="table-number">Table 1:</span>
+                \( R^2 \) and sample size for the three models obtained on
+                different parts of the dataset.
+              </caption>
+
+              <colgroup>
+                <col class="org-left" />
+
+                <col class="org-right" />
+
+                <col class="org-right" />
+
+                <col class="org-right" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col" class="org-left">&#xa0;</th>
+                  <th scope="col" class="org-right">total</th>
+                  <th scope="col" class="org-right">train</th>
+                  <th scope="col" class="org-right">test</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="org-left">Model 1: \( R^{2} \) MLR Without NN</td>
+                  <td class="org-right">0.915</td>
+                  <td class="org-right">0.915</td>
+                  <td class="org-right">0.914</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Model 2: \( R^{2} \) MLR With NN</td>
+                  <td class="org-right">0.945</td>
+                  <td class="org-right">0.951</td>
+                  <td class="org-right">0.923</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Model 3: \( R^{2} \) LR NN only</td>
+                  <td class="org-right">0.897</td>
+                  <td class="org-right">0.917</td>
+                  <td class="org-right">0.817</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">N</td>
+                  <td class="org-right">141,394</td>
+                  <td class="org-right">113,116</td>
+                  <td class="org-right">28,278</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <ul>
+              <li>
+                We can see an improvement on the total dataset \( R^2: 0.915
+                \rightarrow 0.945 \)
+              </li>
+              <li>
+                test data improvement is smaller \( R^2: 0.914 \rightarrow 0.923
+                \)
+              </li>
+            </ul>
+          </section>
+          <section id="slide-org6137821">
+            <h4 id="org6137821">Performance</h4>
+            <table
+              id="orgd40b4ee"
+              border="2"
+              cellspacing="0"
+              cellpadding="6"
+              rules="groups"
+              frame="hsides"
+            >
+              <caption class="t-above">
+                <span class="table-number">Table 2:</span>
+                Reduction of error in predictions on test set. \( (N=28,278) \)
+              </caption>
+
+              <colgroup>
+                <col class="org-left" />
+
+                <col class="org-right" />
+
+                <col class="org-right" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col" class="org-left">Model</th>
+                  <th scope="col" class="org-right">
+                    Total Error (10,000 Yen)
+                  </th>
+                  <th scope="col" class="org-right">MAE (10,000 Yen)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="org-left">Model 1 (Baseline)</td>
+                  <td class="org-right">43813</td>
+                  <td class="org-right">1.5493</td>
+                </tr>
+
+                <tr>
+                  <td class="org-left">Model 2 (w/ NN)</td>
+                  <td class="org-right">32131</td>
+                  <td class="org-right">1.1362</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>Reduction of error of \( \approx 26\% \).</p>
+            <ul>
+              <li>\( 438,130,000 - 321,310,000 = 116,820,000 \)</li>
+              <li>\( 116,820,000 \) Yen improvement in prediction</li>
+            </ul>
+          </section>
+          <section id="slide-orgd2585e9">
+            <h3 id="orgd2585e9">Qualitative</h3>
+            <div class="outline-text-3" id="text-orgd2585e9"></div>
+          </section>
+          <section id="slide-orgc58f735">
+            <h4 id="orgc58f735">Randomly Extracted sample</h4>
+
+            <div id="orgdbec2c3" class="figure">
+              <p>
+                <img src="./assets/random_table.png" alt="random_table.png" />
+              </p>
+              <p>
+                <span class="figure-number">Figure 4: </span>NN predictions and
+                ground truths for a randomly extracted sample of the dataset.
+                (in 10,000¥)
+              </p>
+            </div>
+          </section>
+          <section id="slide-orgb420ad8">
+            <h4 id="orgb420ad8">Lowest predictions of the neural net</h4>
+            <aside class="notes">
+              <ul>
+                <li>
+                  All of the lowest predictions are of single room apartments in
+                  dormitories
+                </li>
+                <li>
+                  The model probably picked up on the repetitive nature of these
+                  floorplans
+                </li>
+                <li>
+                  thus knows to predict these apartments to have lower rents
+                </li>
+                <li>
+                  The middle 2 pics are actually the same, but predictions are
+                  different ( Due to random cropping )
+                </li>
+              </ul>
+            </aside>
+
+            <div id="org268e6fb" class="figure">
+              <p>
+                <img
+                  src="./assets/rand_neg_top_100.png"
+                  alt="rand_neg_top_100.png"
+                />
+              </p>
+              <p>
+                <span class="figure-number">Figure 5: </span>The four
+                predictions the model predicted the lowest rent for. (in
+                10,000¥)
+              </p>
+            </div>
+          </section>
+          <section id="slide-orgffef6b9">
+            <h4 id="orgffef6b9">Highest predictions of the neural net</h4>
+            <aside class="notes">
+              <ul>
+                <li>The highest predictions all have multiple bed rooms</li>
+                <li>Multiple floors</li>
+                <li>complicated layouts</li>
+                <li>The magnitude of the overpredictions is quite high ()</li>
+              </ul>
+            </aside>
+
+            <div id="org4da6683" class="figure">
+              <p>
+                <img src="./assets/rand_top_100.png" alt="rand_top_100.png" />
+              </p>
+              <p>
+                <span class="figure-number">Figure 6: </span>The floorplans of
+                four apartments with very highest predicted rents. (in 10,000¥)
+              </p>
+            </div>
+          </section>
+          <section id="slide-org0bed746">
+            <h4 id="org0bed746">Plot of residulas</h4>
+
+            <div id="org9fef642" class="figure">
+              <p>
+                <img src="./assets/residual_plot.png" alt="residual_plot.png" />
+              </p>
+              <p>
+                <span class="figure-number">Figure 7: </span>The floorplans of
+                four apartments with very highest predicted rents. (in 10,000¥)
+              </p>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section id="slide-org15006d1">
+            <h2 id="org15006d1">Limitations</h2>
+            <ul>
+              <li class="fragment roll-in">
+                Improvements might decrease when more structural variables are
+                available
+              </li>
+              <li class="fragment roll-in">
+                Using more recent or bigger models, might give better results
+                than the Resnet50
+              </li>
+              <li class="fragment roll-in">
+                Currently we are only considering a single market
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section id="slide-orgfc17b93">
+            <h2 id="orgfc17b93">Conclusion</h2>
+            <ul>
+              <li class="fragment roll-in">
+                Hypothesis was that floorplans contain valuable information
+                about prices, which we can leverage with neural networks
+              </li>
+              <li class="fragment roll-in">
+                Trained a Resnet model to predict rent prices using the floor
+                plans images
+              </li>
+              <li class="fragment roll-in">
+                We were able to improve the accuracy over the model using
+                tabular data only
+              </li>
+              <li class="fragment roll-in">
+                We believe that using floorplans can be a practically viable
+                option, especially in situations where it is hard to obtain many
+                structural features
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section id="slide-org3eb7a88">
+            <h2 id="org3eb7a88">Bibliography</h2>
+            <style>
+              .csl-entry {
+                text-indent: -1.5em;
+                margin-left: 1.5em;
+              }
+            </style>
+            <div class="csl-bib-body">
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_1"></a>Akiyama, Yuki. 2019.
+                “マイクロジオデータを用いた日本全国の家賃形成メカニズムの研
+                究–-住環境と住宅の市場価値の意外な関係性–-.”
+                <i>環境科学会誌</i> 32 (2): 53–64.
+                <a href="https://doi.org/10.11353/sesj.32.53"
+                  >https://doi.org/10.11353/sesj.32.53</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_2"></a>Choi, J. M., and Y. Asami. 2003.
+                “賃貸住宅居住者の満足度評価に見られる潜在的評価構造.”
+                <i>都市住宅学</i> 2003 (42): 86–97.
+                <a href="https://doi.org/10.11531/uhs1993.2003.42_86"
+                  >https://doi.org/10.11531/uhs1993.2003.42_86</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_3"></a>Hattori, Ryosuke, Kazushi
+                Okamoto, and Atsushi Shibata. 2019. “Rent Prediction Models with
+                Floor Plan Images.” In
+                <i
+                  >2019 Ieee 8th Global Conference on Consumer Electronics
+                  (Gcce)</i
+                >, 451–52.
+                <a href="https://doi.org/10.1109/GCCE46687.2019.9015208"
+                  >https://doi.org/10.1109/GCCE46687.2019.9015208</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_4"></a>He, Kaiming, Xiangyu Zhang,
+                Shaoqing Ren, and Jian Sun. 2015. “Deep Residual Learning for
+                Image Recognition.” 2015.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_5"></a>Limsombunchai, Visit,
+                Christopher Gan, and Minsoo Lee. 2004. “House Price Prediction:
+                Hedonic Price Model Vs. Artificial Neural Network.”
+                <i>American Journal of Applied Sciences</i> 1.
+                <a href="https://doi.org/10.3844/ajassp.2004.193.201"
+                  >https://doi.org/10.3844/ajassp.2004.193.201</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_6"></a>Paszke, Adam, Sam Gross,
+                Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan,
+                Trevor Killeen, et al. 2019. “Pytorch: An Imperative Style,
+                High-Performance Deep Learning Library.” In
+                <i>Advances in Neural Information Processing Systems 32</i>,
+                edited by H. Wallach, H. Larochelle, A. Beygelzimer, F. d
+                Alché-Buc, E. Fox, and R. Garnett, 8024–35. Curran Associates,
+                Inc.
+                <a
+                  href="http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf"
+                  >http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_7"></a>Poursaeed, Omid, Tomáš Matera,
+                and Serge Belongie. 2018. “Vision-Based Real Estate Price
+                Estimation.” <i>Machine Vision and Applications</i> 29 (4):
+                667–76.
+                <a href="https://doi.org/10.1007/s00138-018-0922-2"
+                  >https://doi.org/10.1007/s00138-018-0922-2</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_8"></a>Rosen, Sherwin. 1974. “Hedonic
+                Prices and Implicit Markets: Product Differentiation in Pure
+                Competition.” <i>Journal of Political Economy</i> 82 (1): 34–55.
+                <a href="http://www.jstor.org/stable/1830899"
+                  >http://www.jstor.org/stable/1830899</a
+                >.
+              </div>
+              <div class="csl-entry">
+                <a id="citeproc_bib_item_9"></a>Zeng, Zhiliang, Xianzhi Li, Ying
+                Kin Yu, and Chi-Wing Fu. 2019. “Deep Floor Plan Recognition
+                Using a Multi-Task Network with Room-Boundary-Guided Attention.”
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+    <script src="./reveal.js/dist/reveal.js"></script>
+    <script src="./reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="./reveal.js/plugin/notes/notes.js"></script>
+    <script src="./reveal.js/plugin/search/search.js"></script>
+    <script src="./reveal.js/plugin/zoom/zoom.js"></script>
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        slideNumber: "c",
+        rollingLinks: false,
+        keyboard: true,
+        mouseWheel: false,
+        fragmentInURL: true,
+        hashOneBasedIndex: false,
+        pdfSeparateFragments: true,
+        overview: true,
+
+        transition: "linear",
+        transitionSpeed: "default",
+
+        // Plugins with reveal.js 4.x
+        plugins: [RevealMarkdown, RevealNotes, RevealSearch, RevealZoom],
+
+        // Optional libraries used to extend reveal.js
+        dependencies: [],
+      });
+    </script>
+  </body>
 </html>

@@ -9,6 +9,7 @@
 #+latex_class_options: [twocolumn]
 #+OPTIONS: toc:nil email:nil author:nil title:nil H:4 num:nil
 #+LATEX_HEADER: \usepackage{jsaiac}
+#+LATEX_HEADER: \usepackage[backend=biber,style=apa]{biblatex}
 #+LATEX_HEADER: \author{\ename{Jiyan Schneider\first \second} \and \ename{Takahiro Hoshino\first \second}}
 #+LATEX_HEADER: \address{Jiyan Schneider, Faculty of Economics, Keio University, 2-15-45, Mita, Minato City, Tokyo, 108-8345, jiyan.schneider@keio.jp}
 #+LATEX_HEADER: \affiliate{\ename{\first{}Graduate School of Economics, Keio University} \and \ename{\second{}AIP Center, RIKEN}}
