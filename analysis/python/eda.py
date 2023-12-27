@@ -6,32 +6,35 @@
 # In[56]:
 
 
-get_ipython().run_line_magic('load_ext', 'autoreload')
-get_ipython().run_line_magic('autoreload', '1')
-get_ipython().run_line_magic('aimport', 'prep')
-get_ipython().run_line_magic('config', 'InlineBackend.figure_formats = ["jpg"]')
+get_ipython().run_line_magic("load_ext", "autoreload")
+get_ipython().run_line_magic("autoreload", "1")
+get_ipython().run_line_magic("aimport", "prep")
+get_ipython().run_line_magic("config", 'InlineBackend.figure_formats = ["jpg"]')
 
 # In[43]:
 
-#k
+# k
 import matplotlib.font_manager as fm
-font_dirs = ['/Users/jiyanschneider/Library/Fonts/']
+
+font_dirs = ["/Users/jiyanschneider/Library/Fonts/"]
 font_files = fm.findSystemFonts(fontpaths=font_dirs)
 
 for font_file in font_files:
     fm.fontManager.addfont(font_file)
 
 import matplotlib.pyplot as plt
-plt.style.use(['science',"nature","notebook"])
-plt.rcParams.update({
-    "font.family": "serif",   # specify font family here
-    "font.serif": ["Computer", "Noto Serif CJK jp"],  # specify font here
-    "font.size":11,
-    "text.usetex": False,
-    "mathtext.fontset": "stixsans",
-    "figure.figsize": (5, 3),
+
+plt.style.use(["science", "nature", "notebook"])
+plt.rcParams.update(
+    {
+        "font.family": "serif",  # specify font family here
+        "font.serif": ["Computer", "Noto Serif CJK jp"],  # specify font here
+        "font.size": 11,
+        "text.usetex": False,
+        "mathtext.fontset": "stixsans",
+        "figure.figsize": (5, 3),
     }
-)          # specify font size here
+)  # specify font size here
 
 # plt.rcParams['figure.dpi'] = 100
 # plt.rcParams['savefig.dpi'] = 300
@@ -39,14 +42,13 @@ plt.rcParams.update({
 # plt.rcParams['legend.fontsize'] = 20
 # plt.rcParams['figure.titlesize'] = 24
 
-from prep import *
-import pandas as pd
 import numpy as np
-import statsmodels.api as sm
+import pandas as pd
 import statsmodels.formula.api as smf
 
+from prep import *
 
-
+x = 1
 # In[44]:
 
 
@@ -56,23 +58,24 @@ df["apt_style"] = df["apt_style"].apply(apt_style_clean)
 df["log_apt_rent"] = np.log(df["apt_rent"])
 
 
-# ##  Fit regression model 
-# 
+# ##  Fit regression model
+#
 # Also declare two helper functions
 
 # In[48]:
 
 
-def linear_model(formula, df, targ,model_name=None):
+def linear_model(formula, df, targ, model_name=None):
     results = smf.ols(formula.format(targ), data=df).fit()
     preds = results.predict(df)
     targs = df[targ]
     if model_name is None:
         model_name = formula.format(targ)
-    fig,annot = plot_regression_once(preds,targs,model_name)
+    fig, annot = plot_regression_once(preds, targs, model_name)
     print(annot)
-    fig.savefig("../../paper/assets/" + model_name + ".jpg")
-    return results,fig
+    plt.savefig("../../paper/assets/" + model_name + ".jpg")
+    return results, fig
+
 
 def set_base(ser, base):
     cats = list(ser.unique())
@@ -94,30 +97,33 @@ df["method"] = set_base(df["method"], "歩")
 # In[137]:
 
 
-res,p = linear_model("{} ~"
-                        "+ b_no_floors " 
-                        "+ apt_size"
-                        "+ apt_admin_price"
-                        "+ apt_floor"
-                        "+ method * time_to_station"
-                        ,df, "apt_rent", model_name="Linear Regression")
+res, p = linear_model(
+    "{} ~"
+    "+ b_no_floors "
+    "+ apt_size"
+    "+ apt_admin_price"
+    "+ apt_floor"
+    "+ method * time_to_station",
+    df,
+    "apt_rent",
+    model_name="Linear Regression",
+)
 res.summary()
 
 ### Simple regression `log_rent` on simple variables
 # In[139]:
 
-res,p = linear_model("{} ~"
-                        "+ b_no_floors " 
-                        "+ apt_size"
-                        # "+ apt_style"
-                        "+ apt_admin_price"
-                        "+ apt_floor"
-                        "+ method * time_to_station"
-                        "+ time_to_station^2"
-                        # "+ station"
-                        ,df, "log_apt_rent", model_name="Linear Regression log")
+res, p = linear_model(
+    "{} ~" "+ b_no_floors " "+ apt_size"
+    # "+ apt_style"
+    "+ apt_admin_price" "+ apt_floor" "+ method * time_to_station" "+ time_to_station^2"
+    # "+ station"
+    ,
+    df,
+    "log_apt_rent",
+    model_name="Linear Regression log",
+)
 res.summary()
-            
 
 
 # ### Regression on rent with `apt_style`
@@ -125,15 +131,19 @@ res.summary()
 # In[131]:
 
 
-res,p = linear_model("{} ~ b_no_floors " 
-                         "+ apt_size"
-                        "+ apt_style"
-                        "+ apt_admin_price"
-                        "+ apt_floor"
-                        "+ method * time_to_station"
-                        # "+ station"
-                        ,df, "apt_rent",
-                    model_name="style and apt_rent")
+res, p = linear_model(
+    "{} ~ b_no_floors "
+    "+ apt_size"
+    "+ apt_style"
+    "+ apt_admin_price"
+    "+ apt_floor"
+    "+ method * time_to_station"
+    # "+ station"
+    ,
+    df,
+    "apt_rent",
+    model_name="style and apt_rent",
+)
 res.summary()
 
 
@@ -142,16 +152,19 @@ res.summary()
 # In[160]:
 
 
-res,p = linear_model("{} ~ b_no_floors " 
-                         "+ apt_size"
-                        "+ apt_style"
-                        "+ apt_admin_price"
-                        "+ apt_floor"
-                        "+ method * time_to_station"
-                        # "+ station"
-                        ,df, "log_apt_rent",
-                     model_name="With apt_style, log rent"
-                    )
+res, p = linear_model(
+    "{} ~ b_no_floors "
+    "+ apt_size"
+    "+ apt_style"
+    "+ apt_admin_price"
+    "+ apt_floor"
+    "+ method * time_to_station"
+    # "+ station"
+    ,
+    df,
+    "log_apt_rent",
+    model_name="With apt_style, log rent",
+)
 res.summary()
 
 
@@ -160,15 +173,18 @@ res.summary()
 # In[132]:
 
 
-m3,p = linear_model("{} ~ b_no_floors " 
-                         "+ apt_size"
-                        "+ apt_style"
-                        "+ apt_admin_price"
-                        "+ apt_floor"
-                        "+ method * time_to_station"
-                        "+ station"
-                        ,df, "apt_rent",
-                    model_name="Style, station, rent")
+m3, p = linear_model(
+    "{} ~ b_no_floors "
+    "+ apt_size"
+    "+ apt_style"
+    "+ apt_admin_price"
+    "+ apt_floor"
+    "+ method * time_to_station"
+    "+ station",
+    df,
+    "apt_rent",
+    model_name="Style, station, rent",
+)
 m3.summary()
 
 
@@ -177,16 +193,19 @@ m3.summary()
 # In[191]:
 
 
-m4,p = linear_model("{} ~ b_no_floors " 
-                         "+ apt_size"
-                        "+ apt_style"
-                        "+ apt_admin_price"
-                        "+ apt_floor"
-                        "+ method * time_to_station"
-                        "+ method * np.sqrt(time_to_station)"
-                        "+ station"
-                        ,df, "log_apt_rent",
-                    model_name="Station, Style, log rent")
+m4, p = linear_model(
+    "{} ~ b_no_floors "
+    "+ apt_size"
+    "+ apt_style"
+    "+ apt_admin_price"
+    "+ apt_floor"
+    "+ method * time_to_station"
+    "+ method * np.sqrt(time_to_station)"
+    "+ station",
+    df,
+    "log_apt_rent",
+    model_name="Station, Style, log rent",
+)
 
 
 # We can see that it is mostly overvaluing the most places
@@ -194,9 +213,7 @@ m4,p = linear_model("{} ~ b_no_floors "
 # In[131]:
 
 
-
 from statsmodels.iolib.summary2 import summary_col
-
 
 # In[132]:
 
@@ -209,9 +226,6 @@ summary_col([m3, m4])
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.pipeline import Pipeline
-
 
 # In[63]:
 
@@ -247,25 +261,26 @@ cat = [
 # In[108]:
 
 
-cols = ["b_age",
-        "b_no_floors",
-        "apt_size" ,
-        "apt_style",
-        "station",
-        "apt_admin_price",
-        "apt_floor",
-        "method",
-        "time_to_station"
-       ]
+cols = [
+    "b_age",
+    "b_no_floors",
+    "apt_size",
+    "apt_style",
+    "station",
+    "apt_admin_price",
+    "apt_floor",
+    "method",
+    "time_to_station",
+]
 targs = "log_apt_rent"
-dm = pd.get_dummies(df[cols],drop_first=True)
-rf = RandomForestRegressor(oob_score=True,)
+dm = pd.get_dummies(df[cols], drop_first=True)
+rf = RandomForestRegressor(oob_score=True)
 
 
 # In[ ]:
 
 
-df.describe(j
+df.describe()
 
 
 # In[113]:
@@ -277,38 +292,30 @@ df.iloc[df["apt_admin_price"].argmax()]["full_apt_detail_link"]
 # In[127]:
 
 
-df.sort_values("apt_admin_price",ascending=False).iloc[:10]["full_apt_detail_link"].iloc[2]
+df.sort_values("apt_admin_price", ascending=False).iloc[:10][
+    "full_apt_detail_link"
+].iloc[2]
 
 
 # In[123]:
 
 
-df[cols+[targs]].describe().T.drop("count", axis=1)# .to_latex(float_format="%.2f")
+df[cols + [targs]].describe().T.drop("count", axis=1)  # .to_latex(float_format="%.2f")
 
 
 # In[ ]:
 
 
-df.describe(
-
-
-# In[149]:
-
-
-df[cols].dtypes
-
-
-# In[155]:
-
-
-print(df[cols+[targs]].describe(include=["category"]).T.drop("count", axis=1).to_latex())
+print(
+    df[cols + [targs]].describe(include=["category"]).T.drop("count", axis=1).to_latex()
+)
 
 
 # In[107]:
 
 
-X, y=dm,df[targs]
-tr_X, te_X, tr_y, te_y  = train_test_split(dm, df[targs], random_state=42)
+X, y = dm, df[targs]
+tr_X, te_X, tr_y, te_y = train_test_split(dm, df[targs], random_state=42)
 
 
 # In[ ]:
@@ -321,24 +328,18 @@ test_preds = rf.predict(te_X)
 # In[94]:
 
 
-from sklearn.model_selection import KFold
-
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import cross_val_score
 import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 
 clf = RandomForestRegressor(oob_score=True)
 
 # 10-Fold Cross validation
 # np.mean(cross_val_score(clf, tr_X, tr_y, cv=10))
-#     
-
 
 # In[95]:
 
 
-get_ipython().run_cell_magic('time', '', 'clf.fit(tr_X, tr_y)')
-
+get_ipython().run_cell_magic("time", "", "clf.fit(tr_X, tr_y)")
 
 # In[134]:
 
@@ -349,7 +350,7 @@ clf.oob_score_
 # In[84]:
 
 
-get_ipython().run_cell_magic('time', '', 'cross_val_score(clf, tr_X, tr_y, cv=5)')
+get_ipython().run_cell_magic("time", "", "cross_val_score(clf, tr_X, tr_y, cv=5)")
 
 
 # In[81]:
@@ -374,11 +375,10 @@ print(annot)
 # In[130]:
 
 
-fig.savefig("../../paper/assets/Random Forest.jpg")
+plt.savefig("../../paper/assets/Random Forest.jpg")
 
 
 # In[139]:
 
 
-((df["log_apt_rent"] - df["log_apt_rent"].mean())**2).mean()
-
+((df["log_apt_rent"] - df["log_apt_rent"].mean()) ** 2).mean()
