@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
+# %%
+
+from prep import *
 import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from stargazer.stargazer import Stargazer
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
 
 font_dirs = ["/Users/jiyanschneider/Library/Fonts/"]
 font_files = fm.findSystemFonts(fontpaths=font_dirs)
@@ -7,7 +17,6 @@ font_files = fm.findSystemFonts(fontpaths=font_dirs)
 for font_file in font_files:
     fm.fontManager.addfont(font_file)
 
-import matplotlib.pyplot as plt
 
 plt.style.use(["science", "nature", "notebook"])
 plt.rcParams.update(
@@ -20,12 +29,6 @@ plt.rcParams.update(
         "figure.figsize": (5, 3),
     }
 )
-
-from prep import *
-import pandas as pd
-import numpy as np
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
 
 df = pd.read_csv("../data/viz_learn_preds.csv", index_col=0)
 
@@ -94,9 +97,9 @@ mod2 = lm(
 )
 
 
-from stargazer.stargazer import Stargazer
 
-sg = Stargazer([mod, mod2])
+
+sg = Stargazer([mod1, mod2])
 
 order = [
     "apt_size",
@@ -107,17 +110,18 @@ order = [
     "time_to_station_sq",
     "viz_preds",
 ]
-
 sg.covariate_order(order)
 
-sg.rename_covariates({
-    "apt_size": "Size",
-    "b_no_floors": "Floors",
-    "apt_floor": "apt floor",
-    "apt_admin_price": "adminprice",
-    "time_to_station" : "timetostation",
-    "time_to_station_sq": "timetostationsq",
-    "viz_preds": "vizpreds",
-})
+sg.rename_covariates(
+    {
+        "apt_size": "Size",
+        "b_no_floors": "Floors",
+        "apt_floor": "apt floor",
+        "apt_admin_price": "adminprice",
+        "time_to_station": "timetostation",
+        "time_to_station_sq": "timetostationsq",
+        "viz_preds": "vizpreds",
+    }
+)
 
 print(sg.render_latex())

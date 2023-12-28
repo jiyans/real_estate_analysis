@@ -1,7 +1,6 @@
 \begin{table}[!htbp] 
-\caption{\label{tab:regression}Esimated coefficients (Standard Erorrs) for the variables in Table \ref{tab:var_explanation}.
-These coefficients were estimated with the hedonic price model explained. However, because of the high cardinality 
-of the categorical variables of Apartment style and closest station, we excluded the two variables here.%
+\caption{\label{tab:regression}Esimated coefficients (standard errors) for the variables in table \ref{tab:var_explanation}. 
+The categorical variables, "Style" and "Station", were excluded due to their high cardinality.%
 }
  \centering
 \begin{tabular}{@{\extracolsep{5pt}}lccc}
@@ -13,19 +12,19 @@ of the categorical variables of Apartment style and closest station, we excluded
 \hline \\[-1.8ex]
  Intercept & 1.962$^{***}$ & 1.050$^{***}$ & 0.032$^{***}$ \\
   & (0.011) & (0.009) & (0.002) \\
- Apartment Size(\(m^2\)) & 0.015$^{***}$ & 0.007$^{***}$ & \\
+ Size in \(m^2\) & 0.015$^{***}$ & 0.007$^{***}$ & \\
   & (0.000) & (0.000) & \\
- Building age & -0.008$^{***}$ & -0.005$^{***}$ & \\
+ Age Bldg. & -0.008$^{***}$ & -0.005$^{***}$ & \\
   & (0.000) & (0.000) & \\
- No. Floors(Building) & 0.006$^{***}$ & 0.003$^{***}$ & \\
+ No Floors Building  & 0.006$^{***}$ & 0.003$^{***}$ & \\
   & (0.000) & (0.000) & \\
- Apartment Floor & 0.006$^{***}$ & 0.004$^{***}$ & \\
+ Apt. Floor & 0.006$^{***}$ & 0.004$^{***}$ & \\
   & (0.000) & (0.000) & \\
- Administration Price & -0.000$^{}$ & -0.000$^{***}$ & \\
+ Admin Fee & -0.000$^{}$ & -0.000$^{***}$ & \\
   & (0.000) & (0.000) & \\
- Time to station & -0.003$^{***}$ & -0.002$^{***}$ & \\
+ Time to Station & -0.003$^{***}$ & -0.002$^{***}$ & \\
   & (0.000) & (0.000) & \\
- Time to station\(^2\) & -0.000$^{***}$ & -0.000$^{***}$ & \\
+ Time to Station\(^2\) & -0.000$^{***}$ & -0.000$^{***}$ & \\
   & (0.000) & (0.000) & \\
  NN Factor & & 0.485$^{***}$ & 0.986$^{***}$ \\
   & & (0.002) & (0.001) \\
