@@ -5,7 +5,7 @@ description = ""
 authors = ["Jiyan Jonas Schneider <jiyan.schneider@keio.jp>"]
 
 [tool.poetry.dependencies]
-python = "3.8.14"
+python = "^3.8"
 fastai = "^2.5.3"
 pandas = "^1.3.5"
 statsmodels = "^0.13.1"

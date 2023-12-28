@@ -339,18 +339,17 @@ of values our variables take on and summary statistics in the appendix (Tables
 # reliable. In this paper, however, we will not make any strong interpretations
 # based on our coefficients.
 
+#+CAPTION: This figure depicts the value frequencies of the variables used in our paper. Note that for the "Styles" variable, the x and y axes have been flipped for the readability of the labels.
 #+NAME: fig:hists
 #+LABEL: fig:hists
 #+ATTR_LATEX: :name fig:hists :label fig:hists
-#+CAPTION: This figure depicts the value frequencies of the variables used in our paper. Note that for the "Styles" variable, the x and y axes have been flipped for the readability of the labels.
 [[./assets/varhists.png]]
 
-# TODO Leave heatmap out for now???
-# #+NAME: fig:corrplot
-# #+LABEL: fig:corrplot
-# #+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm
-# #+CAPTION: Heatmap showing the correlations of the variables displayed in [[tab:regression]].
-# [[./assets/corrplot.png]]
+#+NAME: fig:corrplot
+#+LABEL: fig:corrplot
+#+ATTR_LATEX: :label fig:corrplot :name fig:corrplot :width 8cm
+#+CAPTION: Heatmap showing the correlations of the variables displayed in [[tab:regression]].
+[[./assets/corrplot.png]]
 
 ** Neural Network architecture
 This subsection will explain the architecture of the NN we used, the
@@ -483,7 +482,7 @@ this paper are reported using a model trained on predictions by using the
 The price estimation was performed via a multiple linear regression model using
 all collected variables and outlined in Table [[tab:var_explanation]]. We
 log-transform the target variable of apartment rent. While preliminary tests of
-the multiple regression model only showed a slight improvement in $R^{2}$ by
+the multiple regression model only showed a slight improvement in  $ R^{2} $ by
 using the log-transformed rent, the NN's predictions improved significantly.
 Furthermore, many of the research papers cited in this paper use log-transformed
 rents as well, so we will side with convention. We created dummy matrices for
