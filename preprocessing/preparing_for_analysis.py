@@ -145,7 +145,6 @@ if not os.path.exists(basepath / "processed"):
 df_slim = df_p[eventual_dtypes.keys()].copy()
 df_slim = df_shrink(df_slim)
 
-df_p.to_pickle(basepath / "processed" / "more.pkl")
-df_slim.to_parquet(basepath / "processed" / "slim.parquet")
+df_slim.to_parquet(rawpath /  "slim.parquet")
 
 # %%
