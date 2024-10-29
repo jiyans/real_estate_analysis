@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 import os
+import hashlib
 import re
 from pathlib import Path
 
@@ -8,8 +8,8 @@ import pandas as pd
 from fastai.tabular.all import df_shrink
 
 basepath = Path("data/")
-rawpath = basepath / "raw"
-fname = rawpath / "more.jsonlines"
+rawpath = basepath / "tokyo_2024_10_29"
+fname = rawpath / "tokyo_all.jsonlines"
 
 # %%
 df = pd.read_json(
@@ -64,51 +64,62 @@ def get_closest_station_parts(t):
         print(f"Failed to parse {t[1]}")
     return pd.Series([station, method, time])
 
+def get_sha1_hash(text):
+    # Convert string to bytes if it isn't already
+    if isinstance(text, str):
+        text = text.encode('utf-8')
+    return hashlib.sha1(text).hexdigest()
 
 def prep_data(df):
     print("preparing easy columns")
-    df["b_age"] = df["b_age"].apply(lambda x: x[0])
-    df["b_age"] = df["b_age"].str.replace("新築", "0年")
+    df["b_age"] = df["b_age"].apply(lambda x: x[0]).str.replace("新築", "0年")
     df["b_age_int"] = df["b_age"].str.extract(r"(\d+)年")[0].astype(int)
-
+    print("Age done ")
     df["b_no_floors"] = df["b_no_floors"].str.replace("平屋", "1階建")
     df["b_no_floors_int"] = df["b_no_floors"].str.extract(r"(\d+)階建")[0].astype(int)
+    print("building floors done")
 
     assert df["apt_size"].str.endswith("m").all()
     df["apt_size_num"] = df["apt_size"].str.slice(0, -1).astype(float)
+    print("Apt size done ")
 
     assert df["apt_rent"].str.endswith("万円").all()
     df["apt_rent_num"] = df["apt_rent"].str.slice(0, -2).astype(float)
 
-    df["apt_floor"] = df["apt_floor"].apply(lambda x: x[0])
-    df["apt_floor"] = df["apt_floor"].replace("-", "1階")
-    df["apt_floor_num"] = df["apt_floor"].str.extract(r"(\d+)階")[0].astype(int)
+    print("apt rent num done")
+
+    df["apt_floor_num"] = df["apt_floor"].replace("-", "1階").str.extract(r"(\d+)階")[0].fillna(1).astype(int)
+    print("apt floors done")
 
     df["apt_admin_price"] = df["apt_admin_price"].replace("-", "0円")
     assert df["apt_admin_price"].str.endswith("円").all()
     df["apt_admin_price_num"] = df["apt_admin_price"].str.slice(0, -1).astype(float)
 
+    print("Admin price done ")
     df["apt_thanks_fee"] = df["apt_thanks_fee"].replace("-", "0万円")
     assert df["apt_thanks_fee"].str.endswith("万円").all()
     df["apt_thanks_fee_num"] = (
         df["apt_thanks_fee"].str.slice(0, -2).astype(float) * 10000
     )
 
+    print("Thanks fee done ")
     df["apt_deposit"] = df["apt_deposit"].replace("-", "0万円")
     assert df["apt_deposit"].str.endswith("万円").all()
     df["apt_deposit_num"] = df["apt_deposit"].str.slice(0, -2).astype(float) * 10000
+    print("Deposit done ")
 
     df["apt_total_rent_num"] = df["apt_rent_num"] + df["apt_admin_price_num"]
+    df["images_url"] = df["image_urls"].apply(lambda x: x[0])
+    df["images_path"] = df["images_url"].apply(lambda x: get_sha1_hash(x) + ".jpg")
 
-    df["images"] = df["images"].apply(lambda x: x[0])
-    df["images_url"] = df["images"].apply(lambda x: x["url"])
-    df["images_path"] = df["images"].apply(lambda x: x["path"])
+    print("Images done ")
 
     df[["b_closest_1", "b_closest_2", "b_closest_3"]] = df["b_closest_stations"].apply(
         lambda x: pd.Series(x.items())
     )
     print("splitting closest stations")
     for i in range(1, 4):
+
         df[
             [
                 f"b_closest_station_{i}",
@@ -120,6 +131,7 @@ def prep_data(df):
     df["b_distance_station_1"] = df["b_distance_station_1"].astype(float)
     df["b_distance_station_2"] = df["b_distance_station_2"].astype(float)
     df["b_distance_station_3"] = df["b_distance_station_3"].astype(float)
+    print("Distances done ")
     return df
 
 
